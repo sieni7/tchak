@@ -3,496 +3,998 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>TCHAK – Certifiez votre art. Sécurisez votre héritage.</title>
+    <title>TCHAK – Certification d'authenticité pour artistes | Offline-first Crypto Studio</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Library pour animations scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <style>
-        :root {
-            --emerald: #0F201B;
-            --gold: #D4AF37;
-            --gold-light: #F2D06B;
-            --off-white: #FDFBF7;
-            --text-main: #FFFFFF;
-            --text-muted: #A0A0A0;
-            --glass: rgba(255, 255, 255, 0.05);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--emerald);
-            color: var(--text-main);
-            line-height: 1.6;
+            background: #0F201B;
+            color: #FFFFFF;
+            line-height: 1.5;
             overflow-x: hidden;
         }
 
-        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
 
-        /* --- NAVBAR --- */
+        /* Glassmorphism Navbar */
         .glass-nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 1.5rem 10%;
+            background: rgba(15, 32, 27, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 32, 27, 0.8);
-            backdrop-filter: blur(15px);
             z-index: 1000;
-            border-bottom: 1px solid var(--glass);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }
 
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -1px;
+            color: #FDFBF7;
         }
 
-        .logo span { color: var(--gold); }
-
-        .nav-links { display: flex; gap: 2.5rem; }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
+        .logo span {
+            color: #D4AF37;
         }
 
-        .nav-links a:hover { color: var(--gold); }
-
-        .cta-nav {
-            background: var(--gold);
-            color: var(--emerald);
-            padding: 0.75rem 1.5rem;
-            border-radius: 40px;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-        }
-
-        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
-
-        /* --- HERO --- */
-        .hero {
-            height: 100vh;
-            padding: 0 10%;
+        .nav-links {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 4rem;
-            background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
-        }
-
-        .hero-content { flex: 1.2; }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 2.5rem;
-        }
-
-        .cta-hero {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--gold), var(--gold-light));
-            color: var(--emerald);
-            padding: 1.25rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-        }
-
-        .cta-hero:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); }
-
-        .hero-mockup {
-            flex: 0.8;
-            position: relative;
-        }
-
-        .hero-mockup img {
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* --- SECTIONS --- */
-        section { padding: 8rem 10%; }
-
-        h2 { font-size: 3rem; text-align: center; margin-bottom: 4rem; }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2.5rem;
-        }
-
-        .feature-card {
-            background: var(--glass);
-            padding: 3rem 2rem;
-            border-radius: 24px;
-            border: 1px solid var(--glass);
-            text-align: center;
-            transition: var(--transition);
-        }
-
-        .feature-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-10px); }
-
-        .feature-card h3 { font-size: 1.5rem; margin: 1.5rem 0; color: var(--gold); }
-
-        .how-it-works .steps {
-            display: flex;
-            justify-content: space-between;
             gap: 2rem;
         }
 
-        .step {
+        .nav-links a {
+            color: #FDFBF7;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #D4AF37;
+        }
+
+        /* Badge Beta */
+        .beta-badge {
+            background: #D4AF37;
+            color: #0F201B;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        /* Boutons CTA améliorés */
+        .cta-nav, .cta-hero, .cta-free {
+            background: #D4AF37;
+            color: #0F201B;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-nav:hover, .cta-hero:hover, .cta-free:hover {
+            background: #C59B2E;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-hero {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6rem 2rem 4rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #A0A0A0;
+            margin-bottom: 1rem;
+        }
+
+        .hero-mockup {
             flex: 1;
             text-align: center;
         }
 
-        .step-num {
-            font-size: 4rem;
-            color: var(--gold);
-            opacity: 0.2;
-            font-weight: 900;
+        .hero-mockup img, .hero-mockup video {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        /* --- PRICING --- */
-        .pricing-grid {
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+            background: #FDFBF7;
+            color: #0F201B;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-grid {
             display: flex;
             justify-content: center;
-            gap: 3rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .pricing-card {
-            background: var(--glass);
-            padding: 4rem 3rem;
-            border-radius: 32px;
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 300px;
+            text-align: center;
+            transition: all 0.25s ease;
+            border: 1px solid #E5E0D5;
+        }
+
+        .feature-card:hover {
+            border-color: #D4AF37;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            transition: transform 0.25s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: translateY(-5px);
+        }
+
+        /* How it Works */
+        .how-it-works {
+            padding: 4rem 2rem;
+            background: #0F201B;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 300px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .step-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #D4AF37;
+            margin-bottom: 1rem;
+        }
+
+        /* Security Schema */
+        .security-schema {
+            background: #FDFBF7;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .schema {
+            background: #0F201B;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 800px;
+            margin: 2rem auto;
+            color: #FDFBF7;
+        }
+
+        .chain {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .block {
+            background: #D4AF37;
+            color: #0F201B;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 4rem 2rem;
+            background: #0F201B;
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .pricing-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card-free, .card-pro {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
             width: 350px;
             text-align: center;
-            border: 1px solid var(--glass);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            transition: transform 0.2s ease;
         }
 
-        .pricing-card.premium {
-            border: 2px solid var(--gold);
-            position: relative;
+        .card-free:hover, .card-pro:hover {
+            transform: translateY(-5px);
         }
 
-        .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #D4AF37;
+            margin: 1rem 0;
+        }
 
-        .price { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; color: var(--gold); }
-
-        /* --- MODAL --- */
+        /* Modal améliorée */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 2000;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
             background: rgba(15, 32, 27, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
-            background: var(--off-white);
-            color: var(--emerald);
+            background: #FDFBF7;
+            color: #0F201B;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 24px;
             width: 90%;
-            max-width: 800px;
-            padding: 3rem;
-            border-radius: 32px;
-            position: relative;
+            max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.2s ease;
         }
 
-        .close-modal {
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close {
             position: absolute;
-            top: 1.5rem;
             right: 1.5rem;
-            font-size: 2.5rem;
+            top: 1rem;
+            font-size: 2rem;
             cursor: pointer;
-            color: var(--emerald);
-            opacity: 0.5;
+            color: #6B7280;
+            transition: color 0.2s ease;
         }
 
-        /* --- FORM STYLING (Inside Modal) --- */
-        .progress-steps { display: flex; gap: 4px; margin-bottom: 2rem; }
-        .step-bar { height: 4px; flex: 1; background: #E5E0D5; border-radius: 2px; }
-        .step-bar.active { background: var(--gold); }
+        .close:hover {
+            color: #D4AF37;
+        }
 
-        .form-group { margin-bottom: 1.5rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .step-indicator {
+            flex: 1;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #6B7280;
+        }
+
+        .step-indicator.active {
+            color: #D4AF37;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #E5E0D5;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #D4AF37;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .required::after {
+            content: " *";
+            color: #D4AF37;
+        }
+
         input, select, textarea {
-            width: 100%; padding: 1rem; border: 1.5px solid #E5E0D5; border-radius: 12px;
-            font-size: 1rem; outline: none; transition: var(--transition);
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid #E5E0D5;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s ease;
         }
-        input:focus { border-color: var(--gold); }
 
-        .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .checkbox-opt {
-            padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #E5E0D5;
-            cursor: pointer; transition: var(--transition);
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
-        .checkbox-opt.selected { background: var(--gold); color: white; border-color: var(--gold); }
 
-        .btn-form {
-            padding: 1rem 2rem; border-radius: 12px; border: none; font-weight: 700; cursor: pointer;
+        /* Success Modal */
+        .success-modal {
+            display: none;
+            position: fixed;
+            z-index: 2001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 32, 27, 0.95);
+            backdrop-filter: blur(8px);
         }
-        .btn-next { background: var(--gold); color: white; }
-        .btn-back { background: transparent; border: 1px solid #E5E0D5; margin-right: 10px; }
 
-        .loading-overlay {
-            display: none; text-align: center; padding: 2rem;
+        .success-content {
+            background: #FDFBF7;
+            color: #0F201B;
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            animation: slideIn 0.2s ease;
         }
-        .spinner {
-            width: 40px; height: 40px; border: 4px solid #f3f3f3; 
-            border-top: 4px solid var(--gold); border-radius: 50%;
-            animation: spin 1s linear infinite; margin: 0 auto;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1024px) {
-            .hero { flex-direction: column; text-align: center; padding-top: 10rem; }
-            .hero h1 { font-size: 3rem; }
-            .feature-grid { grid-template-columns: 1fr; }
-            .pricing-grid { flex-direction: column; align-items: center; }
+        /* Footer */
+        footer {
+            background: #0A1512;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #A0A0A0;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #D4AF37;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .social-icons a {
+            color: #A0A0A0;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: #D4AF37;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glass-nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero {
+                padding-top: 8rem;
+            }
+            
+            .modal-content {
+                padding: 1rem;
+                margin: 1rem;
+                width: auto;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- NAVBAR -->
+    <!-- Navbar Glassmorphism -->
     <nav class="glass-nav">
-        <div class="logo">TCHAK<span>!</span></div>
+        <div class="logo">
+            TCHAK<span>!</span>
+            <span class="beta-badge">Beta privée</span>
+        </div>
         <div class="nav-links">
             <a href="#features">Logiciel</a>
-            <a href="#how-it-works">Mode d'emploi</a>
+            <a href="#security">Sécurité</a>
             <a href="#pricing">Tarifs</a>
         </div>
-        <button class="cta-nav open-modal-btn">Accéder au Studio</button>
+        <button class="cta-nav" id="open-studio">✨ Accéder au Studio</button>
     </nav>
 
-    <!-- HERO SECTION -->
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content">
+        <div class="hero-content" data-aos="fade-right">
             <h1>Certifiez votre art.<br>Sécurisez votre héritage.</h1>
-            <p>Le premier Studio de certification d'authenticité 100% hors-ligne. Souveraineté cryptographique pour les créateurs de demain.</p>
-            <button class="cta-hero open-modal-btn">✨ Créer mon Studio Personnalisé</button>
+            <p>Le premier Studio de certification d'authenticité 100% hors-ligne.<br>Souveraineté cryptographique pour les créateurs de demain.</p>
+            <button class="cta-hero" id="open-studio-2">✨ Créer mon Studio Personnalisé</button>
         </div>
-        <div class="hero-mockup">
-            <img src="mockup-studio.png" alt="TCHAK Studio Mockup">
+        <div class="hero-mockup" data-aos="fade-left">
+            <video autoplay muted loop playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23D4AF37'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%230F201B' dy='.3em'%3ETCHAK Studio%3C/text%3E%3C/svg%3E">
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+                Votre navigateur ne supporte pas la vidéo.
+            </video>
         </div>
     </section>
 
-    <!-- FEATURES SECTION -->
+    <!-- Features Section -->
     <section id="features" class="features">
-        <h2>Conçu pour l'Excellence Artistique</h2>
+        <h2 data-aos="fade-up">Conçu pour l'Excellence Artistique</h2>
         <div class="feature-grid">
-            <div class="feature-card">
-                <h3>📡 Offline by Design</h3>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="feature-icon">📡</div>
+                <h3>Offline by Design</h3>
                 <p>Aucune donnée ne transite par nos serveurs. Vos certificats naissent et restent sur votre machine.</p>
             </div>
-            <div class="feature-card">
-                <h3>🔗 Crypto-Chained</h3>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="feature-icon">🔗</div>
+                <h3>Crypto-Chained</h3>
                 <p>Chaque certificat est lié mathématiquement au précédent (SHA256), rendant toute falsification impossible.</p>
             </div>
-            <div class="feature-card">
-                <h3>🎨 Artist-First</h3>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="feature-icon">🎨</div>
+                <h3>Artist-First</h3>
                 <p>Une interface épurée pensée pour les créateurs, pas pour les techniciens.</p>
             </div>
         </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="how-it-works" class="how-it-works">
-        <h2>3 Étapes vers la Souveraineté</h2>
+    <!-- Security Schema Section -->
+    <section id="security" class="security-schema">
+        <h2 data-aos="fade-up">Comment ça fonctionne ?</h2>
+        <div class="schema" data-aos="flip-up">
+            <h3>🔗 Chaîne cryptographique SHA256</h3>
+            <div class="chain">
+                <div class="block">Certificat #1</div>
+                <div>→ Hash →</div>
+                <div class="block">Certificat #2</div>
+                <div>→ Hash →</div>
+                <div class="block">Certificat #3</div>
+            </div>
+            <p style="margin-top: 1rem;">Comme une chaîne de blocs, mais sur votre disque dur. Chaque certificat valide le précédent.</p>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="how-it-works">
+        <h2 data-aos="fade-up">3 Étapes vers la Souveraineté</h2>
         <div class="steps">
-            <div class="step">
-                <div class="step-num">01</div>
+            <div class="step" data-aos="flip-left" data-aos-delay="100">
+                <div class="step-number">01</div>
                 <h3>Configurez</h3>
                 <p>Définissez votre identité et votre pratique artistique en quelques clics.</p>
             </div>
-            <div class="step">
-                <div class="step-num">02</div>
+            <div class="step" data-aos="flip-left" data-aos-delay="200">
+                <div class="step-number">02</div>
                 <h3>Téléchargez</h3>
                 <p>Recevez votre Studio de Certification packagé avec votre clé de sécurité unique.</p>
             </div>
-            <div class="step">
-                <div class="step-num">03</div>
+            <div class="step" data-aos="flip-left" data-aos-delay="300">
+                <div class="step-number">03</div>
                 <h3>Certifiez</h3>
                 <p>Générez vos certificats d'authenticité en toute autonomie, même sans connexion.</p>
             </div>
         </div>
     </section>
 
-    <!-- PRICING SECTION -->
+    <!-- Pricing Section -->
     <section id="pricing" class="pricing">
-        <h2>Tarification Transparente</h2>
-        <div class="pricing-grid">
-            <div class="pricing-card">
+        <h2 data-aos="fade-up">Tarification Transparente</h2>
+        <div class="pricing-cards">
+            <div class="card-free" data-aos="zoom-in" data-aos-delay="100">
                 <h3>TCHAK Free</h3>
-                <div class="price">0€</div>
+                <div class="price">0 XOF</div>
                 <p>10 certificats / mois</p>
                 <p>Templates Standards</p>
                 <p>Sécurité SHA256 native</p>
-                <button class="cta-nav open-modal-btn" style="margin-top: 2rem; width: 100%;">Commencer</button>
+                <button class="cta-free" style="margin-top: 1rem;" id="open-studio-3">✨ Commencer</button>
             </div>
-            <div class="pricing-card premium">
+            <div class="card-pro" data-aos="zoom-in" data-aos-delay="200">
                 <h3>TCHAK Pro</h3>
                 <div class="price">Bientôt</div>
                 <p>Certificats Illimités</p>
                 <p>Templates de Luxe</p>
                 <p>Statistiques Avancées</p>
-                <button class="cta-nav" style="margin-top: 2rem; width: 100%; opacity: 0.5;" disabled>À venir</button>
+                <button class="cta-free" style="margin-top: 1rem; background: #6B7280; cursor: not-allowed;" disabled>À venir</button>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer style="padding: 4rem 10%; text-align: center; border-top: 1px solid var(--glass);">
-        <p style="color: var(--text-muted);">© 2026 TCHAK! – Certification d'authenticité souveraine.</p>
+    <!-- Footer enrichi -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">FAQ</a>
+            <a href="#">Contact</a>
+            <a href="#">Sécurité</a>
+            <a href="#">Mentions légales</a>
+        </div>
+        <div class="social-icons">
+            <a href="#">📷</a>
+            <a href="#">🐦</a>
+            <a href="#">💬</a>
+        </div>
+        <p>© 2026 TCHAK – Certification d'authenticité pour les artistes</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Made with ❤️ for Ivorian artists</p>
     </footer>
 
-    <!-- ONBOARDING MODAL -->
+    <!-- Modal Onboarding (formulaire 7 étapes) -->
     <div id="onboarding-modal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="modal-app">
-                <!-- React-like logic will inject content here -->
+            <span class="close">&times;</span>
+            <div id="modal-form-container">
+                <!-- Le formulaire sera injecté dynamiquement -->
             </div>
         </div>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- Success Modal -->
+    <div id="success-modal" class="success-modal">
+        <div class="success-content">
+            <span class="close-success" style="float: right; cursor: pointer;">&times;</span>
+            <div style="font-size: 4rem;">🎉</div>
+            <h2>Félicitations !</h2>
+            <p id="success-message">Votre Studio TCHAK est prêt à être utilisé.</p>
+            <button id="open-downloads" class="cta-free" style="margin-top: 1rem;">📂 Ouvrir les téléchargements</button>
+        </div>
+    </div>
+
     <script>
-        // --- LOGIQUE MODALE ---
-        const modal = document.getElementById('onboarding-modal');
-        const openBtns = document.querySelectorAll('.open-modal-btn');
-        const closeBtn = document.querySelector('.close-modal');
+        // Initialisation AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
 
-        openBtns.forEach(btn => btn.onclick = () => { modal.style.display = 'flex'; renderForm(); });
-        closeBtn.onclick = () => modal.style.display = 'none';
-        window.onclick = (e) => { if(e.target == modal) modal.style.display = 'none'; }
-
-        // --- TRADUCTIONS & DATA ---
-        const translations = {
-            fr: {
-                steps: ["Identité", "Contact", "Pratique", "Bio", "Organisation", "Préférences", "Validation"],
-                titles: ["🎨 Qui êtes-vous ?", "📞 Contact", "🖌️ Votre pratique", "📖 Votre histoire", "🏢 Organisation", "⚙️ Préférences", "✅ Validation"],
-                labels: { fName: "Prénom", lName: "Nom", pseudo: "Pseudo (opt)", email: "Email", phone: "Tél", tech: "Techniques", bio: "Bio", lang: "Langue" },
-                techniques: ["Huile", "Acrylique", "Sculpture", "Digital", "Autre"],
-                buttons: { next: "Suivant ▶", generate: "📦 Générer mon package" }
-            }
+        // Données du formulaire
+        let currentStep = 0;
+        let formData = {
+            firstName: '', lastName: '', pseudonym: '', email: '', phone: '', whatsapp: '',
+            techniques: [], movements: [], bio: '', organization: '', role: '', language: 'fr', usageType: ''
         };
 
-        let currentStep = 0;
-        let formData = { firstName: '', lastName: '', pseudonym: '', email: '', phone: '', techniques: [], bio: '', organization: '', language: 'fr' };
+        const steps = ["Identité", "Contact", "Pratique", "Bio", "Organisation", "Préférences", "Validation"];
+        const titles = [
+            "🎨 Qui êtes-vous ?",
+            "📞 Comment vous joindre ?",
+            "🖌️ Votre pratique artistique",
+            "📖 Votre histoire",
+            "🏢 Organisation (optionnel)",
+            "⚙️ Préférences",
+            "✅ Validation"
+        ];
+        const descriptions = [
+            "Nous avons besoin de vous connaître pour personnaliser votre expérience.",
+            "Ces informations nous permettront de vous contacter.",
+            "Dites-nous en plus sur votre art.",
+            "Partagez votre parcours en quelques mots.",
+            "Si vous représentez une structure, indiquez-la.",
+            "Adaptez TCHAK à vos besoins.",
+            "Vérifiez vos informations avant de générer votre package."
+        ];
 
-        // --- MOTEUR DE RENDU FORMULAIRE ---
-        function renderForm() {
-            const container = document.getElementById('modal-app');
-            const lang = translations.fr;
-            const progress = ((currentStep + 1) / 7) * 100;
+        const techniques = ["Peinture à l'huile", "Acrylique", "Aquarelle", "Dessin", "Mixte", "Autre"];
+        const movements = ["Contemporain", "Abstrait", "Figuratif", "Street art", "Classique", "Autre"];
+        const usageTypes = ["Individuel", "Atelier / Collectif", "Galerie", "École"];
 
-            let content = '';
-            switch(currentStep) {
-                case 0: content = `<div class="form-group"><label>${lang.labels.fName}*</label><input type="text" value="${formData.firstName}" oninput="formData.firstName=this.value"></div><div class="form-group"><label>${lang.labels.lName}*</label><input type="text" value="${formData.lastName}" oninput="formData.lastName=this.value"></div>`; break;
-                case 1: content = `<div class="form-group"><label>${lang.labels.email}*</label><input type="email" value="${formData.email}" oninput="formData.email=this.value"></div><div class="form-group"><label>${lang.labels.phone}*</label><input type="tel" value="${formData.phone}" oninput="formData.phone=this.value"></div>`; break;
-                case 2: content = `<div class="form-group"><label>${lang.labels.tech}</label><div class="checkbox-group">${lang.techniques.map(t => `<div class="checkbox-opt ${formData.techniques.includes(t)?'selected':''}" onclick="toggleTech('${t}')">${t}</div>`).join('')}</div></div>`; break;
-                case 3: content = `<div class="form-group"><label>${lang.labels.bio}</label><textarea rows="4" style="width:100%; border-radius:12px; padding:1rem;" oninput="formData.bio=this.value">${formData.bio}</textarea></div>`; break;
-                case 4: content = `<div class="form-group"><label>${lang.labels.organization}</label><input type="text" value="${formData.organization}" oninput="formData.organization=this.value"></div>`; break;
-                case 5: content = `<div class="form-group"><label>${lang.labels.lang}</label><select onchange="formData.language=this.value"><option value="fr">Français</option><option value="en">English</option></select></div>`; break;
-                case 6: content = `<div style="background:#f9f9f9; padding:1rem; border-radius:12px; font-size:0.9rem;"><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}<br><strong>Email :</strong> ${formData.email}</div>`; break;
-            }
-
-            container.innerHTML = `
-                <div class="progress-steps">${Array(7).fill(0).map((_, i) => `<div class="step-bar ${i <= currentStep ? 'active' : ''}"></div>`).join('')}</div>
-                <h2 style="margin-bottom:1.5rem; color:var(--emerald);">${lang.titles[currentStep]}</h2>
-                <div id="form-body">${content}</div>
-                <div class="buttons" style="margin-top:2rem;">
-                    ${currentStep > 0 ? `<button class="btn-form btn-back" onclick="currentStep--; renderForm();">Retour</button>` : '<div></div>'}
-                    <button class="btn-form btn-next" onclick="handleNextStep()">${currentStep === 6 ? lang.buttons.generate : lang.buttons.next}</button>
-                </div>
-                <div id="loading" class="loading-overlay"><div class="spinner"></div><p>Génération de votre package...</p></div>
-            `;
+        function saveToLocalStorage() {
+            localStorage.setItem('tchak_form_data', JSON.stringify(formData));
+            localStorage.setItem('tchak_current_step', currentStep);
         }
 
-        function toggleTech(t) {
-            if(formData.techniques.includes(t)) formData.techniques = formData.techniques.filter(x => x !== t);
-            else formData.techniques.push(t);
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('tchak_form_data');
+            if (saved) formData = JSON.parse(saved);
+            const savedStep = localStorage.getItem('tchak_current_step');
+            if (savedStep) currentStep = parseInt(savedStep);
+        }
+
+        function showToast(msg, isError = false) {
+            // Création toast simple
+            const toast = document.createElement('div');
+            toast.textContent = msg;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '2rem';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.background = isError ? '#DC2626' : '#D4AF37';
+            toast.style.color = isError ? 'white' : '#0F201B';
+            toast.style.padding = '0.75rem 1.5rem';
+            toast.style.borderRadius = '40px';
+            toast.style.fontSize = '0.875rem';
+            toast.style.zIndex = '2002';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function updateFormData(field, value) {
+            if (field === 'techniques' || field === 'movements') {
+                if (formData[field].includes(value)) {
+                    formData[field] = formData[field].filter(v => v !== value);
+                } else {
+                    formData[field].push(value);
+                }
+            } else {
+                formData[field] = value;
+            }
+            saveToLocalStorage();
             renderForm();
         }
 
-        async function handleNextStep() {
-            if(currentStep < 6) {
-                currentStep++;
-                renderForm();
-            } else {
-                const loading = document.getElementById('loading');
-                const formBody = document.getElementById('form-body');
-                loading.style.display = 'block';
-                formBody.style.opacity = '0.3';
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;';
+            });
+        }
 
-                try {
-                    const response = await fetch('/.netlify/functions/generate-zip', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData)
-                    });
-                    const data = await response.json();
-                    
-                    const link = document.createElement('a');
-                    link.href = 'data:application/zip;base64,' + data.zip;
-                    link.download = `TCHAK_${formData.firstName}_${formData.lastName}.zip`;
-                    link.click();
-                    
-                    document.getElementById('modal-app').innerHTML = `
-                        <div style="text-align:center; padding:2rem;">
-                            <div style="font-size:4rem; margin-bottom:1rem;">✨</div>
-                            <h2 style="color:var(--emerald);">Studio Prêt !</h2>
-                            <p>Le téléchargement de votre Studio TCHAK a commencé.</p>
-                            <button class="cta-nav" onclick="modal.style.display='none';" style="margin-top:2rem;">Fermer</button>
-                        </div>
-                    `;
-                } catch (e) {
-                    alert("Erreur lors de la génération. Veuillez réessayer.");
-                    loading.style.display = 'none';
-                    formBody.style.opacity = '1';
-                }
+        async function generatePackage() {
+            const loadingDiv = document.getElementById('loading');
+            if (loadingDiv) loadingDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch('/.netlify/functions/generate-zip', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) throw new Error('Network error');
+                
+                const data = await response.json();
+                const link = document.createElement('a');
+                link.href = 'data:application/zip;base64,' + data.zip;
+                link.download = `TCHAK_${formData.firstName}_${formData.lastName}.zip`;
+                link.click();
+                
+                // Fermer la modale onboarding
+                document.getElementById('onboarding-modal').style.display = 'none';
+                // Afficher la modale de succès
+                document.getElementById('success-message').innerHTML = `Félicitations ${formData.firstName} !<br>Votre Studio TCHAK est prêt à être utilisé.`;
+                document.getElementById('success-modal').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('❌ Erreur lors de la génération du package. Veuillez réessayer.', true);
+            } finally {
+                if (loadingDiv) loadingDiv.style.display = 'none';
             }
         }
+
+        function nextStep() {
+            // Validation basique
+            if (currentStep === 0 && (!formData.firstName || !formData.lastName)) {
+                showToast('Veuillez remplir votre prénom et nom', true);
+                return;
+            }
+            if (currentStep === 1 && (!formData.email || !formData.phone)) {
+                showToast('Veuillez remplir votre email et téléphone', true);
+                return;
+            }
+            
+            if (currentStep < 6) {
+                currentStep++;
+                saveToLocalStorage();
+                renderForm();
+                document.querySelector('.modal-content').scrollTop = 0;
+            } else {
+                generatePackage();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                saveToLocalStorage();
+                renderForm();
+                document.querySelector('.modal-content').scrollTop = 0;
+            }
+        }
+
+        function renderForm() {
+            const container = document.getElementById('modal-form-container');
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            
+            let stepContent = '';
+            switch(currentStep) {
+                case 0:
+                    stepContent = `
+                        <div class="form-group"><label class="required">Prénom</label><input type="text" id="firstName" value="${escapeHtml(formData.firstName)}"></div>
+                        <div class="form-group"><label class="required">Nom</label><input type="text" id="lastName" value="${escapeHtml(formData.lastName)}"></div>
+                        <div class="form-group"><label>Pseudo (optionnel)</label><input type="text" id="pseudonym" value="${escapeHtml(formData.pseudonym)}"></div>
+                    `;
+                    break;
+                case 1:
+                    stepContent = `
+                        <div class="form-group"><label class="required">Email</label><input type="email" id="email" value="${escapeHtml(formData.email)}"></div>
+                        <div class="form-group"><label class="required">Téléphone</label><input type="tel" id="phone" value="${escapeHtml(formData.phone)}"></div>
+                        <div class="form-group"><label>WhatsApp (optionnel)</label><input type="tel" id="whatsapp" value="${escapeHtml(formData.whatsapp)}"></div>
+                    `;
+                    break;
+                case 2:
+                    stepContent = `
+                        <div class="form-group"><label>Techniques</label><div class="checkbox-group" id="techniques-group">${techniques.map(tech => `<div class="checkbox-option ${formData.techniques.includes(tech) ? 'selected' : ''}" data-value="${tech}"><span>${tech}</span></div>`).join('')}</div></div>
+                        <div class="form-group"><label>Courants artistiques</label><div class="checkbox-group" id="movements-group">${movements.map(mvt => `<div class="checkbox-option ${formData.movements.includes(mvt) ? 'selected' : ''}" data-value="${mvt}"><span>${mvt}</span></div>`).join('')}</div></div>
+                    `;
+                    break;
+                case 3:
+                    stepContent = `<div class="form-group"><label>Biographie</label><textarea id="bio" rows="4">${escapeHtml(formData.bio)}</textarea></div>`;
+                    break;
+                case 4:
+                    stepContent = `
+                        <div class="form-group"><label>Nom de l'organisation</label><input type="text" id="organization" value="${escapeHtml(formData.organization)}"></div>
+                        <div class="form-group"><label>Rôle</label><input type="text" id="role" value="${escapeHtml(formData.role)}"></div>
+                    `;
+                    break;
+                case 5:
+                    stepContent = `
+                        <div class="form-group"><label>Langue</label><select id="language"><option value="fr" ${formData.language === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${formData.language === 'en' ? 'selected' : ''}>English</option></select></div>
+                        <div class="form-group"><label>Type d'usage</label><select id="usageType"><option value="">Sélectionnez...</option>${usageTypes.map(type => `<option value="${type}" ${formData.usageType === type ? 'selected' : ''}>${type}</option>`).join('')}</select></div>
+                    `;
+                    break;
+                case 6:
+                    stepContent = `
+                        <div class="summary-item"><strong>Nom complet:</strong> ${formData.firstName} ${formData.lastName} ${formData.pseudonym ? `(${formData.pseudonym})` : ''}</div>
+                        <div class="summary-item"><strong>Contact:</strong> ${formData.email}<br>${formData.phone}${formData.whatsapp ? `<br>WhatsApp: ${formData.whatsapp}` : ''}</div>
+                        <div class="summary-item"><strong>Pratique:</strong> ${formData.techniques.join(', ') || '-'}<br>${formData.movements.join(', ') || '-'}</div>
+                        <div class="summary-item"><strong>Bio:</strong> ${formData.bio || '-'}</div>
+                        ${formData.organization ? `<div class="summary-item"><strong>Organisation:</strong> ${formData.organization} ${formData.role ? `(${formData.role})` : ''}</div>` : ''}
+                        <div class="summary-item"><strong>Préférences:</strong> ${formData.language === 'fr' ? 'Français' : 'English'}${formData.usageType ? `, ${formData.usageType}` : ''}</div>
+                    `;
+                    break;
+            }
+            
+            container.innerHTML = `
+                <div class="progress-container">
+                    <div class="progress-steps">
+                        ${steps.map((step, idx) => `<div class="step-indicator ${idx === currentStep ? 'active' : ''} ${idx < currentStep ? 'completed' : ''}">${idx + 1}. ${step}</div>`).join('')}
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+                </div>
+                <h2>${titles[currentStep]}</h2>
+                <p>${descriptions[currentStep]}</p>
+                ${stepContent}
+                <div class="buttons" style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    ${currentStep > 0 ? '<button class="btn-secondary" id="prev-btn" style="background: transparent; border: 1px solid #E5E0D5; padding: 0.75rem 1.5rem; border-radius: 40px; cursor: pointer;">◀ Retour</button>' : '<div></div>'}
+                    <button class="btn-primary" id="next-btn" style="background: #D4AF37; color: #0F201B; border: none; padding: 0.75rem 1.5rem; border-radius: 40px; cursor: pointer; font-weight: 600;">${currentStep === 6 ? '📦 Générer mon package' : 'Suivant ▶'}</button>
+                </div>
+                <div id="loading" style="display: none; text-align: center; margin-top: 1rem;"><div class="spinner"></div><p>Génération de votre package...</p></div>
+            `;
+            
+            // Ajout styles checkbox
+            const style = document.createElement('style');
+            style.textContent = `
+                .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem; }
+                .checkbox-option { padding: 0.5rem 1rem; background: #FDFBF7; border: 1px solid #E5E0D5; border-radius: 30px; cursor: pointer; transition: all 0.2s ease; }
+                .checkbox-option.selected { background: #D4AF37; border-color: #D4AF37; color: #0F201B; }
+                .summary-item { padding: 0.5rem; border-bottom: 1px solid #E5E0D5; }
+            `;
+            container.appendChild(style);
+            
+            // Attach events
+            if (currentStep === 0) {
+                document.getElementById('firstName')?.addEventListener('input', (e) => updateFormData('firstName', e.target.value));
+                document.getElementById('lastName')?.addEventListener('input', (e) => updateFormData('lastName', e.target.value));
+                document.getElementById('pseudonym')?.addEventListener('input', (e) => updateFormData('pseudonym', e.target.value));
+            } else if (currentStep === 1) {
+                document.getElementById('email')?.addEventListener('input', (e) => updateFormData('email', e.target.value));
+                document.getElementById('phone')?.addEventListener('input', (e) => updateFormData('phone', e.target.value));
+                document.getElementById('whatsapp')?.addEventListener('input', (e) => updateFormData('whatsapp', e.target.value));
+            } else if (currentStep === 2) {
+                document.querySelectorAll('#techniques-group .checkbox-option').forEach(opt => {
+                    opt.addEventListener('click', () => { updateFormData('techniques', opt.dataset.value); renderForm(); });
+                });
+                document.querySelectorAll('#movements-group .checkbox-option').forEach(opt => {
+                    opt.addEventListener('click', () => { updateFormData('movements', opt.dataset.value); renderForm(); });
+                });
+            } else if (currentStep === 3) {
+                document.getElementById('bio')?.addEventListener('input', (e) => updateFormData('bio', e.target.value));
+            } else if (currentStep === 4) {
+                document.getElementById('organization')?.addEventListener('input', (e) => updateFormData('organization', e.target.value));
+                document.getElementById('role')?.addEventListener('input', (e) => updateFormData('role', e.target.value));
+            } else if (currentStep === 5) {
+                document.getElementById('language')?.addEventListener('change', (e) => updateFormData('language', e.target.value));
+                document.getElementById('usageType')?.addEventListener('change', (e) => updateFormData('usageType', e.target.value));
+            }
+            
+            document.getElementById('next-btn')?.addEventListener('click', nextStep);
+            if (currentStep > 0) {
+                document.getElementById('prev-btn')?.addEventListener('click', prevStep);
+            }
+        }
+        
+        // Modal management
+        function openModal() {
+            loadFromLocalStorage();
+            renderForm();
+            document.getElementById('onboarding-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            document.getElementById('onboarding-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Event listeners
+        document.getElementById('open-studio')?.addEventListener('click', openModal);
+        document.getElementById('open-studio-2')?.addEventListener('click', openModal);
+        document.getElementById('open-studio-3')?.addEventListener('click', openModal);
+        document.querySelector('.close')?.addEventListener('click', closeModal);
+        document.querySelector('.close-success')?.addEventListener('click', () => {
+            document.getElementById('success-modal').style.display = 'none';
+        });
+        
+        document.getElementById('open-downloads')?.addEventListener('click', () => {
+            // Tentative d'ouverture du dossier téléchargements
+            window.open('about:blank', '_blank');
+            document.getElementById('success-modal').style.display = 'none';
+        });
+        
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('onboarding-modal')) {
+                closeModal();
+            }
+            if (event.target === document.getElementById('success-modal')) {
+                document.getElementById('success-modal').style.display = 'none';
+            }
+        };
     </script>
 </body>
 </html>
