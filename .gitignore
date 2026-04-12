@@ -1,0 +1,30 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac
+.DS_Store
+
+# Electron
+dist/
+electron-app/data/
+electron-app/pdf/
+
+# Landing
+landing/dist/
+.netlify/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build
+*.exe
+*.dmg
+*.AppImage
+*.zip
