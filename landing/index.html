@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCHAK – Votre Studio de Certification d'Art</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3c34;
+            --secondary: #d4af37;
+            --bg: #fdfbf7;
+            --text: #2c2c2c;
+            --accent: #e67e22;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Hero & Background */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1a3c34 0%, #0d1f1b 100%);
+            color: white;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            opacity: 0.9;
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 500px;
+            width: 90%;
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin-top: -100px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        input, select {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #f9f9f9;
+        }
+
+        button {
+            width: 100%;
+            padding: 1.2rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
+        }
+
+        button.secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .progress-bar {
+            height: 4px;
+            width: 100%;
+            background: #eee;
+            margin-bottom: 2rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary);
+            width: 25%;
+            transition: width 0.3s ease;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #27ae60;
+            margin-bottom: 1rem;
+        }
+
+        /* Desktop Layout */
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 120vh;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <div class="hero">
+            <h1>TCHAK</h1>
+            <p>Le premier Studio de certification d'art 100% hors-ligne. Reprenez le contrôle de votre authenticité.</p>
+        </div>
+
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <form id="onboarding-form">
+                <!-- Etape 1 : Bienvenue -->
+                <div class="step active" id="step-1">
+                    <h2>Bienvenue, Artiste</h2>
+                    <p>Commençons par configurer votre Studio de certification personnalisé.</p>
+                    <button type="button" onclick="nextStep(2)">Commencer l'installation</button>
+                </div>
+
+                <!-- Etape 2 : Identité -->
+                <div class="step" id="step-2">
+                    <h2>Votre Identité</h2>
+                    <input type="text" id="artist-name" placeholder="Nom d'artiste (ex: ABOUDIA)" required>
+                    <input type="email" id="artist-email" placeholder="Email professionnel" required>
+                    <button type="button" onclick="nextStep(3)">Continuer</button>
+                    <button type="button" class="secondary" onclick="nextStep(1)">Retour</button>
+                </div>
+
+                <!-- Etape 3 : Style -->
+                <div class="step" id="step-3">
+                    <h2>Votre Style</h2>
+                    <select id="artist-style">
+                        <option value="peinture">Peinture Classique</option>
+                        <option value="abstrait">Art Abstrait</option>
+                        <option value="sculpture">Sculpture</option>
+                        <option value="digital">Art Digital</option>
+                    </select>
+                    <p style="font-size: 0.8rem; color: #888;">Ceci sera utilisé pour configurer vos templates de certificat.</p>
+                    <button type="button" onclick="nextStep(4)">Prêt à installer</button>
+                    <button type="button" class="secondary" onclick="nextStep(2)">Retour</button>
+                </div>
+
+                <!-- Etape 4 : Téléchargement -->
+                <div class="step" id="step-4">
+                    <div class="success-icon">✨</div>
+                    <h2>Tout est prêt !</h2>
+                    <p>Votre Studio TCHAK personnalisé a été généré avec votre seed de sécurité unique.</p>
+                    <button type="submit" id="download-btn">Télécharger mon Studio (.zip)</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            // Update progress bar
+            const fill = document.getElementById('progress-fill');
+            fill.style.width = (step * 25) + "%";
+        }
+
+        document.getElementById('onboarding-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('download-btn');
+            btn.innerText = "Génération du package...";
+            btn.disabled = true;
+
+            const data = {
+                name: document.getElementById('artist-name').value,
+                email: document.getElementById('artist-email').value,
+                style: document.getElementById('artist-style').value
+            };
+
+            try {
+                // Appel à la Netlify Function
+                const response = await fetch('/.netlify/functions/generate-zip', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                // Simulation du téléchargement
+                alert(`Succès !\nCode Installation : ${result.profile.installationCode}\n\nDans une version réelle, le ZIP serait téléchargé ici.`);
+                
+                btn.innerText = "Studio Téléchargé";
+                btn.style.backgroundColor = "#27ae60";
+            } catch (error) {
+                alert("Erreur lors de la génération. Veuillez réessayer.");
+                btn.innerText = "Réessayer";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
