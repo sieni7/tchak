@@ -2,242 +2,497 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCHAK – Votre Studio de Certification d'Art</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TCHAK – Certifiez votre art. Sécurisez votre héritage.</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary: #1a3c34;
-            --secondary: #d4af37;
-            --bg: #fdfbf7;
-            --text: #2c2c2c;
-            --accent: #e67e22;
+            --emerald: #0F201B;
+            --gold: #D4AF37;
+            --gold-light: #F2D06B;
+            --off-white: #FDFBF7;
+            --text-main: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--emerald);
+            color: var(--text-main);
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Hero & Background */
-        .hero {
-            height: 100vh;
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        /* --- NAVBAR --- */
+        .glass-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 10%;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            text-align: center;
-            background: linear-gradient(135deg, #1a3c34 0%, #0d1f1b 100%);
-            color: white;
-            padding: 2rem;
-            position: relative;
+            background: rgba(15, 32, 27, 0.8);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass);
         }
 
-        .hero h1 {
+        .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            margin-bottom: 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
             letter-spacing: -1px;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            opacity: 0.9;
+        .logo span { color: var(--gold); }
+
+        .nav-links { display: flex; gap: 2.5rem; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
         }
 
-        /* Form Container */
-        .form-container {
-            max-width: 500px;
-            width: 90%;
-            background: white;
-            padding: 3rem;
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            margin-top: -100px;
-            position: relative;
-            z-index: 10;
-        }
+        .nav-links a:hover { color: var(--gold); }
 
-        .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.5s ease; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        input, select {
-            width: 100%;
-            padding: 1rem;
-            margin: 1rem 0;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            font-size: 1rem;
-            background: #f9f9f9;
-        }
-
-        button {
-            width: 100%;
-            padding: 1.2rem;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
+        .cta-nav {
+            background: var(--gold);
+            color: var(--emerald);
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
+            border: none;
+            transition: var(--transition);
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
-        }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
 
-        button.secondary {
-            background-color: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-
-        .progress-bar {
-            height: 4px;
-            width: 100%;
-            background: #eee;
-            margin-bottom: 2rem;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--secondary);
-            width: 25%;
-            transition: width 0.3s ease;
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            color: #27ae60;
-            margin-bottom: 1rem;
-        }
-
-        /* Desktop Layout */
-        main {
+        /* --- HERO --- */
+        .hero {
+            height: 100vh;
+            padding: 0 10%;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            min-height: 120vh;
+            justify-content: space-between;
+            gap: 4rem;
+            background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+        }
+
+        .hero-content { flex: 1.2; }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-hero {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--gold), var(--gold-light));
+            color: var(--emerald);
+            padding: 1.25rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .cta-hero:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); }
+
+        .hero-mockup {
+            flex: 0.8;
+            position: relative;
+        }
+
+        .hero-mockup img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* --- SECTIONS --- */
+        section { padding: 8rem 10%; }
+
+        h2 { font-size: 3rem; text-align: center; margin-bottom: 4rem; }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            border: 1px solid var(--glass);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-10px); }
+
+        .feature-card h3 { font-size: 1.5rem; margin: 1.5rem 0; color: var(--gold); }
+
+        .how-it-works .steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+        }
+
+        .step-num {
+            font-size: 4rem;
+            color: var(--gold);
+            opacity: 0.2;
+            font-weight: 900;
+        }
+
+        /* --- PRICING --- */
+        .pricing-grid {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .pricing-card {
+            background: var(--glass);
+            padding: 4rem 3rem;
+            border-radius: 32px;
+            width: 350px;
+            text-align: center;
+            border: 1px solid var(--glass);
+        }
+
+        .pricing-card.premium {
+            border: 2px solid var(--gold);
+            position: relative;
+        }
+
+        .pricing-card h3 { font-size: 2rem; margin-bottom: 1rem; }
+
+        .price { font-size: 3rem; font-weight: 700; margin-bottom: 2rem; color: var(--gold); }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 32, 27, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--off-white);
+            color: var(--emerald);
+            width: 90%;
+            max-width: 800px;
+            padding: 3rem;
+            border-radius: 32px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: var(--emerald);
+            opacity: 0.5;
+        }
+
+        /* --- FORM STYLING (Inside Modal) --- */
+        .progress-steps { display: flex; gap: 4px; margin-bottom: 2rem; }
+        .step-bar { height: 4px; flex: 1; background: #E5E0D5; border-radius: 2px; }
+        .step-bar.active { background: var(--gold); }
+
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        input, select, textarea {
+            width: 100%; padding: 1rem; border: 1.5px solid #E5E0D5; border-radius: 12px;
+            font-size: 1rem; outline: none; transition: var(--transition);
+        }
+        input:focus { border-color: var(--gold); }
+
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .checkbox-opt {
+            padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid #E5E0D5;
+            cursor: pointer; transition: var(--transition);
+        }
+        .checkbox-opt.selected { background: var(--gold); color: white; border-color: var(--gold); }
+
+        .btn-form {
+            padding: 1rem 2rem; border-radius: 12px; border: none; font-weight: 700; cursor: pointer;
+        }
+        .btn-next { background: var(--gold); color: white; }
+        .btn-back { background: transparent; border: 1px solid #E5E0D5; margin-right: 10px; }
+
+        .loading-overlay {
+            display: none; text-align: center; padding: 2rem;
+        }
+        .spinner {
+            width: 40px; height: 40px; border: 4px solid #f3f3f3; 
+            border-top: 4px solid var(--gold); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 10rem; }
+            .hero h1 { font-size: 3rem; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .pricing-grid { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
 
-    <main>
-        <div class="hero">
-            <h1>TCHAK</h1>
-            <p>Le premier Studio de certification d'art 100% hors-ligne. Reprenez le contrôle de votre authenticité.</p>
+    <!-- NAVBAR -->
+    <nav class="glass-nav">
+        <div class="logo">TCHAK<span>!</span></div>
+        <div class="nav-links">
+            <a href="#features">Logiciel</a>
+            <a href="#how-it-works">Mode d'emploi</a>
+            <a href="#pricing">Tarifs</a>
         </div>
+        <button class="cta-nav open-modal-btn">Accéder au Studio</button>
+    </nav>
 
-        <div class="form-container">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Certifiez votre art.<br>Sécurisez votre héritage.</h1>
+            <p>Le premier Studio de certification d'authenticité 100% hors-ligne. Souveraineté cryptographique pour les créateurs de demain.</p>
+            <button class="cta-hero open-modal-btn">✨ Créer mon Studio Personnalisé</button>
+        </div>
+        <div class="hero-mockup">
+            <img src="mockup-studio.png" alt="TCHAK Studio Mockup">
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="features">
+        <h2>Conçu pour l'Excellence Artistique</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>📡 Offline by Design</h3>
+                <p>Aucune donnée ne transite par nos serveurs. Vos certificats naissent et restent sur votre machine.</p>
             </div>
-
-            <form id="onboarding-form">
-                <!-- Etape 1 : Bienvenue -->
-                <div class="step active" id="step-1">
-                    <h2>Bienvenue, Artiste</h2>
-                    <p>Commençons par configurer votre Studio de certification personnalisé.</p>
-                    <button type="button" onclick="nextStep(2)">Commencer l'installation</button>
-                </div>
-
-                <!-- Etape 2 : Identité -->
-                <div class="step" id="step-2">
-                    <h2>Votre Identité</h2>
-                    <input type="text" id="artist-name" placeholder="Nom d'artiste (ex: ABOUDIA)" required>
-                    <input type="email" id="artist-email" placeholder="Email professionnel" required>
-                    <button type="button" onclick="nextStep(3)">Continuer</button>
-                    <button type="button" class="secondary" onclick="nextStep(1)">Retour</button>
-                </div>
-
-                <!-- Etape 3 : Style -->
-                <div class="step" id="step-3">
-                    <h2>Votre Style</h2>
-                    <select id="artist-style">
-                        <option value="peinture">Peinture Classique</option>
-                        <option value="abstrait">Art Abstrait</option>
-                        <option value="sculpture">Sculpture</option>
-                        <option value="digital">Art Digital</option>
-                    </select>
-                    <p style="font-size: 0.8rem; color: #888;">Ceci sera utilisé pour configurer vos templates de certificat.</p>
-                    <button type="button" onclick="nextStep(4)">Prêt à installer</button>
-                    <button type="button" class="secondary" onclick="nextStep(2)">Retour</button>
-                </div>
-
-                <!-- Etape 4 : Téléchargement -->
-                <div class="step" id="step-4">
-                    <div class="success-icon">✨</div>
-                    <h2>Tout est prêt !</h2>
-                    <p>Votre Studio TCHAK personnalisé a été généré avec votre seed de sécurité unique.</p>
-                    <button type="submit" id="download-btn">Télécharger mon Studio (.zip)</button>
-                </div>
-            </form>
+            <div class="feature-card">
+                <h3>🔗 Crypto-Chained</h3>
+                <p>Chaque certificat est lié mathématiquement au précédent (SHA256), rendant toute falsification impossible.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Artist-First</h3>
+                <p>Une interface épurée pensée pour les créateurs, pas pour les techniciens.</p>
+            </div>
         </div>
-    </main>
+    </section>
 
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="how-it-works">
+        <h2>3 Étapes vers la Souveraineté</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <h3>Configurez</h3>
+                <p>Définissez votre identité et votre pratique artistique en quelques clics.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <h3>Téléchargez</h3>
+                <p>Recevez votre Studio de Certification packagé avec votre clé de sécurité unique.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <h3>Certifiez</h3>
+                <p>Générez vos certificats d'authenticité en toute autonomie, même sans connexion.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="pricing">
+        <h2>Tarification Transparente</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>TCHAK Free</h3>
+                <div class="price">0€</div>
+                <p>10 certificats / mois</p>
+                <p>Templates Standards</p>
+                <p>Sécurité SHA256 native</p>
+                <button class="cta-nav open-modal-btn" style="margin-top: 2rem; width: 100%;">Commencer</button>
+            </div>
+            <div class="pricing-card premium">
+                <h3>TCHAK Pro</h3>
+                <div class="price">Bientôt</div>
+                <p>Certificats Illimités</p>
+                <p>Templates de Luxe</p>
+                <p>Statistiques Avancées</p>
+                <button class="cta-nav" style="margin-top: 2rem; width: 100%; opacity: 0.5;" disabled>À venir</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="padding: 4rem 10%; text-align: center; border-top: 1px solid var(--glass);">
+        <p style="color: var(--text-muted);">© 2026 TCHAK! – Certification d'authenticité souveraine.</p>
+    </footer>
+
+    <!-- ONBOARDING MODAL -->
+    <div id="onboarding-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-app">
+                <!-- React-like logic will inject content here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
     <script>
-        let currentStep = 1;
+        // --- LOGIQUE MODALE ---
+        const modal = document.getElementById('onboarding-modal');
+        const openBtns = document.querySelectorAll('.open-modal-btn');
+        const closeBtn = document.querySelector('.close-modal');
 
-        function nextStep(step) {
-            document.getElementById(`step-${currentStep}`).classList.remove('active');
-            currentStep = step;
-            document.getElementById(`step-${currentStep}`).classList.add('active');
-            
-            // Update progress bar
-            const fill = document.getElementById('progress-fill');
-            fill.style.width = (step * 25) + "%";
+        openBtns.forEach(btn => btn.onclick = () => { modal.style.display = 'flex'; renderForm(); });
+        closeBtn.onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if(e.target == modal) modal.style.display = 'none'; }
+
+        // --- TRADUCTIONS & DATA ---
+        const translations = {
+            fr: {
+                steps: ["Identité", "Contact", "Pratique", "Bio", "Organisation", "Préférences", "Validation"],
+                titles: ["🎨 Qui êtes-vous ?", "📞 Contact", "🖌️ Votre pratique", "📖 Votre histoire", "🏢 Organisation", "⚙️ Préférences", "✅ Validation"],
+                labels: { fName: "Prénom", lName: "Nom", pseudo: "Pseudo (opt)", email: "Email", phone: "Tél", tech: "Techniques", bio: "Bio", lang: "Langue" },
+                techniques: ["Huile", "Acrylique", "Sculpture", "Digital", "Autre"],
+                buttons: { next: "Suivant ▶", generate: "📦 Générer mon package" }
+            }
+        };
+
+        let currentStep = 0;
+        let formData = { firstName: '', lastName: '', pseudonym: '', email: '', phone: '', techniques: [], bio: '', organization: '', language: 'fr' };
+
+        // --- MOTEUR DE RENDU FORMULAIRE ---
+        function renderForm() {
+            const container = document.getElementById('modal-app');
+            const lang = translations.fr;
+            const progress = ((currentStep + 1) / 7) * 100;
+
+            let content = '';
+            switch(currentStep) {
+                case 0: content = `<div class="form-group"><label>${lang.labels.fName}*</label><input type="text" value="${formData.firstName}" oninput="formData.firstName=this.value"></div><div class="form-group"><label>${lang.labels.lName}*</label><input type="text" value="${formData.lastName}" oninput="formData.lastName=this.value"></div>`; break;
+                case 1: content = `<div class="form-group"><label>${lang.labels.email}*</label><input type="email" value="${formData.email}" oninput="formData.email=this.value"></div><div class="form-group"><label>${lang.labels.phone}*</label><input type="tel" value="${formData.phone}" oninput="formData.phone=this.value"></div>`; break;
+                case 2: content = `<div class="form-group"><label>${lang.labels.tech}</label><div class="checkbox-group">${lang.techniques.map(t => `<div class="checkbox-opt ${formData.techniques.includes(t)?'selected':''}" onclick="toggleTech('${t}')">${t}</div>`).join('')}</div></div>`; break;
+                case 3: content = `<div class="form-group"><label>${lang.labels.bio}</label><textarea rows="4" style="width:100%; border-radius:12px; padding:1rem;" oninput="formData.bio=this.value">${formData.bio}</textarea></div>`; break;
+                case 4: content = `<div class="form-group"><label>${lang.labels.organization}</label><input type="text" value="${formData.organization}" oninput="formData.organization=this.value"></div>`; break;
+                case 5: content = `<div class="form-group"><label>${lang.labels.lang}</label><select onchange="formData.language=this.value"><option value="fr">Français</option><option value="en">English</option></select></div>`; break;
+                case 6: content = `<div style="background:#f9f9f9; padding:1rem; border-radius:12px; font-size:0.9rem;"><strong>Nom :</strong> ${formData.firstName} ${formData.lastName}<br><strong>Email :</strong> ${formData.email}</div>`; break;
+            }
+
+            container.innerHTML = `
+                <div class="progress-steps">${Array(7).fill(0).map((_, i) => `<div class="step-bar ${i <= currentStep ? 'active' : ''}"></div>`).join('')}</div>
+                <h2 style="margin-bottom:1.5rem; color:var(--emerald);">${lang.titles[currentStep]}</h2>
+                <div id="form-body">${content}</div>
+                <div class="buttons" style="margin-top:2rem;">
+                    ${currentStep > 0 ? `<button class="btn-form btn-back" onclick="currentStep--; renderForm();">Retour</button>` : '<div></div>'}
+                    <button class="btn-form btn-next" onclick="handleNextStep()">${currentStep === 6 ? lang.buttons.generate : lang.buttons.next}</button>
+                </div>
+                <div id="loading" class="loading-overlay"><div class="spinner"></div><p>Génération de votre package...</p></div>
+            `;
         }
 
-        document.getElementById('onboarding-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('download-btn');
-            btn.innerText = "Génération du package...";
-            btn.disabled = true;
+        function toggleTech(t) {
+            if(formData.techniques.includes(t)) formData.techniques = formData.techniques.filter(x => x !== t);
+            else formData.techniques.push(t);
+            renderForm();
+        }
 
-            const data = {
-                name: document.getElementById('artist-name').value,
-                email: document.getElementById('artist-email').value,
-                style: document.getElementById('artist-style').value
-            };
+        async function handleNextStep() {
+            if(currentStep < 6) {
+                currentStep++;
+                renderForm();
+            } else {
+                const loading = document.getElementById('loading');
+                const formBody = document.getElementById('form-body');
+                loading.style.display = 'block';
+                formBody.style.opacity = '0.3';
 
-            try {
-                // Appel à la Netlify Function
-                const response = await fetch('/.netlify/functions/generate-zip', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-                
-                // Simulation du téléchargement
-                alert(`Succès !\nCode Installation : ${result.profile.installationCode}\n\nDans une version réelle, le ZIP serait téléchargé ici.`);
-                
-                btn.innerText = "Studio Téléchargé";
-                btn.style.backgroundColor = "#27ae60";
-            } catch (error) {
-                alert("Erreur lors de la génération. Veuillez réessayer.");
-                btn.innerText = "Réessayer";
-                btn.disabled = false;
+                try {
+                    const response = await fetch('/.netlify/functions/generate-zip', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                    const data = await response.json();
+                    
+                    const link = document.createElement('a');
+                    link.href = 'data:application/zip;base64,' + data.zip;
+                    link.download = `TCHAK_${formData.firstName}_${formData.lastName}.zip`;
+                    link.click();
+                    
+                    document.getElementById('modal-app').innerHTML = `
+                        <div style="text-align:center; padding:2rem;">
+                            <div style="font-size:4rem; margin-bottom:1rem;">✨</div>
+                            <h2 style="color:var(--emerald);">Studio Prêt !</h2>
+                            <p>Le téléchargement de votre Studio TCHAK a commencé.</p>
+                            <button class="cta-nav" onclick="modal.style.display='none';" style="margin-top:2rem;">Fermer</button>
+                        </div>
+                    `;
+                } catch (e) {
+                    alert("Erreur lors de la génération. Veuillez réessayer.");
+                    loading.style.display = 'none';
+                    formBody.style.opacity = '1';
+                }
             }
-        });
+        }
     </script>
 </body>
 </html>
