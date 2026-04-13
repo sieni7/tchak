@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCHAK Studio – Certificat d'authenticité</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange:       #D4541A;
+            --orange-hover: #B8451A;
+            --orange-glow:  rgba(212, 84, 26, 0.2);
+            --bg-dark:      #180E08;
+            --cream:        #F5F0EA;
+            --charcoal:     #2C2C2C;
+            --text-muted:   #888;
+            --border:       #E0D8D0;
+            --green:        #16a34a;
+            --red:          #dc2626;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--charcoal);
+            min-height: 100vh;
+        }
+
+        /* ========= HEADER ========= */
+        header {
+            background: var(--bg-dark);
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #FFF;
+            letter-spacing: -0.5px;
+        }
+
+        .header-logo span { color: var(--orange); }
+
+        .header-meta {
+            font-size: 0.8rem;
+            color: #A89080;
+            font-family: 'Montserrat', sans-serif;
+            text-align: right;
+        }
+
+        #artist-name-display {
+            color: var(--orange);
+            font-weight: 700;
+        }
+
+        /* ========= DASHBOARD BAR ========= */
+        .dashboard-bar {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .quota-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quota-label { font-size: 0.875rem; color: var(--text-muted); }
+
+        .quota-bar-wrap {
+            width: 120px;
+            height: 8px;
+            background: #E8E2DA;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .quota-bar-fill {
+            height: 100%;
+            background: var(--orange);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .quota-count {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--charcoal);
+        }
+
+        .quota-count.danger { color: var(--red); }
+
+        .install-code {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--text-muted);
+            background: var(--cream);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        /* ========= MAIN LAYOUT ========= */
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .main { grid-template-columns: 1fr; }
+        }
+
+        /* ========= PANELS ========= */
+        .panel {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            border: 1px solid var(--border);
+        }
+
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--charcoal);
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--cream);
+        }
+
+        /* ========= FORM ========= */
+        .form-group { margin-bottom: 1.25rem; }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--charcoal);
+        }
+
+        .required::after { content: " *"; color: var(--orange); }
+
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            color: var(--charcoal);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px var(--orange-glow);
+            background: #fff;
+        }
+
+        /* ========= CANVAS SIGNATURE ========= */
+        .canvas-wrap {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 0.5rem;
+            background: var(--cream);
+            transition: border-color 0.2s;
+        }
+
+        .canvas-wrap:hover { border-color: var(--orange); }
+
+        canvas {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            background: #fff;
+            border-radius: 8px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .sig-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        /* ========= BUTTONS ========= */
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border-radius: 40px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-primary { background: var(--orange); color: #fff; width: 100%; justify-content: center; font-size: 1rem; padding: 1rem; }
+        .btn-primary:hover { background: var(--orange-hover); box-shadow: 0 8px 20px var(--orange-glow); transform: translateY(-1px); }
+        .btn-primary:disabled { background: #CCC; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-sm { padding: 0.5rem 1rem; font-size: 0.8rem; }
+        .btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--charcoal); }
+        .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+        .btn-green { background: var(--green); color: #fff; }
+        .btn-green:hover { background: #15803d; }
+
+        /* ========= CERTIFICATE PREVIEW ========= */
+        .cert-placeholder {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .certificate {
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            background: #FFFEF7;
+        }
+
+        .cert-header {
+            background: var(--bg-dark);
+            color: #fff;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .cert-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            color: var(--orange);
+        }
+
+        .cert-header p {
+            font-size: 0.8rem;
+            color: #A89080;
+            margin-top: 0.25rem;
+            font-family: monospace;
+        }
+
+        .cert-body { padding: 1.5rem; }
+
+        .cert-field {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cert-field:last-child { border-bottom: none; }
+        .cert-field strong { color: var(--text-muted); font-weight: 600; min-width: 120px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .cert-hash {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: var(--orange);
+            word-break: break-all;
+        }
+
+        .cert-sig-area {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .cert-sig-area img {
+            max-width: 160px;
+            max-height: 70px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+        }
+
+        .cert-footer-note {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .preview-actions { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+
+        /* ========= HISTORY ========= */
+        .history-section { max-width: 1300px; margin: 0 auto 3rem; padding: 0 2rem; }
+
+        .history-list { margin-top: 1rem; }
+
+        .history-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }
+
+        .history-item:hover { box-shadow: 0 4px 14px var(--orange-glow); border-color: var(--orange); }
+
+        .history-item-info { font-size: 0.875rem; }
+        .history-item-info strong { font-size: 1rem; }
+        .history-item-info .hist-meta { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem; font-family: monospace; }
+
+        /* ========= TOAST ========= */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--orange);
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.875rem;
+            z-index: 9999;
+            box-shadow: 0 8px 24px var(--orange-glow);
+            animation: slideUp 0.2s ease;
+        }
+
+        .toast.error { background: var(--red); }
+        .toast.success { background: var(--green); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } }
+
+        /* ========= PRINT ========= */
+        @media print {
+            header, .dashboard-bar, .form-col, .preview-actions, .history-section, .btn { display: none !important; }
+            .main { display: block !important; }
+            .panel { box-shadow: none !important; border: none !important; }
+            body { background: #fff !important; }
+            .cert-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-logo">TCHAK<span>!</span></div>
+        <div class="header-meta">
+            Studio de Certification<br>
+            Artiste : <span id="artist-name-display">Chargement...</span>
+        </div>
+    </header>
+
+    <!-- DASHBOARD BAR -->
+    <div class="dashboard-bar">
+        <div class="quota-info">
+            <span class="quota-label">Certificats ce mois :</span>
+            <div class="quota-bar-wrap">
+                <div class="quota-bar-fill" id="quota-bar" style="width:0%"></div>
+            </div>
+            <span class="quota-count" id="quota-count">--/10</span>
+        </div>
+        <span class="install-code" id="install-code">Chargement du profil...</span>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <!-- COL GAUCHE : FORMULAIRE -->
+        <div class="form-col">
+            <div class="panel">
+                <div class="panel-title">✍️ Nouveau Certificat</div>
+                <form id="cert-form">
+
+                    <div class="form-group">
+                        <label class="required">Nom de l'artiste</label>
+                        <input type="text" id="f-artist" placeholder="Nom complet" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Titre de l'œuvre</label>
+                        <input type="text" id="f-title" placeholder="Ex: Sans titre #3" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type d'œuvre</label>
+                        <select id="f-type">
+                            <option value="Peinture">Peinture</option>
+                            <option value="Dessin">Dessin</option>
+                            <option value="Sculpture">Sculpture</option>
+                            <option value="Photographie">Photographie</option>
+                            <option value="Art numérique">Art numérique</option>
+                            <option value="Textile">Textile</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Année de création</label>
+                        <input type="text" id="f-year" placeholder="2026">
+                    </div>
+
+                    <div class="form-group">
+                        <label>✍️ Signature manuscrite</label>
+                        <div class="canvas-wrap">
+                            <canvas id="sig-canvas" width="600" height="160"></canvas>
+                        </div>
+                        <div class="sig-actions">
+                            <button type="button" class="btn btn-ghost btn-sm" id="clear-sig">🗑 Effacer</button>
+                            <span style="font-size:0.75rem;color:var(--text-muted);align-self:center;">Signez ci-dessus avec la souris ou le doigt</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="generate-btn">🔐 Générer le certificat</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- COL DROITE : APERÇU -->
+        <div class="preview-col">
+            <div class="panel">
+                <div class="panel-title">📄 Aperçu du Certificat</div>
+                <div id="cert-preview">
+                    <div class="cert-placeholder">Remplissez le formulaire et signez pour voir l'aperçu</div>
+                </div>
+                <div class="preview-actions" id="preview-actions" style="display:none">
+                    <button class="btn btn-green btn-sm" id="btn-print">🖨 Imprimer / PDF</button>
+                    <button class="btn btn-ghost btn-sm" id="btn-copy-id">📋 Copier l'ID</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history-section">
+        <div class="panel">
+            <div class="panel-title">📜 Historique des certificats</div>
+            <div class="history-list" id="history-list">
+                <p style="color:var(--text-muted);font-size:.875rem;">Aucun certificat générés pour le moment.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ===== PROFIL ===== */
+        let artistProfile = null;
+        let certificates  = [];
+        let lastCert      = null;
+
+        const STORAGE_KEY = 'tchak_certs_v2';
+        const QUOTA_KEY   = 'tchak_quota_v2';
+        const QUOTA_MAX   = 10;
+
+        /* ===== QUOTA ===== */
+        function getQuotaData() {
+            const d = localStorage.getItem(QUOTA_KEY);
+            if (!d) return { month: currentMonth(), count: 0 };
+            return JSON.parse(d);
+        }
+
+        function currentMonth() { const n = new Date(); return `${n.getFullYear()}-${n.getMonth()}`; }
+
+        function quotaRemaining() {
+            const q = getQuotaData();
+            if (q.month !== currentMonth()) return QUOTA_MAX;
+            return Math.max(0, QUOTA_MAX - q.count);
+        }
+
+        function incrementQuota() {
+            let q = getQuotaData();
+            if (q.month !== currentMonth()) q = { month: currentMonth(), count: 0 };
+            q.count++;
+            localStorage.setItem(QUOTA_KEY, JSON.stringify(q));
+        }
+
+        function updateQuotaUI() {
+            const remaining = quotaRemaining();
+            const used      = QUOTA_MAX - remaining;
+            const pct       = (used / QUOTA_MAX) * 100;
+            document.getElementById('quota-bar').style.width   = pct + '%';
+            document.getElementById('quota-count').textContent = `${used}/${QUOTA_MAX}`;
+            const countEl = document.getElementById('quota-count');
+            countEl.className = 'quota-count' + (remaining <= 2 ? ' danger' : '');
+        }
+
+        /* ===== SHA256 ===== */
+        async function sha256(text) {
+            const data   = new TextEncoder().encode(text);
+            const buf    = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        /* ===== CANVAS ===== */
+        const canvas = document.getElementById('sig-canvas');
+        const ctx    = canvas.getContext('2d');
+        let drawing  = false;
+
+        function initCanvas() {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth   = 2.5;
+            ctx.lineCap     = 'round';
+            ctx.lineJoin    = 'round';
+        }
+        initCanvas();
+
+        function getPos(e) {
+            const r  = canvas.getBoundingClientRect();
+            const sx = canvas.width  / r.width;
+            const sy = canvas.height / r.height;
+            const cx = e.touches ? e.touches[0].clientX : e.clientX;
+            const cy = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: (cx - r.left) * sx, y: (cy - r.top) * sy };
+        }
+
+        canvas.addEventListener('mousedown',  e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+        canvas.addEventListener('mousemove',  e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+        canvas.addEventListener('mouseup',    () => { drawing = false; ctx.beginPath(); });
+        canvas.addEventListener('mouseleave', () => { drawing = false; ctx.beginPath(); });
+        canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+        canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+        canvas.addEventListener('touchend',   () => { drawing = false; ctx.beginPath(); });
+
+        document.getElementById('clear-sig').addEventListener('click', initCanvas);
+
+        /* ===== LOAD PROFILE ===== */
+        async function loadProfile() {
+            try {
+                const res = await fetch('../config/artist_profile.json');
+                if (res.ok) {
+                    artistProfile = await res.json();
+                    document.getElementById('artist-name-display').textContent =
+                        `${artistProfile.firstName || ''} ${artistProfile.lastName || ''}`.trim() || artistProfile.name || 'Artiste';
+                    document.getElementById('install-code').textContent =
+                        artistProfile.artistId || artistProfile.installationCode || 'Mode local';
+                    // Pré-remplir le nom artiste
+                    const fn = artistProfile.firstName || '';
+                    const ln = artistProfile.lastName  || '';
+                    const ps = artistProfile.pseudonym || '';
+                    document.getElementById('f-artist').value = ps || [fn, ln].filter(Boolean).join(' ');
+                }
+            } catch (e) {
+                document.getElementById('artist-name-display').textContent = 'Mode autonome';
+                document.getElementById('install-code').textContent = 'Profil local';
+            }
+        }
+
+        /* ===== LOAD CERTS ===== */
+        function loadCerts() {
+            const s = localStorage.getItem(STORAGE_KEY);
+            return s ? JSON.parse(s) : [];
+        }
+
+        function saveCerts(certs) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(certs));
+        }
+
+        /* ===== RENDER CERT ===== */
+        function renderCert(cert) {
+            const dateStr = new Date(cert.timestamp).toLocaleString('fr-FR');
+            document.getElementById('cert-preview').innerHTML = `
+                <div class="certificate" id="printable-cert">
+                    <div class="cert-header">
+                        <h2>CERTIFICAT D'AUTHENTICITÉ</h2>
+                        <p>N° ${cert.id}</p>
+                    </div>
+                    <div class="cert-body">
+                        <div class="cert-field">
+                            <strong>Artiste</strong>
+                            <span>${escHtml(cert.artist)}</span>
+                        </div>
+                        <div class="cert-field">
+                            <strong>Œuvre</strong>
+                            <span>${escHtml(cert.title)}</span>
+                        </div>
+                        <div class="cert-field">
+                            <strong>Type</strong>
+                            <span>${escHtml(cert.type || '–')}</span>
+                        </div>
+                        <div class="cert-field">
+                            <strong>Année</strong>
+                            <span>${escHtml(cert.year || '–')}</span>
+                        </div>
+                        <div class="cert-field">
+                            <strong>Date d'émission</strong>
+                            <span>${dateStr}</span>
+                        </div>
+                        <div class="cert-field">
+                            <strong>Hash SHA256</strong>
+                            <span class="cert-hash">${cert.fullHash}</span>
+                        </div>
+                        ${cert.prevId ? `<div class="cert-field">
+                            <strong>Hash précédent</strong>
+                            <span class="cert-hash">${cert.prevId}</span>
+                        </div>` : ''}
+                        <div class="cert-sig-area">
+                            <div>
+                                <p style="font-size:.75rem;color:var(--text-muted);margin-bottom:.5rem;">Signature de l'artiste</p>
+                                <img src="${cert.signatureDataURL}" alt="Signature">
+                            </div>
+                            <div style="text-align:right;font-size:.75rem;color:var(--text-muted);">
+                                <p>Système TCHAK</p>
+                                <p>Certification offline</p>
+                            </div>
+                        </div>
+                        <p class="cert-footer-note">Document généré par TCHAK Studio – Certification hors-ligne sécurisée par chaîne SHA256</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('preview-actions').style.display = 'flex';
+            document.getElementById('btn-copy-id').onclick = () => {
+                navigator.clipboard.writeText(cert.id).then(() => toast('ID copié !', 'success'));
+            };
+        }
+
+        /* ===== HISTORY ===== */
+        function renderHistory(certs) {
+            const el = document.getElementById('history-list');
+            if (!certs.length) {
+                el.innerHTML = '<p style="color:var(--text-muted);font-size:.875rem;">Aucun certificat généré.</p>';
+                return;
+            }
+            el.innerHTML = [...certs].reverse().map(c => `
+                <div class="history-item">
+                    <div class="history-item-info">
+                        <strong>${escHtml(c.artist)}</strong> – "${escHtml(c.title)}"
+                        <div class="hist-meta">ID: ${c.id} | ${new Date(c.timestamp).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'})}</div>
+                    </div>
+                    <span style="font-size:.75rem;background:var(--cream);padding:.25rem .6rem;border-radius:6px;color:var(--text-muted);">${c.type||'–'}</span>
+                </div>
+            `).join('');
+        }
+
+        /* ===== TOAST ===== */
+        function toast(msg, type='') {
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3500);
+        }
+
+        function escHtml(s) {
+            return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        /* ===== FORM SUBMIT ===== */
+        document.getElementById('cert-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Quota check
+            if (quotaRemaining() <= 0) {
+                toast('❌ Limite de 10 certificats/mois atteinte.', 'error');
+                return;
+            }
+
+            const artist = document.getElementById('f-artist').value.trim();
+            const title  = document.getElementById('f-title').value.trim();
+            const type   = document.getElementById('f-type').value;
+            const year   = document.getElementById('f-year').value.trim();
+
+            if (!artist || !title) { toast('Veuillez remplir artiste et titre.', 'error'); return; }
+
+            const btn = document.getElementById('generate-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Génération...';
+
+            try {
+                const sigDataURL = canvas.toDataURL('image/png');
+                const allCerts   = loadCerts();
+                const prevId     = allCerts.length ? allCerts[allCerts.length - 1].id : '';
+                const timestamp  = Date.now();
+                const rawData    = `${prevId}|${artist}|${title}|${timestamp}|${sigDataURL.substring(0, 80)}`;
+                const fullHash   = await sha256(rawData);
+
+                const cert = {
+                    id: fullHash.substring(0, 16),
+                    fullHash,
+                    timestamp,
+                    artist, title, type, year,
+                    signatureDataURL: sigDataURL,
+                    prevId
+                };
+
+                allCerts.push(cert);
+                saveCerts(allCerts);
+                incrementQuota();
+
+                renderCert(cert);
+                renderHistory(allCerts);
+                updateQuotaUI();
+
+                lastCert = cert;
+                certificates = allCerts;
+
+                // Reset form fields (keep name)
+                document.getElementById('f-title').value = '';
+                document.getElementById('f-year').value  = '';
+                initCanvas();
+
+                toast(`✅ Certificat ID:${cert.id} généré et chaîné!`, 'success');
+            } catch (err) {
+                toast('❌ Erreur inattendue : ' + err.message, 'error');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🔐 Générer le certificat';
+            }
+        });
+
+        /* ===== PRINT ===== */
+        document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+        /* ===== INIT ===== */
+        async function init() {
+            await loadProfile();
+            certificates = loadCerts();
+            renderHistory(certificates);
+            updateQuotaUI();
+            if (certificates.length > 0) {
+                renderCert(certificates[certificates.length - 1]);
+            }
+        }
+        init();
+    </script>
+</body>
+</html>

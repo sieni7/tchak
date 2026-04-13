@@ -1,40 +1,31 @@
 {
-  "name": "tchak-electron",
-  "version": "1.0.0",
-  "description": "Système de certification d'authenticité hors-ligne",
+  "name": "tchak-studio",
+  "version": "2.0.0",
+  "description": "TCHAK – Système de certification d'authenticité pour artistes, offline-first",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start":       "electron .",
+    "build":       "electron-builder",
+    "dev:landing": "npx serve landing",
+    "dev:app":     "npx serve app",
+    "dev:netlify": "netlify dev",
+    "test":        "echo \"No tests yet\" && exit 0"
   },
   "build": {
-    "appId": "com.tchak.studio",
+    "appId":       "com.tchak.studio",
     "productName": "TCHAK Studio",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "index.html",
-      "main.js",
-      "preload.js",
-      "package.json"
-    ],
-    "win": {
-      "target": [
-        "portable"
-      ]
-    }
+    "directories": { "output": "dist" },
+    "files": ["index.html", "main.js", "preload.js", "package.json"],
+    "win": { "target": ["portable"] }
   },
-  "keywords": [],
-  "author": "TCHAK Team",
+  "keywords": ["art", "certificate", "offline", "sha256", "certification"],
+  "author": "Oulai Siéni <sieni7@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^25.0.0",
+    "electron":         "^25.0.0",
     "electron-builder": "^26.8.1"
   },
   "dependencies": {
-    "adm-zip": "^0.5.17",
-    "jszip": "^3.10.1"
+    "jszip":  "^3.10.1"
   }
 }

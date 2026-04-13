@@ -1,12 +1,20 @@
 [build]
-  command = "echo 'Building TCHAK Cloud...'"
+  command = "npm install"
   publish = "landing"
   functions = "netlify-functions"
 
 [functions]
   node_bundler = "esbuild"
 
+[functions."generate-zip"]
+  included_files = ["app/**"]
+
 [[redirects]]
   from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/.netlify/functions/*"
   to = "/.netlify/functions/:splat"
   status = 200
