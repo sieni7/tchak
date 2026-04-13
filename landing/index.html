@@ -747,11 +747,32 @@
             setTimeout(() => t.remove(), 3000);
         }
 
-        function updateFD(field, val) {
-            if(field==='techniques'||field==='movements') {
-                formData[field].includes(val) ? formData[field]=formData[field].filter(v=>v!==val) : formData[field].push(val);
-            } else { formData[field]=val; }
-            saveLS(); renderForm();
+        // Pour les champs texte/select : mise à jour silencieuse (sans re-render)
+        function setFD(field, val) {
+            formData[field] = val;
+            saveLS();
+        }
+
+        // Pour les checkboxes : toggle + re-render (nécessaire pour l'état visuel)
+        function toggleFD(field, val) {
+            formData[field].includes(val)
+                ? formData[field] = formData[field].filter(v => v !== val)
+                : formData[field].push(val);
+            saveLS();
+            renderCheckboxes();
+        }
+
+        // Re-render uniquement les checkbox-groups sans détruire les inputs
+        function renderCheckboxes() {
+            const CB = (arr, field) => `<div class="tchak-cb-group">${arr.map(v =>
+                `<div class="tchak-opt${formData[field].includes(v)?' sel':''}" data-field="${field}" data-val="${escHtml(v)}">${v}</div>`
+            ).join('')}</div>`;
+            const gTech = document.getElementById('g-tech');
+            const gMvt  = document.getElementById('g-mvt');
+            if(gTech) { gTech.outerHTML = CB(TECHNIQUES,'techniques').replace('<div class="tchak-cb-group">', '<div class="tchak-cb-group" id="g-tech">'); }
+            if(gMvt)  { gMvt.outerHTML  = CB(MOVEMENTS,'movements').replace('<div class="tchak-cb-group">', '<div class="tchak-cb-group" id="g-mvt">'); }
+            // Re-bind click events after DOM update
+            document.querySelectorAll('.tchak-opt').forEach(o => o.addEventListener('click', () => toggleFD(o.dataset.field, o.dataset.val)));
         }
 
         async function generatePackage() {
@@ -790,7 +811,7 @@
             const C = document.getElementById('modal-form-container');
             const pct = Math.round(((currentStep+1)/STEPS.length)*100);
 
-            const CB = (arr, field) => `<div class="tchak-cb-group">${arr.map(v =>
+            const CB = (arr, field, gid) => `<div class="tchak-cb-group" id="${gid}">${arr.map(v =>
                 `<div class="tchak-opt${formData[field].includes(v)?' sel':''}" data-field="${field}" data-val="${escHtml(v)}">${v}</div>`
             ).join('')}</div>`;
 
@@ -798,7 +819,7 @@
             switch(currentStep) {
                 case 0: body=`<div class="form-group"><label class="required">Prénom</label><input id="i-fn" type="text" value="${escHtml(formData.firstName)}"></div><div class="form-group"><label class="required">Nom</label><input id="i-ln" type="text" value="${escHtml(formData.lastName)}"></div><div class="form-group"><label>Pseudo (opt.)</label><input id="i-ps" type="text" value="${escHtml(formData.pseudonym)}"></div>`; break;
                 case 1: body=`<div class="form-group"><label class="required">Email</label><input id="i-em" type="email" value="${escHtml(formData.email)}"></div><div class="form-group"><label class="required">Téléphone</label><input id="i-ph" type="tel" value="${escHtml(formData.phone)}"></div><div class="form-group"><label>WhatsApp (opt.)</label><input id="i-wa" type="tel" value="${escHtml(formData.whatsapp)}"></div>`; break;
-                case 2: body=`<div class="form-group"><label>Techniques</label>${CB(TECHNIQUES,'techniques')}</div><div class="form-group" style="margin-top:1rem;"><label>Courants artistiques</label>${CB(MOVEMENTS,'movements')}</div>`; break;
+                case 2: body=`<div class="form-group"><label>Techniques</label>${CB(TECHNIQUES,'techniques','g-tech')}</div><div class="form-group" style="margin-top:1rem;"><label>Courants artistiques</label>${CB(MOVEMENTS,'movements','g-mvt')}</div>`; break;
                 case 3: body=`<div class="form-group"><label>Biographie</label><textarea id="i-bio" rows="5">${escHtml(formData.bio)}</textarea></div>`; break;
                 case 4: body=`<div class="form-group"><label>Organisation</label><input id="i-org" type="text" value="${escHtml(formData.organization)}"></div><div class="form-group"><label>Rôle</label><input id="i-role" type="text" value="${escHtml(formData.role)}"></div>`; break;
                 case 5: body=`<div class="form-group"><label>Langue</label><select id="i-lang"><option value="fr" ${formData.language==='fr'?'selected':''}>Français</option><option value="en" ${formData.language==='en'?'selected':''}>English</option></select></div><div class="form-group"><label>Type d'usage</label><select id="i-use"><option value="">Sélectionnez...</option>${USAGE_TYPES.map(t=>`<option value="${t}" ${formData.usageType===t?'selected':''}>${t}</option>`).join('')}</select></div>`; break;
@@ -841,12 +862,13 @@
                 </div>
             `;
 
-            const ev = (id, field) => document.getElementById(id)?.addEventListener('input', e => updateFD(field, e.target.value));
-            const ch = (id, field) => document.getElementById(id)?.addEventListener('change', e => updateFD(field, e.target.value));
+            // Helpers : mise à jour silencieuse pour les champs texte
+            const ev = (id, field) => document.getElementById(id)?.addEventListener('input',  e => setFD(field, e.target.value));
+            const ch = (id, field) => document.getElementById(id)?.addEventListener('change', e => setFD(field, e.target.value));
 
             if(currentStep===0)      { ev('i-fn','firstName'); ev('i-ln','lastName'); ev('i-ps','pseudonym'); }
             else if(currentStep===1) { ev('i-em','email'); ev('i-ph','phone'); ev('i-wa','whatsapp'); }
-            else if(currentStep===2) { C.querySelectorAll('.tchak-opt').forEach(o => o.addEventListener('click', () => updateFD(o.dataset.field, o.dataset.val))); }
+            else if(currentStep===2) { C.querySelectorAll('.tchak-opt').forEach(o => o.addEventListener('click', () => toggleFD(o.dataset.field, o.dataset.val))); }
             else if(currentStep===3) { ev('i-bio','bio'); }
             else if(currentStep===4) { ev('i-org','organization'); ev('i-role','role'); }
             else if(currentStep===5) { ch('i-lang','language'); ch('i-use','usageType'); }
