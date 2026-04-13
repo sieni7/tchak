@@ -533,6 +533,8 @@
         function currentMonth() { const n = new Date(); return `${n.getFullYear()}-${n.getMonth() + 1}`; }
 
         async function quotaRemaining() {
+            if (artistProfile && artistProfile.plan === 'pro') return Infinity;
+
             const q = await getQuotaData();
             if (q.month !== currentMonth()) return QUOTA_MAX;
             return Math.max(0, QUOTA_MAX - q.count);
@@ -558,6 +560,14 @@
         }
 
         async function updateQuotaUI() {
+            const quotaContainer = document.querySelector('.quota-container');
+            
+            if (artistProfile && artistProfile.plan === 'pro') {
+                if (quotaContainer) quotaContainer.style.display = 'none';
+                return;
+            }
+
+            if (quotaContainer) quotaContainer.style.display = 'block';
             const remaining = await quotaRemaining();
             const used      = QUOTA_MAX - remaining;
             const pct       = (used / QUOTA_MAX) * 100;
