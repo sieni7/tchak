@@ -13,161 +13,190 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            /* Palette extraite du logo TCHAK */
+            --orange:       #D4541A;  /* Terracotta – lettres TCHAK */
+            --orange-hover: #B8451A;  /* Hover, ombre */
+            --orange-glow:  rgba(212, 84, 26, 0.25);
+            --bg-dark:      #180E08;  /* Fond sombre (brun-noir chaud) */
+            --bg-section:   #1F1208;  /* Fond section alternate */
+            --cream:        #F5F0EA;  /* Fond clair (arrière-plan du logo) */
+            --charcoal:     #2C2C2C;  /* Gris foncé du texte logo */
+            --text-main:    #FDFAF7;  /* Blanc cassé pour le texte sur fond sombre */
+            --text-muted:   #A89080;  /* Muted warm gray */
+            --glass:        rgba(255, 255, 255, 0.05);
+            --border-warm:  rgba(212, 84, 26, 0.25);
+            --transition:   all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0F201B;
-            color: #FFFFFF;
-            line-height: 1.5;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
-        }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
-        /* Glassmorphism Navbar */
+        /* ============ NAVBAR ============ */
         .glass-nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 32, 27, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
+            background: rgba(24, 14, 8, 0.92);
+            backdrop-filter: blur(12px);
+            padding: 0.75rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid var(--border-warm);
         }
 
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #FDFBF7;
+        .logo-img {
+            height: 56px;
+            width: auto;
+            object-fit: contain;
+            /* Adaptation sur fond sombre : légère lueur chaude */
+            filter: drop-shadow(0 0 8px rgba(212, 84, 26, 0.4));
+            transition: var(--transition);
         }
 
-        .logo span {
-            color: #D4AF37;
+        .logo-img:hover {
+            filter: drop-shadow(0 0 14px rgba(212, 84, 26, 0.7));
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: #FDFBF7;
-            text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .nav-links a:hover {
-            color: #D4AF37;
-        }
-
-        /* Badge Beta */
         .beta-badge {
-            background: #D4AF37;
-            color: #0F201B;
-            font-size: 0.7rem;
+            background: var(--orange);
+            color: #fff;
+            font-size: 0.65rem;
             padding: 0.2rem 0.6rem;
             border-radius: 20px;
-            margin-left: 0.5rem;
-            font-weight: 600;
+            margin-left: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             vertical-align: middle;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Boutons CTA améliorés */
+        .nav-links { display: flex; gap: 2.5rem; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--orange); }
+
+        /* ============ CTA BUTTONS ============ */
         .cta-nav, .cta-hero, .cta-free {
-            background: #D4AF37;
-            color: #0F201B;
+            background: var(--orange);
+            color: #fff;
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 40px;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
 
         .cta-nav:hover, .cta-hero:hover, .cta-free:hover {
-            background: #C59B2E;
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+            background: var(--orange-hover);
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px var(--orange-glow);
         }
 
         .cta-hero {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            margin-top: 1.5rem;
+            padding: 1.1rem 2.25rem;
+            font-size: 1.05rem;
+            margin-top: 1.75rem;
+            box-shadow: 0 4px 16px var(--orange-glow);
         }
 
-        /* Hero Section */
+        /* ============ HERO ============ */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 6rem 2rem 4rem;
+            padding: 7rem 5% 4rem;
             gap: 2rem;
             flex-wrap: wrap;
+            background: radial-gradient(ellipse at 70% 30%, rgba(212, 84, 26, 0.07) 0%, transparent 55%);
         }
 
-        .hero-content {
-            flex: 1;
-            min-width: 300px;
-        }
+        .hero-content { flex: 1.2; min-width: 300px; }
 
-        .hero-content h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.2;
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1.12;
             margin-bottom: 1.5rem;
         }
 
-        .hero-content p {
+        .hero h1 .accent { color: var(--orange); }
+
+        .hero-subtitle {
             font-size: 1.1rem;
-            color: #A0A0A0;
-            margin-bottom: 1rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 0.5rem;
         }
 
-        .hero-mockup {
-            flex: 1;
-            text-align: center;
+        .hero-deco {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.5px;
         }
 
-        .hero-mockup img, .hero-mockup video {
+        .hero-deco span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .hero-deco span::before {
+            content: "✓";
+            color: var(--orange);
+            font-weight: 700;
+        }
+
+        .hero-mockup { flex: 0.9; text-align: center; }
+
+        .hero-mockup video {
             max-width: 100%;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--border-warm);
         }
 
-        /* Features Section */
+        /* ============ FEATURES ============ */
         .features {
-            padding: 4rem 2rem;
-            background: #FDFBF7;
-            color: #0F201B;
+            padding: 6rem 5%;
+            background: var(--cream);
+            color: var(--charcoal);
         }
 
         .features h2 {
             text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
+            font-size: clamp(1.8rem, 3vw, 2.75rem);
+            margin-bottom: 3.5rem;
+            color: var(--charcoal);
         }
 
         .feature-grid {
@@ -175,90 +204,67 @@
             justify-content: center;
             gap: 2rem;
             flex-wrap: wrap;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .feature-card {
             background: white;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             border-radius: 20px;
             width: 300px;
             text-align: center;
-            transition: all 0.25s ease;
-            border: 1px solid #E5E0D5;
+            transition: var(--transition);
+            border: 1.5px solid #E8E2DA;
         }
 
         .feature-card:hover {
-            border-color: #D4AF37;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: var(--orange);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(212, 84, 26, 0.1);
         }
 
         .feature-icon {
-            font-size: 3rem;
+            font-size: 2.75rem;
             margin-bottom: 1rem;
             display: inline-block;
-            transition: transform 0.25s ease;
+            transition: transform 0.3s ease;
         }
 
-        .feature-card:hover .feature-icon {
-            transform: translateY(-5px);
+        .feature-card:hover .feature-icon { transform: scale(1.15); }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: var(--orange);
         }
 
-        /* How it Works */
-        .how-it-works {
-            padding: 4rem 2rem;
-            background: #0F201B;
-        }
+        .feature-card p { color: #666; font-size: 0.95rem; }
 
-        .how-it-works h2 {
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .steps {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .step {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
-            width: 300px;
-            text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .step-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            color: #D4AF37;
-            margin-bottom: 1rem;
-        }
-
-        /* Security Schema */
+        /* ============ SECURITY ============ */
         .security-schema {
-            background: #FDFBF7;
-            padding: 4rem 2rem;
+            background: var(--cream);
+            padding: 4rem 5%;
             text-align: center;
+        }
+
+        .security-schema h2 {
+            color: var(--charcoal);
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 2rem;
         }
 
         .schema {
-            background: #0F201B;
-            padding: 2rem;
+            background: var(--bg-dark);
+            padding: 2.5rem;
             border-radius: 20px;
             max-width: 800px;
-            margin: 2rem auto;
-            color: #FDFBF7;
+            margin: 0 auto;
+            color: var(--text-main);
+            border: 1px solid var(--border-warm);
         }
+
+        .schema h3 { color: var(--orange); margin-bottom: 1.5rem; }
 
         .chain {
             display: flex;
@@ -269,286 +275,290 @@
         }
 
         .block {
-            background: #D4AF37;
-            color: #0F201B;
-            padding: 0.5rem 1rem;
+            background: var(--orange);
+            color: #fff;
+            padding: 0.5rem 1.25rem;
             border-radius: 8px;
             font-family: monospace;
+            font-size: 0.9rem;
         }
 
-        /* Pricing */
+        .chain-arrow { color: var(--text-muted); font-size: 1.2rem; }
+
+        /* ============ HOW IT WORKS ============ */
+        .how-it-works {
+            padding: 6rem 5%;
+            background: var(--bg-section);
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: clamp(1.8rem, 3vw, 2.75rem);
+            margin-bottom: 3.5rem;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .step {
+            background: var(--glass);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            width: 300px;
+            text-align: center;
+            border: 1px solid var(--border-warm);
+            transition: var(--transition);
+        }
+
+        .step:hover {
+            background: rgba(212, 84, 26, 0.05);
+            transform: translateY(-6px);
+        }
+
+        .step-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--orange);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .step h3 { margin-bottom: 0.75rem; }
+        .step p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* ============ PRICING ============ */
         .pricing {
-            padding: 4rem 2rem;
-            background: #0F201B;
+            padding: 6rem 5%;
+            background: var(--bg-dark);
         }
 
         .pricing h2 {
             text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
+            font-size: clamp(1.8rem, 3vw, 2.75rem);
+            margin-bottom: 3.5rem;
         }
 
         .pricing-cards {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 2.5rem;
             flex-wrap: wrap;
-            max-width: 1000px;
-            margin: 0 auto;
         }
 
         .card-free, .card-pro {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 20px;
-            width: 350px;
+            background: var(--glass);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            width: 340px;
             text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            transition: transform 0.2s ease;
+            border: 1px solid var(--border-warm);
+            transition: var(--transition);
         }
 
-        .card-free:hover, .card-pro:hover {
-            transform: translateY(-5px);
+        .card-free:hover, .card-pro:hover { transform: translateY(-6px); }
+
+        .card-pro { border-color: var(--orange); }
+
+        .card-free h3, .card-pro h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
         .price {
-            font-size: 2.5rem;
+            font-size: 2.75rem;
             font-weight: 700;
-            color: #D4AF37;
-            margin: 1rem 0;
+            color: var(--orange);
+            margin: 1rem 0 1.5rem;
         }
 
-        /* Modal améliorée */
+        .card-free p, .card-pro p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* ============ MODAL ============ */
         .modal {
             display: none;
             position: fixed;
             z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 32, 27, 0.95);
-            backdrop-filter: blur(8px);
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(24, 14, 8, 0.96);
+            backdrop-filter: blur(10px);
             animation: fadeIn 0.2s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .modal-content {
-            background: #FDFBF7;
-            color: #0F201B;
+            background: var(--cream);
+            color: var(--charcoal);
             margin: 2rem auto;
-            padding: 2rem;
-            border-radius: 24px;
+            padding: 2.5rem;
+            border-radius: 28px;
             width: 90%;
-            max-width: 700px;
+            max-width: 680px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            animation: slideIn 0.2s ease;
+            animation: slideIn 0.25s ease;
+            border-top: 4px solid var(--orange);
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .close {
             position: absolute;
-            right: 1.5rem;
-            top: 1rem;
+            right: 1.5rem; top: 1.25rem;
             font-size: 2rem;
             cursor: pointer;
-            color: #6B7280;
-            transition: color 0.2s ease;
+            color: var(--text-muted);
+            transition: color 0.2s;
         }
 
-        .close:hover {
-            color: #D4AF37;
-        }
+        .close:hover { color: var(--orange); }
 
-        /* Progress Bar */
-        .progress-container {
-            margin-bottom: 2rem;
-        }
+        /* ============ FORM ============ */
+        .progress-container { margin-bottom: 2rem; }
 
         .progress-steps {
             display: flex;
             justify-content: space-between;
             margin-bottom: 0.5rem;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.25rem;
         }
 
         .step-indicator {
             flex: 1;
             text-align: center;
-            font-size: 0.7rem;
-            color: #6B7280;
+            font-size: 0.65rem;
+            color: #9A9A9A;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        .step-indicator.active {
-            color: #D4AF37;
-            font-weight: 600;
-        }
+        .step-indicator.active { color: var(--orange); font-weight: 700; }
 
-        .progress-bar {
-            height: 4px;
-            background: #E5E0D5;
-            border-radius: 2px;
-            overflow: hidden;
-        }
+        .progress-bar { height: 4px; background: #E0D8D0; border-radius: 2px; overflow: hidden; }
 
         .progress-fill {
             height: 100%;
-            background: #D4AF37;
-            transition: width 0.3s ease;
-            width: 0%;
+            background: var(--orange);
+            transition: width 0.35s ease;
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
+        .form-group { margin-bottom: 1.25rem; }
 
         label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--charcoal);
         }
 
-        .required::after {
-            content: " *";
-            color: #D4AF37;
-        }
+        .required::after { content: " *"; color: var(--orange); }
 
         input, select, textarea {
             width: 100%;
             padding: 0.875rem 1rem;
-            border: 1.5px solid #E5E0D5;
+            border: 1.5px solid #DDD5CC;
             border-radius: 12px;
-            font-family: 'Inter', sans-serif;
             font-size: 1rem;
-            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #D4AF37;
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(212, 84, 26, 0.12);
         }
 
-        /* Success Modal */
+        /* ============ SUCCESS MODAL ============ */
         .success-modal {
             display: none;
             position: fixed;
             z-index: 2001;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 32, 27, 0.95);
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(24, 14, 8, 0.96);
             backdrop-filter: blur(8px);
         }
 
         .success-content {
-            background: #FDFBF7;
-            color: #0F201B;
+            background: var(--cream);
+            color: var(--charcoal);
             margin: 15% auto;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 24px;
             width: 90%;
-            max-width: 500px;
+            max-width: 480px;
             text-align: center;
             animation: slideIn 0.2s ease;
+            border-top: 4px solid var(--orange);
         }
 
-        /* Footer */
+        /* ============ FOOTER ============ */
         footer {
-            background: #0A1512;
-            padding: 2rem;
+            background: #100904;
+            padding: 3rem 5%;
             text-align: center;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-top: 1px solid var(--border-warm);
         }
+
+        .footer-logo { height: 44px; filter: drop-shadow(0 0 6px rgba(212,84,26,0.3)); margin-bottom: 1.5rem; }
 
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             flex-wrap: wrap;
         }
 
         .footer-links a {
-            color: #A0A0A0;
+            color: var(--text-muted);
             text-decoration: none;
-            transition: color 0.2s ease;
+            font-size: 0.875rem;
+            transition: color 0.2s;
         }
 
-        .footer-links a:hover {
-            color: #D4AF37;
-        }
+        .footer-links a:hover { color: var(--orange); }
 
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
+        .social-icons { display: flex; justify-content: center; gap: 1rem; margin: 0.75rem 0 1.25rem; }
+        .social-icons a { color: var(--text-muted); font-size: 1.4rem; text-decoration: none; transition: color 0.2s; }
+        .social-icons a:hover { color: var(--orange); }
 
-        .social-icons a {
-            color: #A0A0A0;
-            font-size: 1.5rem;
-            text-decoration: none;
-        }
+        .footer-copy { color: var(--text-muted); font-size: 0.8rem; }
 
-        .social-icons a:hover {
-            color: #D4AF37;
-        }
-
-        /* Responsive */
+        /* ============ RESPONSIVE ============ */
         @media (max-width: 768px) {
-            .glass-nav {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-            
-            .nav-links {
-                gap: 1rem;
-            }
-            
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-            
-            .hero {
-                padding-top: 8rem;
-            }
-            
-            .modal-content {
-                padding: 1rem;
-                margin: 1rem;
-                width: auto;
-            }
+            .glass-nav { flex-wrap: wrap; gap: 0.75rem; padding: 1rem 4%; }
+            .nav-links { gap: 1.25rem; }
+            .hero { padding-top: 9rem; }
+            .modal-content { padding: 1.5rem; margin: 0.75rem; width: auto; }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar Glassmorphism -->
+
+    <!-- NAVBAR -->
     <nav class="glass-nav">
-        <div class="logo">
-            TCHAK<span>!</span>
+        <div style="display:flex;align-items:center;">
+            <img src="logo-tchak.png" alt="TCHAK! Logo" class="logo-img">
             <span class="beta-badge">Beta privée</span>
         </div>
         <div class="nav-links">
@@ -559,22 +569,27 @@
         <button class="cta-nav" id="open-studio">✨ Accéder au Studio</button>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- HERO -->
     <section class="hero">
         <div class="hero-content" data-aos="fade-right">
-            <h1>Certifiez votre art.<br>Sécurisez votre héritage.</h1>
-            <p>Le premier Studio de certification d'authenticité 100% hors-ligne.<br>Souveraineté cryptographique pour les créateurs de demain.</p>
+            <h1>Certifiez votre art.<br><span class="accent">Sécurisez</span> votre héritage.</h1>
+            <p class="hero-subtitle">Le premier Studio de certification d'authenticité 100% hors-ligne. Souveraineté cryptographique pour les créateurs de demain.</p>
+            <div class="hero-deco">
+                <span>&nbsp;Offline 100%</span>
+                <span>&nbsp;Crypto SHA256</span>
+                <span>&nbsp;0 abonnement</span>
+            </div>
             <button class="cta-hero" id="open-studio-2">✨ Créer mon Studio Personnalisé</button>
         </div>
         <div class="hero-mockup" data-aos="fade-left">
-            <video autoplay muted loop playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23D4AF37'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%230F201B' dy='.3em'%3ETCHAK Studio%3C/text%3E%3C/svg%3E">
+            <video autoplay muted loop playsinline
+                poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='280'%3E%3Crect width='400' height='280' fill='%23D4541A'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='white' dy='.3em' font-size='32' font-family='serif'%3ETCHAK Studio%3C/text%3E%3C/svg%3E">
                 <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-                Votre navigateur ne supporte pas la vidéo.
             </video>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- FEATURES -->
     <section id="features" class="features">
         <h2 data-aos="fade-up">Conçu pour l'Excellence Artistique</h2>
         <div class="feature-grid">
@@ -596,23 +611,23 @@
         </div>
     </section>
 
-    <!-- Security Schema Section -->
+    <!-- SECURITY SCHEMA -->
     <section id="security" class="security-schema">
         <h2 data-aos="fade-up">Comment ça fonctionne ?</h2>
         <div class="schema" data-aos="flip-up">
             <h3>🔗 Chaîne cryptographique SHA256</h3>
             <div class="chain">
                 <div class="block">Certificat #1</div>
-                <div>→ Hash →</div>
+                <span class="chain-arrow">→ Hash →</span>
                 <div class="block">Certificat #2</div>
-                <div>→ Hash →</div>
+                <span class="chain-arrow">→ Hash →</span>
                 <div class="block">Certificat #3</div>
             </div>
-            <p style="margin-top: 1rem;">Comme une chaîne de blocs, mais sur votre disque dur. Chaque certificat valide le précédent.</p>
+            <p style="margin-top:1.25rem; color:#A89080; font-size:0.9rem;">Comme une chaîne de blocs, mais sur votre disque dur. Chaque certificat valide le précédent.</p>
         </div>
     </section>
 
-    <!-- How it Works -->
+    <!-- HOW IT WORKS -->
     <section class="how-it-works">
         <h2 data-aos="fade-up">3 Étapes vers la Souveraineté</h2>
         <div class="steps">
@@ -634,7 +649,7 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
+    <!-- PRICING -->
     <section id="pricing" class="pricing">
         <h2 data-aos="fade-up">Tarification Transparente</h2>
         <div class="pricing-cards">
@@ -644,7 +659,7 @@
                 <p>10 certificats / mois</p>
                 <p>Templates Standards</p>
                 <p>Sécurité SHA256 native</p>
-                <button class="cta-free" style="margin-top: 1rem;" id="open-studio-3">✨ Commencer</button>
+                <button class="cta-free" style="margin-top:1.5rem;" id="open-studio-3">✨ Commencer</button>
             </div>
             <div class="card-pro" data-aos="zoom-in" data-aos-delay="200">
                 <h3>TCHAK Pro</h3>
@@ -652,13 +667,14 @@
                 <p>Certificats Illimités</p>
                 <p>Templates de Luxe</p>
                 <p>Statistiques Avancées</p>
-                <button class="cta-free" style="margin-top: 1rem; background: #6B7280; cursor: not-allowed;" disabled>À venir</button>
+                <button style="margin-top:1.5rem; background:#444; color:#888; border:none; padding:0.75rem 1.5rem; border-radius:40px; cursor:not-allowed; font-weight:700;" disabled>À venir</button>
             </div>
         </div>
     </section>
 
-    <!-- Footer enrichi -->
+    <!-- FOOTER -->
     <footer>
+        <img src="logo-tchak.png" alt="TCHAK Logo" class="footer-logo">
         <div class="footer-links">
             <a href="#">FAQ</a>
             <a href="#">Contact</a>
@@ -666,59 +682,44 @@
             <a href="#">Mentions légales</a>
         </div>
         <div class="social-icons">
-            <a href="#">📷</a>
-            <a href="#">🐦</a>
-            <a href="#">💬</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="WhatsApp">💬</a>
         </div>
-        <p>© 2026 TCHAK – Certification d'authenticité pour les artistes</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Made with ❤️ for Ivorian artists</p>
+        <p class="footer-copy">© 2026 TCHAK – Certification d'authenticité pour les artistes</p>
+        <p class="footer-copy" style="margin-top:0.4rem;">Made with ❤️ for Ivorian artists</p>
     </footer>
 
-    <!-- Modal Onboarding (formulaire 7 étapes) -->
+    <!-- MODAL ONBOARDING -->
     <div id="onboarding-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <div id="modal-form-container">
-                <!-- Le formulaire sera injecté dynamiquement -->
-            </div>
+            <div id="modal-form-container"></div>
         </div>
     </div>
 
-    <!-- Success Modal -->
+    <!-- SUCCESS MODAL -->
     <div id="success-modal" class="success-modal">
         <div class="success-content">
-            <span class="close-success" style="float: right; cursor: pointer;">&times;</span>
-            <div style="font-size: 4rem;">🎉</div>
-            <h2>Félicitations !</h2>
-            <p id="success-message">Votre Studio TCHAK est prêt à être utilisé.</p>
-            <button id="open-downloads" class="cta-free" style="margin-top: 1rem;">📂 Ouvrir les téléchargements</button>
+            <span class="close-success" style="float:right;cursor:pointer;font-size:1.75rem;">&times;</span>
+            <div style="font-size:3.5rem;margin-bottom:1rem;">🎉</div>
+            <h2 style="margin-bottom:0.75rem;">Félicitations !</h2>
+            <p id="success-message">Votre Studio TCHAK est prêt.</p>
+            <button class="cta-free" style="margin-top:1.5rem;" id="open-downloads">📂 Ouvrir les téléchargements</button>
         </div>
     </div>
 
     <script>
-        // Initialisation AOS
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+        AOS.init({ duration: 800, once: true });
 
-        // Données du formulaire
         let currentStep = 0;
         let formData = {
-            firstName: '', lastName: '', pseudonym: '', email: '', phone: '', whatsapp: '',
-            techniques: [], movements: [], bio: '', organization: '', role: '', language: 'fr', usageType: ''
+            firstName:'', lastName:'', pseudonym:'', email:'', phone:'', whatsapp:'',
+            techniques:[], movements:[], bio:'', organization:'', role:'', language:'fr', usageType:''
         };
 
-        const steps = ["Identité", "Contact", "Pratique", "Bio", "Organisation", "Préférences", "Validation"];
-        const titles = [
-            "🎨 Qui êtes-vous ?",
-            "📞 Comment vous joindre ?",
-            "🖌️ Votre pratique artistique",
-            "📖 Votre histoire",
-            "🏢 Organisation (optionnel)",
-            "⚙️ Préférences",
-            "✅ Validation"
-        ];
+        const steps = ["Identité","Contact","Pratique","Bio","Organisation","Préférences","Validation"];
+        const titles = ["🎨 Qui êtes-vous ?","📞 Comment vous joindre ?","🖌️ Votre pratique artistique","📖 Votre histoire","🏢 Organisation (optionnel)","⚙️ Préférences","✅ Validation"];
         const descriptions = [
             "Nous avons besoin de vous connaître pour personnaliser votre expérience.",
             "Ces informations nous permettront de vous contacter.",
@@ -729,272 +730,161 @@
             "Vérifiez vos informations avant de générer votre package."
         ];
 
-        const techniques = ["Peinture à l'huile", "Acrylique", "Aquarelle", "Dessin", "Mixte", "Autre"];
-        const movements = ["Contemporain", "Abstrait", "Figuratif", "Street art", "Classique", "Autre"];
-        const usageTypes = ["Individuel", "Atelier / Collectif", "Galerie", "École"];
+        const techniques = ["Peinture à l'huile","Acrylique","Aquarelle","Dessin","Mixte","Autre"];
+        const movements  = ["Contemporain","Abstrait","Figuratif","Street art","Classique","Autre"];
+        const usageTypes = ["Individuel","Atelier / Collectif","Galerie","École"];
 
-        function saveToLocalStorage() {
-            localStorage.setItem('tchak_form_data', JSON.stringify(formData));
-            localStorage.setItem('tchak_current_step', currentStep);
+        function saveLS()  { localStorage.setItem('tchak_form', JSON.stringify(formData)); localStorage.setItem('tchak_step', currentStep); }
+        function loadLS()  { const s=localStorage.getItem('tchak_form'); if(s) formData=JSON.parse(s); const t=localStorage.getItem('tchak_step'); if(t) currentStep=parseInt(t); }
+
+        function showToast(msg, isErr=false) {
+            const t = document.createElement('div');
+            Object.assign(t.style, { position:'fixed', bottom:'2rem', left:'50%', transform:'translateX(-50%)',
+                background: isErr ? '#B91C1C' : '#D4541A', color:'#fff', padding:'0.75rem 1.5rem',
+                borderRadius:'40px', fontSize:'0.875rem', zIndex:'3000', fontFamily:'Montserrat,sans-serif' });
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
         }
 
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('tchak_form_data');
-            if (saved) formData = JSON.parse(saved);
-            const savedStep = localStorage.getItem('tchak_current_step');
-            if (savedStep) currentStep = parseInt(savedStep);
-        }
+        function escHtml(s) { return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-        function showToast(msg, isError = false) {
-            // Création toast simple
-            const toast = document.createElement('div');
-            toast.textContent = msg;
-            toast.style.position = 'fixed';
-            toast.style.bottom = '2rem';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.background = isError ? '#DC2626' : '#D4AF37';
-            toast.style.color = isError ? 'white' : '#0F201B';
-            toast.style.padding = '0.75rem 1.5rem';
-            toast.style.borderRadius = '40px';
-            toast.style.fontSize = '0.875rem';
-            toast.style.zIndex = '2002';
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        function updateFormData(field, value) {
-            if (field === 'techniques' || field === 'movements') {
-                if (formData[field].includes(value)) {
-                    formData[field] = formData[field].filter(v => v !== value);
-                } else {
-                    formData[field].push(value);
-                }
-            } else {
-                formData[field] = value;
-            }
-            saveToLocalStorage();
-            renderForm();
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;';
-            });
+        function updateFD(field, val) {
+            if(field==='techniques'||field==='movements') {
+                formData[field].includes(val) ? formData[field]=formData[field].filter(v=>v!==val) : formData[field].push(val);
+            } else { formData[field]=val; }
+            saveLS(); renderForm();
         }
 
         async function generatePackage() {
-            const loadingDiv = document.getElementById('loading');
-            if (loadingDiv) loadingDiv.style.display = 'block';
-            
+            const loading = document.getElementById('loading');
+            if(loading) loading.style.display='block';
             try {
-                const response = await fetch('/.netlify/functions/generate-zip', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+                const res = await fetch('/.netlify/functions/generate-zip', {
+                    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(formData)
                 });
-                
-                if (!response.ok) throw new Error('Network error');
-                
-                const data = await response.json();
-                const link = document.createElement('a');
-                link.href = 'data:application/zip;base64,' + data.zip;
-                link.download = `TCHAK_${formData.firstName}_${formData.lastName}.zip`;
-                link.click();
-                
-                // Fermer la modale onboarding
-                document.getElementById('onboarding-modal').style.display = 'none';
-                // Afficher la modale de succès
-                document.getElementById('success-message').innerHTML = `Félicitations ${formData.firstName} !<br>Votre Studio TCHAK est prêt à être utilisé.`;
-                document.getElementById('success-modal').style.display = 'block';
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showToast('❌ Erreur lors de la génération du package. Veuillez réessayer.', true);
+                if(!res.ok) throw new Error();
+                const data = await res.json();
+                const a = document.createElement('a');
+                a.href = 'data:application/zip;base64,'+data.zip;
+                a.download = `TCHAK_${formData.firstName}_${formData.lastName}.zip`;
+                a.click();
+                document.getElementById('onboarding-modal').style.display='none';
+                document.getElementById('success-message').innerHTML = `Félicitations ${escHtml(formData.firstName)} !<br>Votre Studio TCHAK est prêt.`;
+                document.getElementById('success-modal').style.display='block';
+            } catch(e) {
+                showToast('❌ Erreur de génération. Réessayez.', true);
             } finally {
-                if (loadingDiv) loadingDiv.style.display = 'none';
+                if(loading) loading.style.display='none';
             }
         }
 
         function nextStep() {
-            // Validation basique
-            if (currentStep === 0 && (!formData.firstName || !formData.lastName)) {
-                showToast('Veuillez remplir votre prénom et nom', true);
-                return;
-            }
-            if (currentStep === 1 && (!formData.email || !formData.phone)) {
-                showToast('Veuillez remplir votre email et téléphone', true);
-                return;
-            }
-            
-            if (currentStep < 6) {
-                currentStep++;
-                saveToLocalStorage();
-                renderForm();
-                document.querySelector('.modal-content').scrollTop = 0;
-            } else {
-                generatePackage();
-            }
+            if(currentStep===0 && (!formData.firstName||!formData.lastName)) { showToast('Veuillez remplir prénom et nom', true); return; }
+            if(currentStep===1 && (!formData.email||!formData.phone)) { showToast('Email et téléphone requis', true); return; }
+            if(currentStep<6) { currentStep++; saveLS(); renderForm(); document.querySelector('.modal-content').scrollTop=0; }
+            else generatePackage();
         }
 
-        function prevStep() {
-            if (currentStep > 0) {
-                currentStep--;
-                saveToLocalStorage();
-                renderForm();
-                document.querySelector('.modal-content').scrollTop = 0;
-            }
-        }
+        function prevStep() { if(currentStep>0) { currentStep--; saveLS(); renderForm(); document.querySelector('.modal-content').scrollTop=0; } }
 
         function renderForm() {
-            const container = document.getElementById('modal-form-container');
-            const progress = ((currentStep + 1) / steps.length) * 100;
-            
-            let stepContent = '';
+            const C = document.getElementById('modal-form-container');
+            const pct = Math.round(((currentStep+1)/steps.length)*100);
+
+            const CB = (arr, field) => arr.map(v =>
+                `<div class="tchak-opt ${formData[field].includes(v)?'sel':''}" data-field="${field}" data-val="${escHtml(v)}">${v}</div>`
+            ).join('');
+
+            let body = '';
             switch(currentStep) {
-                case 0:
-                    stepContent = `
-                        <div class="form-group"><label class="required">Prénom</label><input type="text" id="firstName" value="${escapeHtml(formData.firstName)}"></div>
-                        <div class="form-group"><label class="required">Nom</label><input type="text" id="lastName" value="${escapeHtml(formData.lastName)}"></div>
-                        <div class="form-group"><label>Pseudo (optionnel)</label><input type="text" id="pseudonym" value="${escapeHtml(formData.pseudonym)}"></div>
-                    `;
-                    break;
-                case 1:
-                    stepContent = `
-                        <div class="form-group"><label class="required">Email</label><input type="email" id="email" value="${escapeHtml(formData.email)}"></div>
-                        <div class="form-group"><label class="required">Téléphone</label><input type="tel" id="phone" value="${escapeHtml(formData.phone)}"></div>
-                        <div class="form-group"><label>WhatsApp (optionnel)</label><input type="tel" id="whatsapp" value="${escapeHtml(formData.whatsapp)}"></div>
-                    `;
-                    break;
-                case 2:
-                    stepContent = `
-                        <div class="form-group"><label>Techniques</label><div class="checkbox-group" id="techniques-group">${techniques.map(tech => `<div class="checkbox-option ${formData.techniques.includes(tech) ? 'selected' : ''}" data-value="${tech}"><span>${tech}</span></div>`).join('')}</div></div>
-                        <div class="form-group"><label>Courants artistiques</label><div class="checkbox-group" id="movements-group">${movements.map(mvt => `<div class="checkbox-option ${formData.movements.includes(mvt) ? 'selected' : ''}" data-value="${mvt}"><span>${mvt}</span></div>`).join('')}</div></div>
-                    `;
-                    break;
-                case 3:
-                    stepContent = `<div class="form-group"><label>Biographie</label><textarea id="bio" rows="4">${escapeHtml(formData.bio)}</textarea></div>`;
-                    break;
-                case 4:
-                    stepContent = `
-                        <div class="form-group"><label>Nom de l'organisation</label><input type="text" id="organization" value="${escapeHtml(formData.organization)}"></div>
-                        <div class="form-group"><label>Rôle</label><input type="text" id="role" value="${escapeHtml(formData.role)}"></div>
-                    `;
-                    break;
-                case 5:
-                    stepContent = `
-                        <div class="form-group"><label>Langue</label><select id="language"><option value="fr" ${formData.language === 'fr' ? 'selected' : ''}>Français</option><option value="en" ${formData.language === 'en' ? 'selected' : ''}>English</option></select></div>
-                        <div class="form-group"><label>Type d'usage</label><select id="usageType"><option value="">Sélectionnez...</option>${usageTypes.map(type => `<option value="${type}" ${formData.usageType === type ? 'selected' : ''}>${type}</option>`).join('')}</select></div>
-                    `;
-                    break;
-                case 6:
-                    stepContent = `
-                        <div class="summary-item"><strong>Nom complet:</strong> ${formData.firstName} ${formData.lastName} ${formData.pseudonym ? `(${formData.pseudonym})` : ''}</div>
-                        <div class="summary-item"><strong>Contact:</strong> ${formData.email}<br>${formData.phone}${formData.whatsapp ? `<br>WhatsApp: ${formData.whatsapp}` : ''}</div>
-                        <div class="summary-item"><strong>Pratique:</strong> ${formData.techniques.join(', ') || '-'}<br>${formData.movements.join(', ') || '-'}</div>
-                        <div class="summary-item"><strong>Bio:</strong> ${formData.bio || '-'}</div>
-                        ${formData.organization ? `<div class="summary-item"><strong>Organisation:</strong> ${formData.organization} ${formData.role ? `(${formData.role})` : ''}</div>` : ''}
-                        <div class="summary-item"><strong>Préférences:</strong> ${formData.language === 'fr' ? 'Français' : 'English'}${formData.usageType ? `, ${formData.usageType}` : ''}</div>
-                    `;
-                    break;
+                case 0: body=`<div class="form-group"><label class="required">Prénom</label><input id="i-fn" type="text" value="${escHtml(formData.firstName)}"></div><div class="form-group"><label class="required">Nom</label><input id="i-ln" type="text" value="${escHtml(formData.lastName)}"></div><div class="form-group"><label>Pseudo (opt.)</label><input id="i-ps" type="text" value="${escHtml(formData.pseudonym)}"></div>`; break;
+                case 1: body=`<div class="form-group"><label class="required">Email</label><input id="i-em" type="email" value="${escHtml(formData.email)}"></div><div class="form-group"><label class="required">Téléphone</label><input id="i-ph" type="tel" value="${escHtml(formData.phone)}"></div><div class="form-group"><label>WhatsApp (opt.)</label><input id="i-wa" type="tel" value="${escHtml(formData.whatsapp)}"></div>`; break;
+                case 2: body=`<div class="form-group"><label>Techniques</label><div class="tchak-cb-group" id="g-tech">${CB(techniques,'techniques')}</div></div><div class="form-group" style="margin-top:1rem;"><label>Courants artistiques</label><div class="tchak-cb-group" id="g-mvt">${CB(movements,'movements')}</div></div>`; break;
+                case 3: body=`<div class="form-group"><label>Biographie</label><textarea id="i-bio" rows="5">${escHtml(formData.bio)}</textarea></div>`; break;
+                case 4: body=`<div class="form-group"><label>Organisation</label><input id="i-org" type="text" value="${escHtml(formData.organization)}"></div><div class="form-group"><label>Rôle</label><input id="i-role" type="text" value="${escHtml(formData.role)}"></div>`; break;
+                case 5: body=`<div class="form-group"><label>Langue</label><select id="i-lang"><option value="fr" ${formData.language==='fr'?'selected':''}>Français</option><option value="en" ${formData.language==='en'?'selected':''}>English</option></select></div><div class="form-group"><label>Type d'usage</label><select id="i-use"><option value="">Sélectionnez...</option>${usageTypes.map(t=>`<option value="${t}" ${formData.usageType===t?'selected':''}>${t}</option>`).join('')}</select></div>`; break;
+                case 6: body=`
+                    <div style="background:#fff;border-radius:16px;padding:1.25rem;border:1px solid #E0D8D0;font-size:0.9rem;">
+                        <p style="margin-bottom:.5rem;"><strong>Nom :</strong> ${escHtml(formData.firstName)} ${escHtml(formData.lastName)}${formData.pseudonym?` (${escHtml(formData.pseudonym)})`:''}</p>
+                        <p style="margin-bottom:.5rem;"><strong>Email :</strong> ${escHtml(formData.email)} | <strong>Tél :</strong> ${escHtml(formData.phone)}</p>
+                        <p style="margin-bottom:.5rem;"><strong>Techniques :</strong> ${formData.techniques.join(', ')||'–'}</p>
+                        <p style="margin-bottom:.5rem;"><strong>Courants :</strong> ${formData.movements.join(', ')||'–'}</p>
+                        ${formData.organization ? `<p style="margin-bottom:.5rem;"><strong>Org. :</strong> ${escHtml(formData.organization)}</p>` : ''}
+                        <p><strong>Langue :</strong> ${formData.language==='fr'?'Français':'English'}</p>
+                    </div>`; break;
             }
-            
-            container.innerHTML = `
+
+            C.innerHTML = `
+                <style>
+                    .tchak-cb-group { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.5rem; }
+                    .tchak-opt { padding:.45rem .9rem; border-radius:20px; border:1px solid #DDD5CC; cursor:pointer; font-size:.875rem; background:#fff; transition:all .2s; }
+                    .tchak-opt.sel { background:#D4541A; color:#fff; border-color:#D4541A; }
+                    .tchak-btn { padding:.875rem 1.5rem; border-radius:40px; border:none; font-weight:700; cursor:pointer; font-family:'Montserrat',sans-serif; font-size:.9rem; }
+                    .tchak-btn-primary { background:#D4541A; color:#fff; }
+                    .tchak-btn-primary:hover { background:#B8451A; }
+                    .tchak-btn-secondary { background:transparent; border:1.5px solid #DDD5CC; color:#666; }
+                </style>
                 <div class="progress-container">
                     <div class="progress-steps">
-                        ${steps.map((step, idx) => `<div class="step-indicator ${idx === currentStep ? 'active' : ''} ${idx < currentStep ? 'completed' : ''}">${idx + 1}. ${step}</div>`).join('')}
+                        ${steps.map((s,i)=>`<div class="step-indicator${i===currentStep?' active':''}">${i+1}. ${s}</div>`).join('')}
                     </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
                 </div>
-                <h2>${titles[currentStep]}</h2>
-                <p>${descriptions[currentStep]}</p>
-                ${stepContent}
-                <div class="buttons" style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    ${currentStep > 0 ? '<button class="btn-secondary" id="prev-btn" style="background: transparent; border: 1px solid #E5E0D5; padding: 0.75rem 1.5rem; border-radius: 40px; cursor: pointer;">◀ Retour</button>' : '<div></div>'}
-                    <button class="btn-primary" id="next-btn" style="background: #D4AF37; color: #0F201B; border: none; padding: 0.75rem 1.5rem; border-radius: 40px; cursor: pointer; font-weight: 600;">${currentStep === 6 ? '📦 Générer mon package' : 'Suivant ▶'}</button>
+                <h2 style="margin-bottom:.5rem;">${titles[currentStep]}</h2>
+                <p style="color:#888;font-size:.875rem;margin-bottom:1.5rem;">${descriptions[currentStep]}</p>
+                ${body}
+                <div style="display:flex;gap:1rem;margin-top:1.75rem;justify-content:space-between;">
+                    ${currentStep>0 ? '<button class="tchak-btn tchak-btn-secondary" id="prev-btn">◀ Retour</button>' : '<div></div>'}
+                    <button class="tchak-btn tchak-btn-primary" id="next-btn">${currentStep===6?'📦 Générer mon package':'Suivant ▶'}</button>
                 </div>
-                <div id="loading" style="display: none; text-align: center; margin-top: 1rem;"><div class="spinner"></div><p>Génération de votre package...</p></div>
+                <div id="loading" style="display:none;text-align:center;padding:1.5rem;">
+                    <div style="width:36px;height:36px;border:3px solid #f0e8e0;border-top:3px solid #D4541A;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>
+                    <p style="margin-top:.75rem;color:#888;font-size:.875rem;">Génération en cours...</p>
+                </div>
+                <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
             `;
-            
-            // Ajout styles checkbox
-            const style = document.createElement('style');
-            style.textContent = `
-                .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem; }
-                .checkbox-option { padding: 0.5rem 1rem; background: #FDFBF7; border: 1px solid #E5E0D5; border-radius: 30px; cursor: pointer; transition: all 0.2s ease; }
-                .checkbox-option.selected { background: #D4AF37; border-color: #D4AF37; color: #0F201B; }
-                .summary-item { padding: 0.5rem; border-bottom: 1px solid #E5E0D5; }
-            `;
-            container.appendChild(style);
-            
-            // Attach events
-            if (currentStep === 0) {
-                document.getElementById('firstName')?.addEventListener('input', (e) => updateFormData('firstName', e.target.value));
-                document.getElementById('lastName')?.addEventListener('input', (e) => updateFormData('lastName', e.target.value));
-                document.getElementById('pseudonym')?.addEventListener('input', (e) => updateFormData('pseudonym', e.target.value));
-            } else if (currentStep === 1) {
-                document.getElementById('email')?.addEventListener('input', (e) => updateFormData('email', e.target.value));
-                document.getElementById('phone')?.addEventListener('input', (e) => updateFormData('phone', e.target.value));
-                document.getElementById('whatsapp')?.addEventListener('input', (e) => updateFormData('whatsapp', e.target.value));
-            } else if (currentStep === 2) {
-                document.querySelectorAll('#techniques-group .checkbox-option').forEach(opt => {
-                    opt.addEventListener('click', () => { updateFormData('techniques', opt.dataset.value); renderForm(); });
-                });
-                document.querySelectorAll('#movements-group .checkbox-option').forEach(opt => {
-                    opt.addEventListener('click', () => { updateFormData('movements', opt.dataset.value); renderForm(); });
-                });
-            } else if (currentStep === 3) {
-                document.getElementById('bio')?.addEventListener('input', (e) => updateFormData('bio', e.target.value));
-            } else if (currentStep === 4) {
-                document.getElementById('organization')?.addEventListener('input', (e) => updateFormData('organization', e.target.value));
-                document.getElementById('role')?.addEventListener('input', (e) => updateFormData('role', e.target.value));
-            } else if (currentStep === 5) {
-                document.getElementById('language')?.addEventListener('change', (e) => updateFormData('language', e.target.value));
-                document.getElementById('usageType')?.addEventListener('change', (e) => updateFormData('usageType', e.target.value));
+
+            // Bind inputs
+            const ev = (id, field) => document.getElementById(id)?.addEventListener('input', e => updateFD(field, e.target.value));
+            const ch = (id, field) => document.getElementById(id)?.addEventListener('change', e => updateFD(field, e.target.value));
+
+            if(currentStep===0) { ev('i-fn','firstName'); ev('i-ln','lastName'); ev('i-ps','pseudonym'); }
+            else if(currentStep===1) { ev('i-em','email'); ev('i-ph','phone'); ev('i-wa','whatsapp'); }
+            else if(currentStep===2) {
+                C.querySelectorAll('.tchak-opt').forEach(o => o.addEventListener('click', () => updateFD(o.dataset.field, o.dataset.val)));
             }
-            
+            else if(currentStep===3) { ev('i-bio','bio'); }
+            else if(currentStep===4) { ev('i-org','organization'); ev('i-role','role'); }
+            else if(currentStep===5) { ch('i-lang','language'); ch('i-use','usageType'); }
+
             document.getElementById('next-btn')?.addEventListener('click', nextStep);
-            if (currentStep > 0) {
-                document.getElementById('prev-btn')?.addEventListener('click', prevStep);
-            }
+            document.getElementById('prev-btn')?.addEventListener('click', prevStep);
         }
-        
-        // Modal management
+
+        // --- MODAL ---
+        const modal = document.getElementById('onboarding-modal');
+
         function openModal() {
-            loadFromLocalStorage();
+            loadLS();
             renderForm();
-            document.getElementById('onboarding-modal').style.display = 'block';
+            modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
-        
+
         function closeModal() {
-            document.getElementById('onboarding-modal').style.display = 'none';
+            modal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-        
-        // Event listeners
-        document.getElementById('open-studio')?.addEventListener('click', openModal);
-        document.getElementById('open-studio-2')?.addEventListener('click', openModal);
-        document.getElementById('open-studio-3')?.addEventListener('click', openModal);
+
+        ['open-studio','open-studio-2','open-studio-3'].forEach(id => document.getElementById(id)?.addEventListener('click', openModal));
         document.querySelector('.close')?.addEventListener('click', closeModal);
-        document.querySelector('.close-success')?.addEventListener('click', () => {
-            document.getElementById('success-modal').style.display = 'none';
+        document.querySelector('.close-success')?.addEventListener('click', () => document.getElementById('success-modal').style.display='none');
+        document.getElementById('open-downloads')?.addEventListener('click', () => document.getElementById('success-modal').style.display='none');
+        window.addEventListener('click', e => {
+            if(e.target===modal) closeModal();
+            if(e.target===document.getElementById('success-modal')) document.getElementById('success-modal').style.display='none';
         });
-        
-        document.getElementById('open-downloads')?.addEventListener('click', () => {
-            // Tentative d'ouverture du dossier téléchargements
-            window.open('about:blank', '_blank');
-            document.getElementById('success-modal').style.display = 'none';
-        });
-        
-        window.onclick = function(event) {
-            if (event.target === document.getElementById('onboarding-modal')) {
-                closeModal();
-            }
-            if (event.target === document.getElementById('success-modal')) {
-                document.getElementById('success-modal').style.display = 'none';
-            }
-        };
     </script>
 </body>
 </html>
