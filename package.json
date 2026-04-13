@@ -9,7 +9,8 @@
     "dev:landing": "npx serve landing",
     "dev:app":     "npx serve app",
     "dev:netlify": "netlify dev",
-    "test":        "echo \"No tests yet\" && exit 0"
+    "test":        "echo \"No tests yet\" && exit 0",
+    "test:local":  "node -e \"const fs=require('fs'); if(!fs.existsSync('app/index.html') || !fs.existsSync('landing/index.html')) { console.error('Files missing'); process.exit(1); } console.log('All required files present.');\""
   },
   "build": {
     "appId":       "com.tchak.studio",
