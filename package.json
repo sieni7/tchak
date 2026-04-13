@@ -2,29 +2,15 @@
   "name": "tchak-studio",
   "version": "2.0.0",
   "description": "TCHAK – Système de certification d'authenticité pour artistes, offline-first",
-  "main": "main.js",
   "scripts": {
-    "start":       "electron .",
-    "build":       "electron-builder",
     "dev:landing": "npx serve landing",
     "dev:app":     "npx serve app",
     "dev:netlify": "netlify dev",
     "test":        "echo \"No tests yet\" && exit 0"
   },
-  "build": {
-    "appId":       "com.tchak.studio",
-    "productName": "TCHAK Studio",
-    "directories": { "output": "dist" },
-    "files": ["index.html", "main.js", "preload.js", "package.json"],
-    "win": { "target": ["portable"] }
-  },
   "keywords": ["art", "certificate", "offline", "sha256", "certification"],
   "author": "Oulai Siéni <sieni7@gmail.com>",
   "license": "ISC",
-  "devDependencies": {
-    "electron":         "^25.0.0",
-    "electron-builder": "^26.8.1"
-  },
   "dependencies": {
     "jszip":  "^3.10.1"
   }

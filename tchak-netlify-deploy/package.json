@@ -1,8 +1,0 @@
-{
-  "name": "tchak-netlify",
-  "version": "1.0.0",
-  "description": "TCHAK distribution system",
-  "dependencies": {
-    "jszip": "^3.10.1"
-  }
-}
