@@ -501,29 +501,63 @@
         const QUOTA_MAX   = 10;
 
         /* ===== QUOTA ===== */
-        function getQuotaData() {
-            const d = localStorage.getItem(QUOTA_KEY);
-            if (!d) return { month: currentMonth(), count: 0 };
-            return JSON.parse(d);
+        const DB_NAME = 'TCHAK_Quota';
+        const STORE_NAME = 'quota';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = () => {
+                    const db = request.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
         }
 
-        function currentMonth() { const n = new Date(); return `${n.getFullYear()}-${n.getMonth()}`; }
+        async function getQuotaData() {
+            const db = await openDB();
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const get = store.get('current');
+                get.onsuccess = () => resolve(get.result || { month: currentMonth(), count: 0 });
+                get.onerror = () => resolve({ month: currentMonth(), count: 0 });
+            });
+        }
 
-        function quotaRemaining() {
-            const q = getQuotaData();
+        function currentMonth() { const n = new Date(); return `${n.getFullYear()}-${n.getMonth() + 1}`; }
+
+        async function quotaRemaining() {
+            const q = await getQuotaData();
             if (q.month !== currentMonth()) return QUOTA_MAX;
             return Math.max(0, QUOTA_MAX - q.count);
         }
 
-        function incrementQuota() {
-            let q = getQuotaData();
-            if (q.month !== currentMonth()) q = { month: currentMonth(), count: 0 };
+        async function incrementQuota() {
+            const db = await openDB();
+            const q = await getQuotaData();
+            
+            if (q.month !== currentMonth()) {
+                q.month = currentMonth();
+                q.count = 0;
+            }
+            
             q.count++;
-            localStorage.setItem(QUOTA_KEY, JSON.stringify(q));
+            
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                store.put(q, 'current');
+                tx.oncomplete = () => resolve(q.count <= QUOTA_MAX);
+            });
         }
 
-        function updateQuotaUI() {
-            const remaining = quotaRemaining();
+        async function updateQuotaUI() {
+            const remaining = await quotaRemaining();
             const used      = QUOTA_MAX - remaining;
             const pct       = (used / QUOTA_MAX) * 100;
             document.getElementById('quota-bar').style.width   = pct + '%';
@@ -699,7 +733,7 @@
             e.preventDefault();
 
             // Quota check
-            if (quotaRemaining() <= 0) {
+            if (await quotaRemaining() <= 0) {
                 toast('❌ Limite de 10 certificats/mois atteinte.', 'error');
                 return;
             }
@@ -734,11 +768,11 @@
 
                 allCerts.push(cert);
                 saveCerts(allCerts);
-                incrementQuota();
+                await incrementQuota();
 
                 renderCert(cert);
                 renderHistory(allCerts);
-                updateQuotaUI();
+                await updateQuotaUI();
 
                 lastCert = cert;
                 certificates = allCerts;
@@ -766,7 +800,7 @@
             await loadProfile();
             certificates = loadCerts();
             renderHistory(certificates);
-            updateQuotaUI();
+            await updateQuotaUI();
             if (certificates.length > 0) {
                 renderCert(certificates[certificates.length - 1]);
             }
