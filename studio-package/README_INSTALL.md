@@ -1,13 +1,13 @@
-# 🎨 Studio TCHAK - Guide d'Installation
+# 🎨 TCHAK - Guide d'Installation
 
-Félicitations ! Vous venez de télécharger votre Studio TCHAK personnalisé. Ce guide vous explique comment le lancer en quelques secondes pour commencer à certifier vos œuvres.
+Félicitations ! Vous venez de télécharger votre TCHAK personnalisé. Ce guide vous explique comment le lancer en quelques secondes pour commencer à certifier vos œuvres.
 
 ## 🚀 Lancement Rapide
 
 ### Sur Windows
 1. Faites un clic-droit sur le fichier `install.ps1`.
 2. Choisissez **"Exécuter avec PowerShell"**.
-3. Votre navigateur s'ouvrira automatiquement sur votre Studio.
+3. Votre navigateur s'ouvrira automatiquement sur votre outil.
 
 ### Sur macOS ou Linux
 1. Ouvrez un terminal dans ce dossier.
