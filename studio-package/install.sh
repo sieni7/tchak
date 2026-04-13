@@ -3,11 +3,11 @@
 # ==============================================================================
 # TCHAK – SCRIPT D'INSTALLATION LOCALE (macOS / Linux)
 # Version : 1.0.0
-# Description : Configure l'environnement Studio et lance le serveur local.
+# Description : Configure l'environnement TCHAK et lance le serveur local.
 # ==============================================================================
 
 clear
-echo "🚀 TCHAK – Initialisation de votre Studio d'Authenticité"
+echo "🚀 TCHAK – Initialisation de votre outil d'authenticité"
 echo "=========================================================="
 echo ""
 
@@ -40,7 +40,7 @@ echo "📡 Recherche d'un serveur local..."
 if command -v npx &> /dev/null; then
     echo "💡 Serveur haute performance (Node.js) détecté."
     cd "$INSTALL_DIR/app"
-    echo "🌐 Ouverture du Studio sur : http://localhost:3000"
+    echo "🌐 Ouverture de l'outil sur : http://localhost:3000"
     echo "--- Lancement ---"
     npx serve . -l 3000
     
@@ -48,7 +48,7 @@ if command -v npx &> /dev/null; then
 elif command -v python3 &> /dev/null; then
     echo "💡 Serveur standard (Python 3) détecté."
     cd "$INSTALL_DIR/app"
-    echo "🌐 Ouverture du Studio sur : http://localhost:8000"
+    echo "🌐 Ouverture de l'outil sur : http://localhost:8000"
     echo "--- Lancement ---"
     python3 -m http.server 8000
     

@@ -1,11 +1,11 @@
 # ==============================================================================
 # TCHAK – SCRIPT D'INSTALLATION LOCALE (Windows PowerShell)
 # Version : 1.0.0
-# Description : Configure l'environnement Studio et lance le serveur local.
+# Description : Configure l'environnement TCHAK et lance le serveur local.
 # ==============================================================================
 
 Clear-Host
-Write-Host "🚀 TCHAK – Initialisation de votre Studio d'Authenticité" -ForegroundColor Cyan
+Write-Host "🚀 TCHAK – Initialisation de votre outil d'authenticité" -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Gray
 Write-Host ""
 
@@ -39,7 +39,7 @@ $nodeCheck = Get-Command node -ErrorAction SilentlyContinue
 if ($nodeCheck) {
     Write-Host "✅ Serveur haute performance (Node.js) détecté." -ForegroundColor Green
     Set-Location "$INSTALL_DIR\app"
-    Write-Host "🌐 Ouverture du Studio sur : http://localhost:3000" -ForegroundColor Cyan
+    Write-Host "🌐 Ouverture de l'outil sur : http://localhost:3000" -ForegroundColor Cyan
     Write-Host "--- Lancement automatique ---"
     Start-Process "http://localhost:3000"
     npx serve . -l 3000
@@ -50,7 +50,7 @@ else {
     if ($pythonCheck) {
         Write-Host "✅ Serveur standard (Python) détecté." -ForegroundColor Green
         Set-Location "$INSTALL_DIR\app"
-        Write-Host "🌐 Ouverture du Studio sur : http://localhost:8000" -ForegroundColor Cyan
+        Write-Host "🌐 Ouverture de l'outil sur : http://localhost:8000" -ForegroundColor Cyan
         Write-Host "--- Lancement automatique ---"
         Start-Process "http://localhost:8000"
         python -m http.server 8000
