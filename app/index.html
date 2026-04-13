@@ -52,14 +52,16 @@
         }
 
         .header-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #FFF;
-            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .header-logo span { color: var(--orange); }
+        .header-logo img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
 
         .header-meta {
             font-size: 0.8rem;
@@ -392,9 +394,11 @@
 
     <!-- HEADER -->
     <header>
-        <div class="header-logo">TCHAK<span>!</span></div>
+        <div class="header-logo">
+            <img src="../assets/logo-tchak.png" alt="TCHAK">
+        </div>
         <div class="header-meta">
-            Studio de Certification<br>
+            Outil de Certification<br>
             Artiste : <span id="artist-name-display">Chargement...</span>
         </div>
     </header>
