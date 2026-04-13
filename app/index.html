@@ -490,6 +490,7 @@
         </div>
     </div>
 
+    <script src="../lib/cert-chain.js"></script>
     <script>
         /* ===== PROFIL ===== */
         let artistProfile = null;
@@ -530,13 +531,6 @@
             document.getElementById('quota-count').textContent = `${used}/${QUOTA_MAX}`;
             const countEl = document.getElementById('quota-count');
             countEl.className = 'quota-count' + (remaining <= 2 ? ' danger' : '');
-        }
-
-        /* ===== SHA256 ===== */
-        async function sha256(text) {
-            const data   = new TextEncoder().encode(text);
-            const buf    = await crypto.subtle.digest('SHA-256', data);
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         /* ===== CANVAS ===== */
@@ -720,8 +714,8 @@
                 const allCerts   = loadCerts();
                 const prevId     = allCerts.length ? allCerts[allCerts.length - 1].id : '';
                 const timestamp  = Date.now();
-                const rawData    = `${prevId}|${artist}|${title}|${timestamp}|${sigDataURL.substring(0, 80)}`;
-                const fullHash   = await sha256(rawData);
+                
+                const fullHash   = await generateCertificateId(prevId, artist, title, timestamp, sigDataURL);
 
                 const cert = {
                     id: fullHash.substring(0, 16),
