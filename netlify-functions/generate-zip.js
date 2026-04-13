@@ -86,11 +86,10 @@ function readAppHtml(artistId, profile) {
         // Fallback minimal si le fichier n'est pas trouvé
         console.warn('⚠️  app/index.html introuvable – utilisation du fallback');
         html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">
-<title>TCHAK Studio</title></head><body>
-<h1>TCHAK Studio</h1>
+<title>TCHAK</title></head><body>
+<h1>TCHAK</h1>
 <p>Bienvenue ${profile.firstName} ${profile.lastName} !</p>
 <p>ID : ${artistId}</p>
-<p>Votre application complète sera disponible dans la prochaine mise à jour.</p>
 </body></html>`;
     }
 
@@ -198,12 +197,12 @@ echo ""
 `;
 
         const installPs1 = `# ============================================================
-# TCHAK Studio - Script d'installation (Windows PowerShell)
+# TCHAK – Script d'installation (Windows PowerShell)
 # Artiste : ${profile.firstName} ${profile.lastName}
 # ID      : ${artistId}
 # ============================================================
 Write-Host ""
-Write-Host "TCHAK Studio - Installation" -ForegroundColor Cyan
+Write-Host "TCHAK – Installation" -ForegroundColor Cyan
 Write-Host "----------------------------"
 
 # Créer les répertoires TCHAK
@@ -231,7 +230,7 @@ Write-Host "Démarrez avec : npx serve app"
 Write-Host ""
 `;
 
-        const readme = `# TCHAK Studio – Guide d'installation
+        const readme = `# TCHAK – Guide d'installation
 
 **Artiste :** ${profile.firstName} ${profile.lastName}  
 **ID unique :** \`${artistId}\`  
@@ -281,7 +280,7 @@ Write-Host ""
 
 ---
 
-*TCHAK Studio – Certification d'authenticité pour les artistes*  
+*TCHAK – Certification d'authenticité pour les artistes*  
 *Créé avec ❤️ pour les artistes de Côte d'Ivoire 🇨🇮*
 `;
 

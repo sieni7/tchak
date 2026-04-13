@@ -15,10 +15,12 @@ function createWindow() {
         }
     });
 
-    win.loadFile('index.html');
+    win.loadFile('app/index.html');
 
-    // Activer les outils de développement pour le débug
-    win.webContents.openDevTools();
+    // Ouvrir les DevTools uniquement en développement
+    if (!app.isPackaged) {
+        win.webContents.openDevTools();
+    }
 }
 
 app.whenReady().then(createWindow);
