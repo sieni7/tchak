@@ -371,16 +371,22 @@
             position: absolute;
             top: -12px;
             left: 50%;
-            transform: translateX(-50%);
             background: #D4AF37;
             color: #0F201B;
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 0.25rem 0.75rem;
+            font-size: 0.73rem;
+            font-weight: 800;
+            padding: 0.25rem 0.85rem;
             border-radius: 20px;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            letter-spacing: 0.5px;
+            box-shadow: 0 0 15px rgba(245, 240, 234, 0.4);
+            letter-spacing: 0.8px;
             z-index: 10;
+            text-transform: uppercase;
+            animation: floatingBadge 2.5s ease-in-out infinite;
+        }
+
+        @keyframes floatingBadge {
+            0%, 100% { transform: translate(-50%, 0); box-shadow: 0 0 15px rgba(245, 240, 234, 0.4); }
+            50% { transform: translate(-50%, -6px); box-shadow: 0 0 25px rgba(245, 240, 234, 0.7); }
         }
 
         .card-free:hover, .card-pro:hover { transform: translateY(-6px); }
@@ -954,7 +960,7 @@
 
         if (proBtn) {
             proBtn.removeAttribute('disabled');
-            proBtn.style.background = '#D4AF37';
+            proBtn.style.background = 'var(--orange)';
             proBtn.style.cursor = 'pointer';
             proBtn.addEventListener('click', () => {
                 proModal.style.display = 'block';
