@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -321,28 +322,86 @@
 
         @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } }
 
+        /* ========= DASHBOARD SPECIFIC ========= */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .artist-card {
+            background: var(--bg-surface);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .artist-avatar {
+            width: 80px; height: 80px;
+            background: var(--primary-dark);
+            color: var(--primary-orange);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; font-weight: 800;
+            margin: 0 auto 1.5rem;
+            border: 2px solid var(--primary-orange);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1.5px solid var(--border-light);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .action-card:hover { border-color: var(--primary-orange); transform: translateY(-4px); box-shadow: 0 8px 24px var(--orange-glow); }
+        .action-card i { font-size: 1.5rem; display: block; margin-bottom: 0.5rem; }
+
+        .console-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .console-table th { text-align: left; padding: 1rem; color: var(--text-muted); border-bottom: 1px solid var(--border-light); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+        .console-table td { padding: 1rem; border-bottom: 1px solid var(--border-light); }
+        
+        .crypto-chain-box {
+            background: var(--primary-dark);
+            color: #fff;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+        }
+        .chain-link { font-family: monospace; font-size: 0.75rem; color: var(--secondary-peach); display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+        .chain-link::before { content: "🔗"; }
+
+        /* ========= VIEW MANAGEMENT ========= */
+        .view-section { display: none; animation: fadeIn 0.4s ease; }
+        .view-section.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
         /* ========= PRINT ========= */
         @media print {
-            header, .dashboard-bar, .form-col, .preview-actions, .history-section, .btn, .update-btn { display: none !important; }
+            header, .dashboard-bar, .form-col, .preview-actions, .history-section, .btn, .update-btn, .dashboard-view, #dashboard-view { display: none !important; }
             .main { display: block !important; margin: 0 !important; padding: 0 !important; }
-            .preview-col { width: 100% !important; padding: 0 !important; margin: 0 !important; }
-            .panel { box-shadow: none !important; border: none !important; padding: 0 !important; background: transparent !important; }
-            body { background: #fff !important; }
-            
-            .certificate {
-                margin: 1.5cm !important;
-                padding: 1.5cm !important;
-                border: 1px solid #EEE !important;
-                box-shadow: none !important;
-                background: #fff !important;
-                width: 210mm;
-                min-height: 297mm;
-                position: relative;
-            }
-            #certificate-title { font-size: 24px !important; }
-            #qr-code { width: 4cm !important; height: 4cm !important; }
-            #signature-area { width: 8cm !important; height: 4cm !important; }
-        }
 
         /* ========= RESPONSIVE REFINEMENT ========= */
         @media (max-width: 1024px) {
@@ -385,8 +444,72 @@
         </div>
     </div>
 
-    <!-- MAIN -->
-    <div class="main">
+    <!-- VIEW: DASHBOARD (CONSOLE) -->
+    <div id="dashboard-view" class="view-section active">
+        <div class="dashboard-grid">
+            <!-- Sidebar: Artist Profile -->
+            <div class="artist-col">
+                <div class="artist-card">
+                    <div class="artist-avatar" id="d-avatar">A</div>
+                    <h2 id="d-name" style="font-family:var(--font-serif); margin-bottom:0.5rem;">Artiste</h2>
+                    <p id="d-plan" style="margin-bottom:1rem;"><span class="v-badge">PLAN FREE</span></p>
+                    <div style="font-size:0.8rem; color:var(--text-light); text-align:left; border-top:1px solid var(--border-light); padding-top:1rem;">
+                        <p style="margin-bottom:0.5rem;"><strong>ID TCHAK :</strong> <span id="d-id" style="font-family:monospace;">--</span></p>
+                        <p><strong>Inscrit le :</strong> <span id="d-date">--</span></p>
+                    </div>
+                </div>
+                
+                <div class="crypto-chain-box">
+                    <div style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:1rem; color:var(--secondary-peach);">⛓️ Chaîne Cryptographique</div>
+                    <div id="d-chain-container">
+                        <div style="font-size:0.75rem; font-style:italic; opacity:0.7;">Initialisation de la chaîne...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="content-col">
+                <div class="action-grid">
+                    <div class="action-card" onclick="switchView('creation')">
+                        <div style="font-size:2rem; margin-bottom:0.5rem;">➕</div>
+                        <h3 style="margin-bottom:0.2rem;">Nouveau Certificat</h3>
+                        <p style="font-size:0.8rem; color:var(--text-muted);">Créer et sécuriser une œuvre</p>
+                    </div>
+                    <div class="action-card" onclick="exportArchive()">
+                        <div style="font-size:2rem; margin-bottom:0.5rem;">📦</div>
+                        <h3 style="margin-bottom:0.2rem;">Exporter Archive</h3>
+                        <p style="font-size:0.8rem; color:var(--text-muted);">Sauvegarder vos données (ZIP)</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">📜 Dernières Certifications</div>
+                    <div style="overflow-x:auto;">
+                        <table class="console-table">
+                            <thead>
+                                <tr>
+                                    <th>Œuvre</th>
+                                    <th>Date</th>
+                                    <th>ID Court</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="d-history-body">
+                                <tr><td colspan="4" style="text-align:center; padding:2rem; color:var(--text-muted);">Aucun certificat généré.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: CREATION (FORM) -->
+    <div id="creation-view" class="view-section">
+        <div style="max-width:1300px; margin: 1rem auto; padding: 0 2rem;">
+            <button class="btn btn-ghost btn-sm" onclick="switchView('dashboard')">← Retour à la Console</button>
+        </div>
+        <div class="main">
 
         <!-- COL GAUCHE : FORMULAIRE -->
         <div class="form-col">
@@ -467,16 +590,18 @@
             </div>
         </div>
 
+        </div>
     </div>
 
-    <!-- HISTORY -->
-    <div class="history-section">
+    <!-- OLD HISTORY (Hidden as handled by Console) -->
+    <div class="history-section" style="display:none;">
         <div class="panel">
             <div class="panel-title">📜 Historique des certificats</div>
             <div class="history-list" id="history-list">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <script>
         /* ===== CONFIG & VERSION ===== */
@@ -491,6 +616,105 @@
         let currentImageBase64 = null;
 
         const INSTITUTIONAL_TEXT_TEMPLATE = `Le présent certificat atteste que cette œuvre originale de l’artiste [ARTISTE] constitue une pièce unique. À la date d’émission du présent certificat, elle est reconnue comme authentique et n’a fait l’objet d’aucune reproduction connue. Cette œuvre est enregistrée dans un système de traçabilité reposant sur une chaîne cryptographique garantissant l’intégrité et la continuité des informations associées. Données de vérification de l’intégrité de la chaîne disponibles sur simple demande à l’artiste. En foi de quoi, le présent certificat est établi pour servir et valoir ce que de droit.`;
+
+        /* ===== VIEW MANAGEMENT ===== */
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewName + '-view').classList.add('active');
+            if(viewName === 'dashboard') loadDashboardData();
+        }
+
+        /* ===== DASHBOARD DATA LOADING ===== */
+        async function loadDashboardData() {
+            if(!artistProfile) await loadProfile();
+            certificates = loadCerts();
+
+            // Artist Card
+            const name = artistProfile ? `${artistProfile.firstName || ''} ${artistProfile.lastName || ''}`.trim() || artistProfile.name : 'Artiste';
+            document.getElementById('d-name').textContent = name;
+            document.getElementById('d-avatar').textContent = name.charAt(0).toUpperCase();
+            document.getElementById('d-id').textContent = (artistProfile && artistProfile.artistId) ? artistProfile.artistId : '--';
+            document.getElementById('d-plan').innerHTML = (artistProfile && artistProfile.plan === 'pro') ? '<span class="pro-badge">PLAN PRO</span>' : '<span class="v-badge">PLAN FREE</span>';
+            
+            // Check for registration date in profile, fallback to current if missing (and save it if possible)
+            if(artistProfile && !artistProfile.registeredAt) {
+                 artistProfile.registeredAt = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
+                 // We don't save back to disk easily as it's a JSON file served from local dir, but we can display it.
+            }
+            document.getElementById('d-date').textContent = (artistProfile && artistProfile.registeredAt) ? artistProfile.registeredAt : '--';
+
+            // History Table (last 10)
+            const historyBody = document.getElementById('d-history-body');
+            const last10 = [...certificates].reverse().slice(0, 10);
+            
+            if (last10.length === 0) {
+                historyBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:2rem; color:var(--text-muted);">Aucun certificat généré.</td></tr>`;
+            } else {
+                historyBody.innerHTML = last10.map(c => `
+                    <tr>
+                        <td style="font-weight:600;">${escHtml(c.title)}</td>
+                        <td>${new Date(c.timestamp).toLocaleDateString('fr-FR')}</td>
+                        <td style="font-family:monospace; color:var(--primary-orange);">${c.fullHash.substring(0, 8)}...</td>
+                        <td>
+                            <div style="display:flex; gap:0.5rem;">
+                                <button class="btn btn-ghost btn-sm" onclick="copyToClipboard('${c.fullHash}')" title="Copier ID">🔗</button>
+                                <button class="btn btn-ghost btn-sm" onclick="downloadPdfFromHash('${c.fullHash}')" title="Voir PDF">📄</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Crypto Chain Visualization (last 3)
+            const chainContainer = document.getElementById('d-chain-container');
+            const last3 = [...certificates].slice(-3);
+            if(last3.length === 0) {
+                 chainContainer.innerHTML = `<div style="font-size:0.75rem; font-style:italic; opacity:0.7;">Aucun certificat dans la chaîne.</div>`;
+            } else {
+                 chainContainer.innerHTML = last3.map(c => `
+                    <div class="chain-link">${c.fullHash.substring(0, 16)}...</div>
+                 `).join('');
+            }
+        }
+
+        /* ===== UTILS ===== */
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                toast('📋 ID copié !', 'success');
+            });
+        }
+
+        function downloadPdfFromHash(hash) {
+            const cert = certificates.find(c => c.fullHash === hash);
+            if(cert) {
+                renderCertUI(cert);
+                switchView('creation');
+                setTimeout(() => exportPDF(), 500); // Trigger download
+            }
+        }
+
+        /* ===== ARCHIVE EXPORT ===== */
+        async function exportArchive() {
+            toast('📦 Préparation de l\'archive ZIP...', 'info');
+            const zip = new JSZip();
+            
+            // Add certificates data
+            zip.file("certificates.json", JSON.stringify(certificates, null, 2));
+            
+            // Add artist profile data (what we have in memory)
+            zip.file("artist_profile.json", JSON.stringify(artistProfile, null, 2));
+            
+            // Add a readme
+            const readme = `ARCHIVE TCHAK - GÉNÉRÉE LE ${new Date().toLocaleString()}\n\nCe fichier contient l'intégralité de vos certificats et de votre historique cryptographique local.`;
+            zip.file("README.txt", readme);
+
+            const content = await zip.generateAsync({type:"blob"});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(content);
+            link.download = `TCHAK_Archive_${Date.now()}.zip`;
+            link.click();
+            toast('✅ Archive exportée avec succès !', 'success');
+        }
 
         /* ===== UPDATE SYSTEM ===== */
         async function checkUpdates() {
@@ -798,8 +1022,8 @@
             renderHistory(certificates);
             await updateQuotaUI();
             
-            // Initial preview
-            updatePreview(); 
+            // Launch Dashboard view
+            switchView('dashboard');
             
             checkUpdates();
         }
