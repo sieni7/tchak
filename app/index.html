@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCHAK – Certificat d'authenticité</title>
+    <title>TCHAK – Certification d'authenticité</title>
 
     <!-- Favicons -->
     <link rel="icon"             type="image/x-icon"            href="./favicon/favicon.ico">
@@ -11,120 +11,95 @@
     <link rel="icon"             type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180"                href="./favicon/apple-touch-icon.png">
     <link rel="manifest"                                        href="./favicon/site.webmanifest">
-    <meta name="theme-color"     content="#D4541A">
+    <meta name="theme-color"     content="#D4AF37">
+    
+    <!-- Libraries (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --orange:       #D4541A;
-            --orange-hover: #B8451A;
-            --orange-glow:  rgba(212, 84, 26, 0.2);
-            --bg-dark:      #180E08;
-            --cream:        #F5F0EA;
-            --charcoal:     #2C2C2C;
-            --text-muted:   #888;
-            --border:       #E0D8D0;
-            --green:        #16a34a;
-            --red:          #dc2626;
+            --primary-dark:  #0F201B;
+            --primary-gold:  #D4AF37;
+            --primary-white: #FDFBF7;
+            --text-dark:     #2D3436;
+            --text-light:    #6B7280;
+            --border-light:  #E5E0D5;
+            
+            --gold-hover:    #C19A2E;
+            --gold-glow:     rgba(212, 175, 55, 0.2);
+            --red-alert:     #B91C1C;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--cream);
-            color: var(--charcoal);
+            background: var(--primary-white);
+            color: var(--text-dark);
             min-height: 100vh;
         }
 
-        /* ========= HEADER ========= */
+        /* ========= HEADER & DASHBOARD ========= */
         header {
-            background: var(--bg-dark);
-            padding: 0.75rem 2rem;
+            background: var(--primary-dark);
+            padding: 1rem 5%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1rem;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.4);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border-bottom: 2px solid var(--primary-gold);
+            position: sticky; top: 0; z-index: 1000;
         }
 
-        .header-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #FFF;
-            letter-spacing: -0.5px;
-        }
-
-        .header-logo span { color: var(--orange); }
+        .header-logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; color: #FFF; }
+        .header-logo span { color: var(--primary-gold); }
 
         .header-meta {
-            font-size: 0.8rem;
-            color: #A89080;
-            font-family: 'Montserrat', sans-serif;
             text-align: right;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        #artist-name-display {
-            color: var(--orange);
+        .v-badge {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--primary-gold);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
             font-weight: 700;
+            margin-right: 0.5rem;
+            border: 1px solid var(--primary-gold);
         }
 
-        /* ========= DASHBOARD BAR ========= */
         .dashboard-bar {
             background: #fff;
-            border-bottom: 1px solid var(--border);
-            padding: 0.75rem 2rem;
+            padding: 0.8rem 5%;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 1px solid var(--border-light);
             gap: 1rem;
             flex-wrap: wrap;
         }
 
-        .quota-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+        .quota-bar-wrap { width: 150px; height: 10px; background: #EEE; border-radius: 5px; overflow: hidden; position: relative; }
+        .quota-bar-fill { height: 100%; background: var(--primary-gold); transition: width 0.3s ease; }
+        .quota-text { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
+        .pro-badge { background: var(--primary-gold); color: var(--primary-dark); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; }
 
-        .quota-label { font-size: 0.875rem; color: var(--text-muted); }
-
-        .quota-bar-wrap {
-            width: 120px;
-            height: 8px;
-            background: #E8E2DA;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .quota-bar-fill {
-            height: 100%;
-            background: var(--orange);
-            border-radius: 4px;
-            transition: width 0.4s ease;
-        }
-
-        .quota-count {
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: var(--charcoal);
-        }
-
-        .quota-count.danger { color: var(--red); }
-
-        .install-code {
+        .update-btn {
+            background: transparent;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
             font-size: 0.75rem;
-            font-family: monospace;
-            color: var(--text-muted);
-            background: var(--cream);
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
-            border: 1px solid var(--border);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
         }
+        .update-btn:hover { background: var(--primary-gold); color: var(--primary-dark); }
+
 
         /* ========= MAIN LAYOUT ========= */
         .main {
@@ -194,32 +169,18 @@
             background: #fff;
         }
 
-        /* ========= CANVAS SIGNATURE ========= */
-        .canvas-wrap {
-            border: 2px dashed var(--border);
+        /* ========= SIGNATURE AREA ========= */
+        .signature-placeholder {
+            border: 2px dashed var(--border-light);
             border-radius: 12px;
-            padding: 0.5rem;
-            background: var(--cream);
-            transition: border-color 0.2s;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            background: #F9F7F5;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-style: italic;
         }
 
-        .canvas-wrap:hover { border-color: var(--orange); }
-
-        canvas {
-            display: block;
-            width: 100%;
-            max-width: 100%;
-            background: #fff;
-            border-radius: 8px;
-            cursor: crosshair;
-            touch-action: none;
-        }
-
-        .sig-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 0.75rem;
-        }
 
         /* ========= BUTTONS ========= */
         .btn {
@@ -255,80 +216,45 @@
             font-size: 0.9rem;
         }
 
+        /* ========= CERTIFICATE V0 ========= */
         .certificate {
-            border: 2px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            background: #FFFEF7;
+            background: #fff;
+            border: 1px solid var(--border-light);
+            border-radius: 4px; /* Plus carré pour le print */
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.03);
         }
 
-        .cert-header {
-            background: var(--bg-dark);
-            color: #fff;
-            padding: 1.5rem;
-            text-align: center;
-        }
+        .cert-header { border-bottom: 2px solid var(--primary-gold); padding-bottom: 20px; margin-bottom: 30px; text-align: center; }
+        .cert-header h2 { font-size: 1.8rem; letter-spacing: 3px; color: var(--primary-dark); margin-bottom: 5px; }
 
-        .cert-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            letter-spacing: 2px;
-            color: var(--orange);
-        }
+        .cert-body { line-height: 2; }
+        .cert-field { display: flex; border-bottom: 1px solid #F0F0F0; padding: 10px 0; }
+        .cert-field strong { width: 140px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); }
+        .cert-field span { font-weight: 500; font-size: 1rem; }
 
-        .cert-header p {
-            font-size: 0.8rem;
-            color: #A89080;
-            margin-top: 0.25rem;
-            font-family: monospace;
-        }
+        .hash-line { font-family: monospace; font-size: 0.7rem; color: var(--primary-gold); word-break: break-all; margin-top: 20px; }
 
-        .cert-body { padding: 1.5rem; }
-
-        .cert-field {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .cert-field:last-child { border-bottom: none; }
-        .cert-field strong { color: var(--text-muted); font-weight: 600; min-width: 120px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        .cert-hash {
-            font-family: monospace;
-            font-size: 0.75rem;
-            color: var(--orange);
-            word-break: break-all;
-        }
-
-        .cert-sig-area {
-            margin-top: 1.25rem;
-            padding-top: 1rem;
-            border-top: 2px solid var(--border);
-            display: flex;
-            justify-content: space-between;
+        .cert-footer-v0 {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: 1fr 120px;
+            gap: 20px;
             align-items: flex-end;
         }
 
-        .cert-sig-area img {
-            max-width: 160px;
-            max-height: 70px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            background: #fff;
+        .signature-box {
+            border-top: 1px solid #000;
+            padding-top: 10px;
+            margin-top: 50px;
+            width: 250px;
+            font-size: 0.75rem;
+            font-family: var(--font-accent);
         }
 
-        .cert-footer-note {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-align: center;
-            margin-top: 1rem;
-            font-style: italic;
-        }
+        #qr-code-container canvas { border: 4px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+
 
         .preview-actions { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
 
@@ -394,21 +320,23 @@
     <header>
         <div class="header-logo">TCHAK<span>!</span></div>
         <div class="header-meta">
-            Studio de Certification<br>
-            Artiste : <span id="artist-name-display">Chargement...</span>
+            <span class="v-badge">v1.0.0</span>
+            <span id="artist-name-display" style="color:var(--primary-gold);font-weight:700;">Artiste</span>
         </div>
     </header>
 
     <!-- DASHBOARD BAR -->
     <div class="dashboard-bar">
         <div class="quota-info">
-            <span class="quota-label">Certificats ce mois :</span>
+            <span class="quota-text" id="quota-status-text">Certificats : --/10</span>
             <div class="quota-bar-wrap">
                 <div class="quota-bar-fill" id="quota-bar" style="width:0%"></div>
             </div>
-            <span class="quota-count" id="quota-count">--/10</span>
         </div>
-        <span class="install-code" id="install-code">Chargement du profil...</span>
+        <div style="display:flex;gap:1rem;align-items:center;">
+            <button class="update-btn" id="check-update-btn">🔄 Actualiser</button>
+            <span class="install-code" id="install-code">ID: --</span>
+        </div>
     </div>
 
     <!-- MAIN -->
@@ -449,17 +377,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label>✍️ Signature manuscrite</label>
-                        <div class="canvas-wrap">
-                            <canvas id="sig-canvas" width="600" height="160"></canvas>
-                        </div>
-                        <div class="sig-actions">
-                            <button type="button" class="btn btn-ghost btn-sm" id="clear-sig">🗑 Effacer</button>
-                            <span style="font-size:0.75rem;color:var(--text-muted);align-self:center;">Signez ci-dessus avec la souris ou le doigt</span>
+                        <label>✍️ Signature</label>
+                        <div class="signature-placeholder">
+                            Une zone de signature sera générée sur le certificat.<br>
+                            Vous signerez manuellement après l'impression.
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" id="generate-btn">🔐 Générer le certificat</button>
+                    <button type="submit" class="btn btn-primary" id="generate-btn">🔐 Générer & Sécuriser</button>
                 </form>
             </div>
         </div>
@@ -469,11 +394,11 @@
             <div class="panel">
                 <div class="panel-title">📄 Aperçu du Certificat</div>
                 <div id="cert-preview">
-                    <div class="cert-placeholder">Remplissez le formulaire et signez pour voir l'aperçu</div>
+                    <div class="cert-placeholder">Remplissez le formulaire pour générer votre certificat sécurisé.</div>
                 </div>
                 <div class="preview-actions" id="preview-actions" style="display:none">
-                    <button class="btn btn-green btn-sm" id="btn-print">🖨 Imprimer / PDF</button>
-                    <button class="btn btn-ghost btn-sm" id="btn-copy-id">📋 Copier l'ID</button>
+                    <button class="btn btn-primary btn-sm" id="btn-export-pdf">📥 Télécharger PDF (Pro)</button>
+                    <button class="btn btn-ghost btn-sm" id="btn-print-native">🖨 Imprimer</button>
                 </div>
             </div>
         </div>
@@ -485,37 +410,40 @@
         <div class="panel">
             <div class="panel-title">📜 Historique des certificats</div>
             <div class="history-list" id="history-list">
-                <p style="color:var(--text-muted);font-size:.875rem;">Aucun certificat générés pour le moment.</p>
-            </div>
-        </div>
-    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <script src="../lib/cert-chain.js"></script>
     <script>
-        /* ===== PROFIL ===== */
+        /* ===== CONFIG & VERSION ===== */
+        const APP_VERSION   = '1.0.0';
+        const STORAGE_KEY   = 'tchak_certs_v2';
+        const DB_NAME       = 'TCHAK_Quota';
+        const STORE_NAME    = 'quota';
+        const QUOTA_MAX     = 10;
+
         let artistProfile = null;
         let certificates  = [];
-        let lastCert      = null;
 
-        const STORAGE_KEY = 'tchak_certs_v2';
-        const QUOTA_KEY   = 'tchak_quota_v2';
-        const QUOTA_MAX   = 10;
-
-        /* ===== QUOTA ===== */
-        const DB_NAME = 'TCHAK_Quota';
-        const STORE_NAME = 'quota';
-
-        function openDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 1);
-                request.onupgradeneeded = () => {
-                    const db = request.result;
-                    if (!db.objectStoreNames.contains(STORE_NAME)) {
-                        db.createObjectStore(STORE_NAME);
+        /* ===== UPDATE SYSTEM ===== */
+        async function checkUpdates() {
+            try {
+                const res = await fetch('../version.json');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.version !== APP_VERSION) {
+                        toast(`🎁 Une mise à jour (${data.version}) est disponible !`, 'success');
                     }
-                };
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = () => reject(request.error);
+                }
+            } catch (e) { console.log('Update check failed (offline)'); }
+        }
+
+        /* ===== QUOTA SYSTEM ===== */
+        function openDB() {
+            return new Promise((resolve) => {
+                const req = indexedDB.open(DB_NAME, 1);
+                req.onupgradeneeded = () => req.result.createObjectStore(STORE_NAME);
+                req.onsuccess = () => resolve(req.result);
             });
         }
 
@@ -524,92 +452,59 @@
             return new Promise((resolve) => {
                 const tx = db.transaction(STORE_NAME, 'readonly');
                 const store = tx.objectStore(STORE_NAME);
-                const get = store.get('current');
-                get.onsuccess = () => resolve(get.result || { month: currentMonth(), count: 0 });
-                get.onerror = () => resolve({ month: currentMonth(), count: 0 });
+                const req = store.get('current');
+                req.onsuccess = () => resolve(req.result || { month: currentMonth(), count: 0 });
             });
         }
 
-        function currentMonth() { const n = new Date(); return `${n.getFullYear()}-${n.getMonth() + 1}`; }
-
-        async function quotaRemaining() {
-            if (artistProfile && artistProfile.plan === 'pro') return Infinity;
-
-            const q = await getQuotaData();
-            if (q.month !== currentMonth()) return QUOTA_MAX;
-            return Math.max(0, QUOTA_MAX - q.count);
-        }
-
-        async function incrementQuota() {
-            const db = await openDB();
-            const q = await getQuotaData();
-            
-            if (q.month !== currentMonth()) {
-                q.month = currentMonth();
-                q.count = 0;
-            }
-            
-            q.count++;
-            
-            return new Promise((resolve) => {
-                const tx = db.transaction(STORE_NAME, 'readwrite');
-                const store = tx.objectStore(STORE_NAME);
-                store.put(q, 'current');
-                tx.oncomplete = () => resolve(q.count <= QUOTA_MAX);
-            });
-        }
+        function currentMonth() { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() + 1}`; }
 
         async function updateQuotaUI() {
-            const quotaContainer = document.querySelector('.quota-container');
+            const q = await getQuotaData();
+            if (q.month !== currentMonth()) { q.month = currentMonth(); q.count = 0; }
             
-            if (artistProfile && artistProfile.plan === 'pro') {
-                if (quotaContainer) quotaContainer.style.display = 'none';
-                return;
+            const isPro = artistProfile && artistProfile.plan === 'pro';
+            const countEl = document.getElementById('quota-status-text');
+            const barEl = document.getElementById('quota-bar');
+
+            if (isPro) {
+                countEl.innerHTML = '✨ <span class="pro-badge">PLAN PRO</span> Certificats illimités';
+                barEl.style.width = '100%';
+            } else {
+                const pct = Math.min(100, (q.count / QUOTA_MAX) * 100);
+                countEl.textContent = `Certificats : ${q.count}/${QUOTA_MAX}`;
+                barEl.style.width = pct + '%';
+                if (q.count >= QUOTA_MAX) barEl.style.background = 'var(--red-alert)';
             }
-
-            if (quotaContainer) quotaContainer.style.display = 'block';
-            const remaining = await quotaRemaining();
-            const used      = QUOTA_MAX - remaining;
-            const pct       = (used / QUOTA_MAX) * 100;
-            document.getElementById('quota-bar').style.width   = pct + '%';
-            document.getElementById('quota-count').textContent = `${used}/${QUOTA_MAX}`;
-            const countEl = document.getElementById('quota-count');
-            countEl.className = 'quota-count' + (remaining <= 2 ? ' danger' : '');
         }
 
-        /* ===== CANVAS ===== */
-        const canvas = document.getElementById('sig-canvas');
-        const ctx    = canvas.getContext('2d');
-        let drawing  = false;
-
-        function initCanvas() {
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#1a1a1a';
-            ctx.lineWidth   = 2.5;
-            ctx.lineCap     = 'round';
-            ctx.lineJoin    = 'round';
-        }
-        initCanvas();
-
-        function getPos(e) {
-            const r  = canvas.getBoundingClientRect();
-            const sx = canvas.width  / r.width;
-            const sy = canvas.height / r.height;
-            const cx = e.touches ? e.touches[0].clientX : e.clientX;
-            const cy = e.touches ? e.touches[0].clientY : e.clientY;
-            return { x: (cx - r.left) * sx, y: (cy - r.top) * sy };
+        /* ===== PDF & QR V0 ===== */
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const cert = document.getElementById('printable-cert');
+            const canvas = await html2canvas(cert, { scale: 2 });
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`TCHAK_Certificat_${Date.now()}.pdf`);
+            toast('✅ PDF généré avec succès !', 'success');
         }
 
-        canvas.addEventListener('mousedown',  e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-        canvas.addEventListener('mousemove',  e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
-        canvas.addEventListener('mouseup',    () => { drawing = false; ctx.beginPath(); });
-        canvas.addEventListener('mouseleave', () => { drawing = false; ctx.beginPath(); });
-        canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-        canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
-        canvas.addEventListener('touchend',   () => { drawing = false; ctx.beginPath(); });
-
-        document.getElementById('clear-sig').addEventListener('click', initCanvas);
+        function generateQR(text) {
+            const container = document.getElementById('qr-code-container');
+            container.innerHTML = '';
+            new QRCode(container, {
+                text: text,
+                width: 120,
+                height: 120,
+                colorDark : "#0F201B",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
 
         /* ===== LOAD PROFILE ===== */
         async function loadProfile() {
@@ -621,7 +516,6 @@
                         `${artistProfile.firstName || ''} ${artistProfile.lastName || ''}`.trim() || artistProfile.name || 'Artiste';
                     document.getElementById('install-code').textContent =
                         artistProfile.artistId || artistProfile.installationCode || 'Mode local';
-                    // Pré-remplir le nom artiste
                     const fn = artistProfile.firstName || '';
                     const ln = artistProfile.lastName  || '';
                     const ps = artistProfile.pseudonym || '';
@@ -643,63 +537,34 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(certs));
         }
 
-        /* ===== RENDER CERT ===== */
+        /* ===== RENDER CERT V0 ===== */
         function renderCert(cert) {
             const dateStr = new Date(cert.timestamp).toLocaleString('fr-FR');
             document.getElementById('cert-preview').innerHTML = `
                 <div class="certificate" id="printable-cert">
                     <div class="cert-header">
                         <h2>CERTIFICAT D'AUTHENTICITÉ</h2>
-                        <p>N° ${cert.id}</p>
                     </div>
                     <div class="cert-body">
-                        <div class="cert-field">
-                            <strong>Artiste</strong>
-                            <span>${escHtml(cert.artist)}</span>
+                        <div class="cert-field"><strong>Artiste</strong><span>${escHtml(cert.artist)}</span></div>
+                        <div class="cert-field"><strong>Œuvre</strong><span>${escHtml(cert.title)}</span></div>
+                        <div class="cert-field"><strong>Type</strong><span>${escHtml(cert.type || '–')}</span></div>
+                        <div class="cert-field"><strong>Année</strong><span>${escHtml(cert.year || '–')}</span></div>
+                        <div class="cert-field"><strong>Émission</strong><span>${dateStr}</span></div>
+                        
+                        <div class="hash-line">ID AUTHENTICITÉ : ${cert.fullHash}</div>
+
+                        <div class="cert-footer-v0">
+                            <div class="signature-box">Signature de l'artiste</div>
+                            <div id="qr-code-container"></div>
                         </div>
-                        <div class="cert-field">
-                            <strong>Œuvre</strong>
-                            <span>${escHtml(cert.title)}</span>
-                        </div>
-                        <div class="cert-field">
-                            <strong>Type</strong>
-                            <span>${escHtml(cert.type || '–')}</span>
-                        </div>
-                        <div class="cert-field">
-                            <strong>Année</strong>
-                            <span>${escHtml(cert.year || '–')}</span>
-                        </div>
-                        <div class="cert-field">
-                            <strong>Date d'émission</strong>
-                            <span>${dateStr}</span>
-                        </div>
-                        <div class="cert-field">
-                            <strong>Hash SHA256</strong>
-                            <span class="cert-hash">${cert.fullHash}</span>
-                        </div>
-                        ${cert.prevId ? `<div class="cert-field">
-                            <strong>Hash précédent</strong>
-                            <span class="cert-hash">${cert.prevId}</span>
-                        </div>` : ''}
-                        <div class="cert-sig-area">
-                            <div>
-                                <p style="font-size:.75rem;color:var(--text-muted);margin-bottom:.5rem;">Signature de l'artiste</p>
-                                <img src="${cert.signatureDataURL}" alt="Signature">
-                            </div>
-                            <div style="text-align:right;font-size:.75rem;color:var(--text-muted);">
-                                <p>Système TCHAK</p>
-                                <p>Certification offline</p>
-                            </div>
-                        </div>
-                        <p class="cert-footer-note">Document généré par TCHAK – Certification hors-ligne sécurisée par chaîne SHA256</p>
                     </div>
                 </div>
             `;
+            generateQR(cert.fullHash);
             document.getElementById('preview-actions').style.display = 'flex';
-            document.getElementById('btn-copy-id').onclick = () => {
-                navigator.clipboard.writeText(cert.id).then(() => toast('ID copié !', 'success'));
-            };
         }
+
 
         /* ===== HISTORY ===== */
         function renderHistory(certs) {
@@ -712,7 +577,7 @@
                 <div class="history-item">
                     <div class="history-item-info">
                         <strong>${escHtml(c.artist)}</strong> – "${escHtml(c.title)}"
-                        <div class="hist-meta">ID: ${c.id} | ${new Date(c.timestamp).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'})}</div>
+                        <div class="hist-meta">ID: ${c.fullHash.substring(0, 16)} | ${new Date(c.timestamp).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'})}</div>
                     </div>
                     <span style="font-size:.75rem;background:var(--cream);padding:.25rem .6rem;border-radius:6px;color:var(--text-muted);">${c.type||'–'}</span>
                 </div>
@@ -735,69 +600,43 @@
         /* ===== FORM SUBMIT ===== */
         document.getElementById('cert-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            // Quota check
-            if (await quotaRemaining() <= 0) {
-                toast('❌ Limite de 10 certificats/mois atteinte.', 'error');
-                return;
-            }
+            const q = await getQuotaData();
+            const isPro = artistProfile && artistProfile.plan === 'pro';
+            if (!isPro && q.count >= QUOTA_MAX) { toast('❌ Quota Free atteint.', 'error'); return; }
 
             const artist = document.getElementById('f-artist').value.trim();
             const title  = document.getElementById('f-title').value.trim();
             const type   = document.getElementById('f-type').value;
             const year   = document.getElementById('f-year').value.trim();
 
-            if (!artist || !title) { toast('Veuillez remplir artiste et titre.', 'error'); return; }
-
             const btn = document.getElementById('generate-btn');
             btn.disabled = true;
-            btn.textContent = '⏳ Génération...';
 
             try {
-                const sigDataURL = canvas.toDataURL('image/png');
-                const allCerts   = loadCerts();
-                const prevId     = allCerts.length ? allCerts[allCerts.length - 1].id : '';
-                const timestamp  = Date.now();
-                
-                const fullHash   = await generateCertificateId(prevId, artist, title, timestamp, sigDataURL);
+                const prevId = certificates.length ? certificates[certificates.length - 1].fullHash : '';
+                const ts = Date.now();
+                const fullHash = await generateCertificateId(prevId, artist, title, ts, 'MANUAL_SIG');
 
-                const cert = {
-                    id: fullHash.substring(0, 16),
-                    fullHash,
-                    timestamp,
-                    artist, title, type, year,
-                    signatureDataURL: sigDataURL,
-                    prevId
-                };
+                const cert = { fullHash, timestamp: ts, artist, title, type, year, prevId };
+                certificates.push(cert);
+                saveCerts(certificates);
 
-                allCerts.push(cert);
-                saveCerts(allCerts);
-                await incrementQuota();
+                const db = await openDB();
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                q.count++;
+                tx.objectStore(STORE_NAME).put(q, 'current');
 
                 renderCert(cert);
-                renderHistory(allCerts);
+                renderHistory(certificates);
                 await updateQuotaUI();
-
-                lastCert = cert;
-                certificates = allCerts;
-
-                // Reset form fields (keep name)
-                document.getElementById('f-title').value = '';
-                document.getElementById('f-year').value  = '';
-                initCanvas();
-
-                toast(`✅ Certificat ID:${cert.id} généré et chaîné!`, 'success');
-            } catch (err) {
-                toast('❌ Erreur inattendue : ' + err.message, 'error');
-                console.error(err);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '🔐 Générer le certificat';
-            }
+                toast('✅ Certificat généré !', 'success');
+            } catch (err) { toast('❌ Erreur', 'error'); }
+            finally { btn.disabled = false; }
         });
 
-        /* ===== PRINT ===== */
-        document.getElementById('btn-print').addEventListener('click', () => window.print());
+        document.getElementById('btn-export-pdf').addEventListener('click', exportPDF);
+        document.getElementById('btn-print-native').addEventListener('click', () => window.print());
+        document.getElementById('check-update-btn').addEventListener('click', checkUpdates);
 
         /* ===== INIT ===== */
         async function init() {
@@ -805,9 +644,8 @@
             certificates = loadCerts();
             renderHistory(certificates);
             await updateQuotaUI();
-            if (certificates.length > 0) {
-                renderCert(certificates[certificates.length - 1]);
-            }
+            if (certificates.length > 0) renderCert(certificates[certificates.length - 1]);
+            checkUpdates();
         }
         init();
 

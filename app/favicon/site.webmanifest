@@ -1,10 +1,18 @@
 {
   "name": "TCHAK",
   "short_name": "TCHAK",
-  "description": "Certification d'authenticité pour artistes",
+  "description": "Outil d'édition de d'authenticité pour artistes",
   "icons": [
-    { "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/favicon/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ],
   "theme_color": "#D4541A",
   "background_color": "#180E08",
