@@ -11,7 +11,7 @@
     <link rel="icon"             type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180"                href="./favicon/apple-touch-icon.png">
     <link rel="manifest"                                        href="./favicon/site.webmanifest">
-    <meta name="theme-color"     content="#D4AF37">
+    <meta name="theme-color"     content="#D4541A">
     
     <!-- Libraries (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -20,16 +20,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-dark:  #0F201B;
-            --primary-gold:  #D4AF37;
-            --primary-white: #FDFBF7;
-            --text-dark:     #2D3436;
-            --text-light:    #6B7280;
-            --border-light:  #E5E0D5;
+            /* Brand Colors (Logo Elephant) */
+            --primary-orange: #D4541A;
+            --primary-dark:   #180E08;
+            --primary-white:  #FDFBF7;
             
-            --gold-hover:    #C19A2E;
-            --gold-glow:     rgba(212, 175, 55, 0.2);
-            --red-alert:     #B91C1C;
+            /* Functional Aliases */
+            --orange:         var(--primary-orange);
+            --orange-hover:   #B8451A;
+            --orange-glow:    rgba(212, 84, 26, 0.2);
+            
+            --charcoal:       var(--primary-dark);
+            --text-dark:      #2D3436;
+            --text-light:     #6B7280;
+            --text-muted:     #888;
+            
+            --cream:          #F9F7F5;
+            --border:         #E5E0D5;
+            --border-light:   #F0F0F0;
+            
+            --red-alert:      #B91C1C;
+            --green:          #16a34a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,12 +59,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 2px solid var(--primary-gold);
+            border-bottom: 2px solid var(--primary-orange);
             position: sticky; top: 0; z-index: 1000;
         }
 
         .header-logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 800; color: #FFF; }
-        .header-logo span { color: var(--primary-gold); }
+        .header-logo span { color: var(--primary-orange); }
 
         .header-meta {
             text-align: right;
@@ -62,13 +73,13 @@
 
         .v-badge {
             background: rgba(212, 175, 55, 0.15);
-            color: var(--primary-gold);
+            color: var(--primary-orange);
             padding: 0.2rem 0.6rem;
             border-radius: 4px;
             font-size: 0.65rem;
             font-weight: 700;
             margin-right: 0.5rem;
-            border: 1px solid var(--primary-gold);
+            border: 1px solid var(--primary-orange);
         }
 
         .dashboard-bar {
@@ -83,14 +94,14 @@
         }
 
         .quota-bar-wrap { width: 150px; height: 10px; background: #EEE; border-radius: 5px; overflow: hidden; position: relative; }
-        .quota-bar-fill { height: 100%; background: var(--primary-gold); transition: width 0.3s ease; }
+        .quota-bar-fill { height: 100%; background: var(--primary-orange); transition: width 0.3s ease; }
         .quota-text { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
-        .pro-badge { background: var(--primary-gold); color: var(--primary-dark); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; }
+        .pro-badge { background: var(--primary-orange); color: var(--primary-dark); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; }
 
         .update-btn {
             background: transparent;
-            border: 1px solid var(--primary-gold);
-            color: var(--primary-gold);
+            border: 1px solid var(--primary-orange);
+            color: var(--primary-orange);
             padding: 0.4rem 0.8rem;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -98,7 +109,7 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .update-btn:hover { background: var(--primary-gold); color: var(--primary-dark); }
+        .update-btn:hover { background: var(--primary-orange); color: var(--primary-dark); }
 
 
         /* ========= MAIN LAYOUT ========= */
@@ -226,7 +237,7 @@
             box-shadow: 0 0 40px rgba(0,0,0,0.03);
         }
 
-        .cert-header { border-bottom: 2px solid var(--primary-gold); padding-bottom: 20px; margin-bottom: 30px; text-align: center; }
+        .cert-header { border-bottom: 2px solid var(--primary-orange); padding-bottom: 20px; margin-bottom: 30px; text-align: center; }
         .cert-header h2 { font-size: 1.8rem; letter-spacing: 3px; color: var(--primary-dark); margin-bottom: 5px; }
 
         .cert-body { line-height: 2; }
@@ -234,7 +245,7 @@
         .cert-field strong { width: 140px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); }
         .cert-field span { font-weight: 500; font-size: 1rem; }
 
-        .hash-line { font-family: monospace; font-size: 0.7rem; color: var(--primary-gold); word-break: break-all; margin-top: 20px; }
+        .hash-line { font-family: monospace; font-size: 0.7rem; color: var(--primary-orange); word-break: break-all; margin-top: 20px; }
 
         .cert-footer-v0 {
             margin-top: 40px;
@@ -321,7 +332,7 @@
         <div class="header-logo">TCHAK<span>!</span></div>
         <div class="header-meta">
             <span class="v-badge">v1.0.0</span>
-            <span id="artist-name-display" style="color:var(--primary-gold);font-weight:700;">Artiste</span>
+            <span id="artist-name-display" style="color:var(--primary-orange);font-weight:700;">Artiste</span>
         </div>
     </header>
 
@@ -500,7 +511,7 @@
                 text: text,
                 width: 120,
                 height: 120,
-                colorDark : "#0F201B",
+                colorDark : "#180E08",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
