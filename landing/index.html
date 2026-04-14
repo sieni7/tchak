@@ -359,28 +359,27 @@
             text-align: center;
             border: 1px solid var(--border-warm);
             transition: var(--transition);
+        }
+
+        .card-free {
             position: relative;
+            border: 2px solid #D4AF37;
+            overflow: visible;
         }
 
-        .badge-recommended {
+        .recommended-badge {
             position: absolute;
-            top: -15px;
-            right: -15px;
-            background: #FFD700;
-            color: #1A1A1A;
-            font-weight: 800;
-            padding: 0.5rem 1rem;
+            top: -12px;
+            right: 20px;
+            background: #D4AF37;
+            color: #0F201B;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
             border-radius: 20px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-            animation: floatingBadge 2.5s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.5px;
             z-index: 10;
-        }
-
-        @keyframes floatingBadge {
-            0%, 100% { transform: translateY(0); box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
-            50% { transform: translateY(-5px); box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
         }
 
         .card-free:hover, .card-pro:hover { transform: translateY(-6px); }
@@ -670,16 +669,16 @@
 
     <!-- PRICING -->
     <section id="pricing" class="pricing">
-        <h2 data-aos="fade-up">Tarification transparente</h2>
+        <h2 data-aos="fade-up">Libre à vous de choisir</h2>
         <div class="pricing-cards">
             <div class="card-free" data-aos="zoom-in" data-aos-delay="100">
-                <div class="badge-recommended">Recommandé!</div>
+                <div class="recommended-badge">✨ recommandé !</div>
                 <h3>TCHAK Gratuit</h3>
                 <div class="price">0 XOF</div>
                 <p>10 certificats / mois</p>
                 <p>Templates standards</p>
                 <p>Sécurité SHA256 native</p>
-                <button class="cta-hero open-studio-btn" style="margin-top:1.5rem;">✨ Commencer</button>
+                <button class="cta-hero open-studio-btn" style="margin-top:1.5rem;">👤 Démarrer gratuitement</button>
             </div>
             <div class="card-pro" data-aos="zoom-in" data-aos-delay="200">
                 <h3>TCHAK Pro</h3>
@@ -687,7 +686,7 @@
                 <p>Certificats illimités</p>
                 <p>Templates de luxe</p>
                 <p>Statistiques avancées</p>
-                <button style="margin-top:1.5rem;background:#444;color:#888;border:none;padding:0.75rem 1.5rem;border-radius:40px;cursor:not-allowed;font-weight:700;" disabled>À venir</button>
+                <button class="cta-hero" style="margin-top:1.5rem;">Soyez informé</button>
             </div>
         </div>
     </section>
@@ -721,6 +720,27 @@
             <h2 style="margin-bottom:.75rem;">Félicitations !</h2>
             <p id="success-message">Votre outil TCHAK est prêt.</p>
             <button class="cta-hero" style="margin-top:1.5rem;" id="open-downloads">📂 Télécharger mon outil</button>
+        </div>
+    </div>
+
+    <!-- PRO MODAL -->
+    <div id="pro-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-pro-modal" style="position: absolute; right: 1.5em; top: 1.25em; font-size: 2em; cursor: pointer; color: #9A9A9A;">&times;</span>
+            <h3>📧 TCHAK Pro – Soyez informé</h3>
+            <p>Soyez parmi les premiers informés du lancement de la version Pro.</p>
+            <form id="pro-form">
+                <div class="form-group" style="text-align: left; margin-bottom: 1.25rem;">
+                    <label>Email *</label>
+                    <input type="email" id="pro-email" required style="width: 100%; border: 1.5px solid #DDD5CC; padding: 0.875rem 1rem; border-radius: 12px; font-family: 'Inter', sans-serif;">
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <label>WhatsApp (optionnel)</label>
+                    <input type="tel" id="pro-whatsapp" style="width: 100%; border: 1.5px solid #DDD5CC; padding: 0.875rem 1rem; border-radius: 12px; font-family: 'Inter', sans-serif;">
+                </div>
+                <button type="submit" class="cta-hero" style="background: #D4AF37; margin-top: 1rem;">📧 M'informer</button>
+            </form>
+            <p id="pro-form-status" style="margin-top: 1rem; font-size: 0.8rem;"></p>
         </div>
     </div>
 
@@ -923,6 +943,60 @@
         window.addEventListener('click', e => {
             if(e.target===modal) closeModal();
             if(e.target===document.getElementById('success-modal')) document.getElementById('success-modal').style.display='none';
+            if(e.target===document.getElementById('pro-modal')) document.getElementById('pro-modal').style.display='none';
+        });
+
+        // Gestion modale Pro
+        const proBtn = document.querySelector('.card-pro .cta-hero');
+        const proModal = document.getElementById('pro-modal');
+        const closeProModal = document.querySelector('.close-pro-modal');
+
+        if (proBtn) {
+            proBtn.removeAttribute('disabled');
+            proBtn.style.background = '#D4AF37';
+            proBtn.style.cursor = 'pointer';
+            proBtn.addEventListener('click', () => {
+                proModal.style.display = 'block';
+            });
+        }
+
+        if (closeProModal) {
+            closeProModal.addEventListener('click', () => {
+                proModal.style.display = 'none';
+            });
+        }
+
+        // Soumission formulaire Pro
+        document.getElementById('pro-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('pro-email').value;
+            const whatsapp = document.getElementById('pro-whatsapp').value;
+            const statusDiv = document.getElementById('pro-form-status');
+            
+            statusDiv.textContent = 'Envoi en cours...';
+            
+            try {
+                const response = await fetch('/.netlify/functions/save-prospect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, whatsapp, source: 'pricing_modal' })
+                });
+                
+                if (response.ok) {
+                    statusDiv.textContent = '✅ Merci ! Vous serez informé du lancement Pro.';
+                    statusDiv.style.color = '#2e7d32';
+                    setTimeout(() => {
+                        proModal.style.display = 'none';
+                        document.getElementById('pro-form').reset();
+                        statusDiv.textContent = '';
+                    }, 2000);
+                } else {
+                    throw new Error();
+                }
+            } catch (error) {
+                statusDiv.textContent = '❌ Erreur, veuillez réessayer.';
+                statusDiv.style.color = '#c62828';
+            }
         });
     </script>
 </body>
