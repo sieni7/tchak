@@ -615,6 +615,77 @@
         }
 
         .faq-link a:hover { text-decoration: underline; }
+
+        /* Accordéon FAQ */
+        .faq-accordion {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #E5E0D5;
+        }
+
+        .accordion-header {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 1.25rem 0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--charcoal);
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover { color: var(--orange); }
+
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.4rem;
+            color: var(--orange);
+            font-weight: 400;
+        }
+
+        .accordion-header.active::after {
+            content: '−';
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+            padding: 0 0 0 0.5rem;
+            color: #6B7280;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .accordion-content.show {
+            max-height: 1000px;
+            padding-bottom: 1.5rem;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        /* Modern blocks for modals */
+        .modal-body-block {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .modal-body-block h3 {
+            color: var(--orange);
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+        .modal-body-block p {
+            color: #4B5563;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -779,7 +850,7 @@
                 </div>
             </div>
             <div class="faq-link">
-                <a href="faq.html">Voir toutes les questions fréquentes →</a>
+                <a href="#" class="modal-trigger" data-modal="modal-faq">Voir toutes les questions fréquentes →</a>
             </div>
         </div>
     </section>
@@ -788,9 +859,9 @@
     <footer>
         <img src="logo tchak-01.png" alt="TCHAK Logo" class="footer-logo">
         <div class="footer-links">
-            <a href="faq.html">FAQ</a>
-            <a href="securite.html">Sécurité</a>
-            <a href="mentions.html">Mentions légales</a>
+            <a href="#" class="modal-trigger" data-modal="modal-faq">FAQ</a>
+            <a href="#" class="modal-trigger" data-modal="modal-securite">Sécurité</a>
+            <a href="#" class="modal-trigger" data-modal="modal-mentions">Mentions légales</a>
             <a href="mailto:sieni7@gmail.com">Contact</a>
         </div>
         <p class="footer-copy">© 2026 TCHAK – Certification d'authenticité pour les artistes</p>
@@ -813,6 +884,88 @@
             <h2 style="margin-bottom:.75rem;">Félicitations !</h2>
             <p id="success-message">Votre outil TCHAK est prêt.</p>
             <button class="cta-hero" style="margin-top:1.5rem;" id="open-downloads">📂 Télécharger mon outil</button>
+        </div>
+    </div>
+
+    <!-- MODALE FAQ -->
+    <div id="modal-faq" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close-modal" data-modal="modal-faq" style="position: absolute; right: 1.5rem; top: 1.25rem; font-size: 2rem; cursor: pointer; color: #9A9A9A;">&times;</span>
+            <h2 style="margin-bottom: 1.5rem;">Questions fréquentes</h2>
+            <div class="faq-accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">Qu’est-ce que TCHAK ?</button>
+                    <div class="accordion-content">TCHAK est un outil personnel qui vous permet de créer vos certificats d’authenticité de manière totalement autonome, sans dépendre d’une plateforme tierce.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Faut-il une connexion internet ?</button>
+                    <div class="accordion-content">Non. Une fois installé, TCHAK fonctionne entièrement hors ligne. Vous pouvez certifier vos œuvres partout, même en zone blanche.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Où sont stockées mes données ?</button>
+                    <div class="accordion-content">Vos certificats, vos signatures et votre historique sont stockés uniquement sur votre ordinateur. Aucune donnée n'est envoyée dans le cloud.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Qu’est-ce que la chaîne SHA256 ?</button>
+                    <div class="accordion-content">C'est une technologie de hachage sécurisée. Chaque certificat est lié mathématiquement au précédent, créant une chaîne inaltérable qui prouve l'intégrité de votre catalogue.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Que se passe-t-il si je change d’ordinateur ?</button>
+                    <div class="accordion-content">Il vous suffit de sauvegarder votre dossier de travail TCHAK (situé dans votre profil utilisateur) pour transférer tout votre historique vers votre nouvel appareil.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Pourquoi une limite gratuite ?</button>
+                    <div class="accordion-content">Le plan gratuit (10 certificats/mois) couvre les besoins de la majorité des artistes indépendants. Une version Pro illimitée arrive bientôt pour les gros volumes.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE SÉCURITÉ -->
+    <div id="modal-securite" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close-modal" data-modal="modal-securite" style="position: absolute; right: 1.5rem; top: 1.25rem; font-size: 2rem; cursor: pointer; color: #9A9A9A;">&times;</span>
+            <h2 style="margin-bottom: 2rem;">Sécurité & Confidentialité</h2>
+            <div class="modal-body-block">
+                <h3>Contrôle total</h3>
+                <p>Vos certificats sont générés et stockés localement. Vous êtes le seul détenteur des clés cryptographiques de vos œuvres.</p>
+            </div>
+            <div class="modal-body-block">
+                <h3>Chaîne cryptographique</h3>
+                <p>Grâce à l'algorithme SHA256, chaque certificat valide le précédent. Toute tentative de modification d'un ancien certificat briserait la chaîne entière.</p>
+            </div>
+            <div class="modal-body-block">
+                <h3>Intégrité des données</h3>
+                <p>TCHAK garantit que vos certificats n'ont pas été altérés depuis leur création. L'identifiant unique de 64 caractères fait foi.</p>
+            </div>
+            <div class="modal-body-block">
+                <h3>Discrétion absolue</h3>
+                <p>Puisque l'outil est Offline-First, nous n'avons aucun moyen technique de savoir quelles œuvres vous certifiez ou à qui vous les vendez.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE MENTIONS LÉGALES -->
+    <div id="modal-mentions" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close-modal" data-modal="modal-mentions" style="position: absolute; right: 1.5rem; top: 1.25rem; font-size: 2rem; cursor: pointer; color: #9A9A9A;">&times;</span>
+            <h2 style="margin-bottom: 2rem;">Mentions légales</h2>
+            <div class="modal-body-block">
+                <h3>Éditeur du projet</h3>
+                <p>TCHAK est une initiative indépendante portée par Oulai Siéni, développeur passionné par l'autonomie technologique des artistes.</p>
+            </div>
+            <div class="modal-body-block">
+                <h3>Nature du service</h3>
+                <p>L'outil TCHAK fournit des certificats d'authenticité numériques basés sur la preuve de travail locale. Il n'est pas un organisme d'État mais un outil de confiance entre l'artiste et l'acquéreur.</p>
+            </div>
+            <div class="modal-body-block">
+                <h3>Responsabilité</h3>
+                <p>L'artiste est responsable de l'exactitude des informations saisies et de la conservation de ses fichiers de base de données locaux.</p>
+            </div>
+            <div class="modal-body-block">
+                <h3>Propriété Intellectuelle</h3>
+                <p>Le code source de l'outil généré ainsi que les visuels de la plateforme TCHAK sont protégés. Toute revente non autorisée de l'outil est interdite.</p>
+            </div>
         </div>
     </div>
 
@@ -1037,6 +1190,56 @@
             if(e.target===modal) closeModal();
             if(e.target===document.getElementById('success-modal')) document.getElementById('success-modal').style.display='none';
             if(e.target===document.getElementById('pro-modal')) document.getElementById('pro-modal').style.display='none';
+            
+            // Close other modals
+            document.querySelectorAll('.modal').forEach(m => {
+                if (e.target === m) {
+                    m.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Gestion des modales FAQ / Sécurité / Mentions (Générique)
+        const modalTriggers = document.querySelectorAll('.modal-trigger');
+        const closeModals = document.querySelectorAll('.close-modal');
+
+        modalTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                const modalId = trigger.getAttribute('data-modal');
+                const targetModal = document.getElementById(modalId);
+                if (targetModal) {
+                    targetModal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        closeModals.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.getAttribute('data-modal');
+                const targetModal = document.getElementById(modalId);
+                if (targetModal) {
+                    targetModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // Accordéon FAQ (dans la modale)
+        document.querySelectorAll('.accordion-header').forEach(button => {
+            button.addEventListener('click', () => {
+                const isActive = button.classList.contains('active');
+                
+                // Optionnel : Fermer les autres (comportement exclusif)
+                // document.querySelectorAll('.accordion-header').forEach(b => b.classList.remove('active'));
+                // document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('show'));
+
+                button.classList.toggle('active');
+                const content = button.nextElementSibling;
+                content.classList.toggle('show');
+            });
         });
 
         // Gestion modale Pro
