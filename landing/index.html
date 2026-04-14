@@ -1230,15 +1230,18 @@
         // Accordéon FAQ (dans la modale)
         document.querySelectorAll('.accordion-header').forEach(button => {
             button.addEventListener('click', () => {
-                const isActive = button.classList.contains('active');
-                
-                // Optionnel : Fermer les autres (comportement exclusif)
-                // document.querySelectorAll('.accordion-header').forEach(b => b.classList.remove('active'));
-                // document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('show'));
-
-                button.classList.toggle('active');
                 const content = button.nextElementSibling;
-                content.classList.toggle('show');
+                const isOpen = content.classList.contains('show');
+
+                // Fermer TOUS les items pour un comportement exclusif
+                document.querySelectorAll('.accordion-header').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('show'));
+
+                // Si l'item cliqué n'était pas ouvert, on l'ouvre
+                if (!isOpen) {
+                    button.classList.add('active');
+                    content.classList.add('show');
+                }
             });
         });
 
