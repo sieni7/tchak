@@ -323,11 +323,40 @@
 
         /* ========= PRINT ========= */
         @media print {
-            header, .dashboard-bar, .form-col, .preview-actions, .history-section, .btn { display: none !important; }
-            .main { display: block !important; }
-            .panel { box-shadow: none !important; border: none !important; }
+            header, .dashboard-bar, .form-col, .preview-actions, .history-section, .btn, .update-btn { display: none !important; }
+            .main { display: block !important; margin: 0 !important; padding: 0 !important; }
+            .preview-col { width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .panel { box-shadow: none !important; border: none !important; padding: 0 !important; background: transparent !important; }
             body { background: #fff !important; }
-            .cert-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            
+            .certificate {
+                margin: 1.5cm !important;
+                padding: 1.5cm !important;
+                border: 1px solid #EEE !important;
+                box-shadow: none !important;
+                background: #fff !important;
+                width: 210mm;
+                min-height: 297mm;
+                position: relative;
+            }
+            #certificate-title { font-size: 24px !important; }
+            #qr-code { width: 4cm !important; height: 4cm !important; }
+            #signature-area { width: 8cm !important; height: 4cm !important; }
+        }
+
+        /* ========= RESPONSIVE REFINEMENT ========= */
+        @media (max-width: 1024px) {
+            .main { grid-template-columns: 1fr; gap: 1.5rem; }
+            .preview-col { order: 1; }
+            .form-col { order: 2; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 0.8rem 1rem; }
+            .header-logo { font-size: 1.4rem; }
+            .panel { padding: 1.25rem; }
+            .certificate { padding: 20px; }
+            #signature-area { width: 100%; height: 120px; }
         }
     </style>
 </head>
@@ -367,7 +396,8 @@
 
                     <div class="form-group">
                         <label class="required">Nom de l'artiste</label>
-                        <input type="text" id="f-artist" placeholder="Nom complet" required>
+                        <input type="text" id="f-artist" placeholder="Nom complet" required disabled>
+                        <small style="color:var(--text-light);font-size:0.75rem;">Fixé dans le profil artiste.</small>
                     </div>
 
                     <div class="form-group">
@@ -375,33 +405,50 @@
                         <input type="text" id="f-title" placeholder="Ex: Sans titre #3" required>
                     </div>
 
-                    <div class="form-group">
-                        <label>Type d'œuvre</label>
-                        <select id="f-type">
-                            <option value="Peinture">Peinture</option>
-                            <option value="Dessin">Dessin</option>
-                            <option value="Sculpture">Sculpture</option>
-                            <option value="Photographie">Photographie</option>
-                            <option value="Art numérique">Art numérique</option>
-                            <option value="Textile">Textile</option>
-                            <option value="Autre">Autre</option>
-                        </select>
+                    <div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div>
+                            <label>Type d'œuvre</label>
+                            <select id="f-type">
+                                <option value="Peinture">Peinture</option>
+                                <option value="Dessin">Dessin</option>
+                                <option value="Sculpture">Sculpture</option>
+                                <option value="Photographie">Photographie</option>
+                                <option value="Art numérique">Art numérique</option>
+                                <option value="Textile">Textile</option>
+                                <option value="Autre">Autre</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Année</label>
+                            <input type="text" id="f-year" placeholder="2026">
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Année de création</label>
-                        <input type="text" id="f-year" placeholder="2026">
+                        <label>Dimensions (Largeur x Hauteur cm)</label>
+                        <input type="text" id="f-dimensions" placeholder="Ex: 50 x 70 cm">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Technique / Médiums</label>
+                        <input type="text" id="f-technique" placeholder="Ex: Huile sur toile">
+                    </div>
+
+                    <div class="form-group">
+                        <label>🖼️ Image de l'œuvre (max 2 Mo)</label>
+                        <input type="file" id="f-image" accept="image/*" style="padding:0.5rem 0;">
+                        <div id="image-status" style="font-size:0.7rem;color:var(--text-light);">Recommandé : Jpeg/Png optimisé.</div>
                     </div>
 
                     <div class="form-group">
                         <label>✍️ Signature</label>
                         <div class="signature-placeholder">
-                            Une zone de signature sera générée sur le certificat.<br>
-                            Vous signerez manuellement après l'impression.
+                            Cadre de signature (8x4cm) généré sur le certificat.<br>
+                            À signer manuellement après l'impression.
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" id="generate-btn">🔐 Générer & Sécuriser</button>
+                    <button type="submit" class="btn btn-primary" id="generate-btn">🔐 Générer & Sécuriser V0</button>
                 </form>
             </div>
         </div>
@@ -411,7 +458,7 @@
             <div class="panel">
                 <div class="panel-title">📄 Aperçu du Certificat</div>
                 <div id="cert-preview">
-                    <div class="cert-placeholder">Remplissez le formulaire pour générer votre certificat sécurisé.</div>
+                    <div class="cert-placeholder">Remplissez le formulaire à gauche pour visualiser votre certificat notarié.</div>
                 </div>
                 <div class="preview-actions" id="preview-actions" style="display:none">
                     <button class="btn btn-primary btn-sm" id="btn-export-pdf">📥 Télécharger PDF (Pro)</button>
@@ -441,6 +488,9 @@
 
         let artistProfile = null;
         let certificates  = [];
+        let currentImageBase64 = null;
+
+        const INSTITUTIONAL_TEXT_TEMPLATE = `Le présent certificat atteste que cette œuvre originale de l’artiste [ARTISTE] constitue une pièce unique. À la date d’émission du présent certificat, elle est reconnue comme authentique et n’a fait l’objet d’aucune reproduction connue. Cette œuvre est enregistrée dans un système de traçabilité reposant sur une chaîne cryptographique garantissant l’intégrité et la continuité des informations associées. Données de vérification de l’intégrité de la chaîne disponibles sur simple demande à l’artiste. En foi de quoi, le présent certificat est établi pour servir et valoir ce que de droit.`;
 
         /* ===== UPDATE SYSTEM ===== */
         async function checkUpdates() {
@@ -496,28 +546,23 @@
         }
 
         /* ===== PDF & QR V0 ===== */
-        async function exportPDF() {
-            const { jsPDF } = window.jspdf;
-            const cert = document.getElementById('printable-cert');
-            const canvas = await html2canvas(cert, { scale: 2 });
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`TCHAK_Certificat_${Date.now()}.pdf`);
-            toast('✅ PDF généré avec succès !', 'success');
+        async function generateCertificateId(dataObj) {
+            const msg = JSON.stringify(dataObj);
+            const msgUint8 = new TextEncoder().encode(msg);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         function generateQR(text) {
             const container = document.getElementById('qr-code-container');
+            if(!container) return;
             container.innerHTML = '';
             new QRCode(container, {
                 text: text,
-                width: 120,
-                height: 120,
-                colorDark : "#180E08",
+                width: 150,
+                height: 150,
+                colorDark : "#0D0D0D",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
@@ -554,31 +599,85 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(certs));
         }
 
-        /* ===== RENDER CERT V0 ===== */
-        function renderCert(cert) {
-            const dateStr = new Date(cert.timestamp).toLocaleString('fr-FR');
+        /* ===== PDF EXPORT ===== */
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const cert = document.getElementById('printable-cert');
+            if(!cert) return;
+            toast('🎨 Préparation du document...', 'info');
+            const canvas = await html2canvas(cert, { scale: 2, useCORS: true });
+            const imgData = canvas.toDataURL('image/jpeg', 0.95);
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`Certificat_TCHAK_${Date.now()}.pdf`);
+            toast('✅ PDF exporté !', 'success');
+        }
+
+        /* ===== HOT REFRESH & RENDER ===== */
+        async function updatePreview() {
+            const artist = document.getElementById('f-artist').value || 'Artiste';
+            const title  = document.getElementById('f-title').value || 'Titre de l\'œuvre';
+            const type   = document.getElementById('f-type').value;
+            const year   = document.getElementById('f-year').value || '2026';
+            const dims   = document.getElementById('f-dimensions').value || 'Dimensions non spécifiées';
+            const tech   = document.getElementById('f-technique').value || 'Technique non spécifiée';
+            
+            const prevHash = certificates.length ? certificates[certificates.length - 1].fullHash : 'GENESIS';
+            
+            // Temporary data object for live hash preview
+            const liveData = { prevHash, artist, title, type, year, dims, tech, image: currentImageBase64 ? 'IMG_PRESENT' : 'NO_IMG' };
+            const hash = await generateCertificateId(liveData);
+            
+            renderCertUI({
+                artist, title, type, year, dims, tech, 
+                image: currentImageBase64,
+                fullHash: hash,
+                timestamp: Date.now()
+            });
+        }
+
+        function renderCertUI(data) {
+            const artistDisplay = artistProfile ? `${artistProfile.firstName || ''} ${artistProfile.lastName || ''}`.trim() || artistProfile.name : data.artist;
+            const institutionalText = INSTITUTIONAL_TEXT_TEMPLATE.replace('[ARTISTE]', artistDisplay);
+
             document.getElementById('cert-preview').innerHTML = `
                 <div class="certificate" id="printable-cert">
-                    <div class="cert-header">
-                        <h2>CERTIFICAT D'AUTHENTICITÉ</h2>
+                    <h2 id="certificate-title" style="font-family:'Playfair Display'; text-align:center; font-size:22px; margin-bottom:20px; border-bottom:1px solid #D4541A; padding-bottom:10px;">CERTIFICAT D'AUTHENTICITÉ</h2>
+                    
+                    <div id="certificate-image-box" style="text-align:center; margin-bottom:25px;">
+                        ${data.image ? `<img src="${data.image}" style="max-width:300px; border-radius:4px; box-shadow:0 4px 15px rgba(0,0,0,0.1); border:1px solid #EEE;">` : `<div style="height:150px; background:#F5F5F5; display:flex; align-items:center; justify-content:center; color:#AAA; border-radius:4px; font-style:italic;">Aperçu de l'œuvre</div>`}
                     </div>
-                    <div class="cert-body">
-                        <div class="cert-field"><strong>Artiste</strong><span>${escHtml(cert.artist)}</span></div>
-                        <div class="cert-field"><strong>Œuvre</strong><span>${escHtml(cert.title)}</span></div>
-                        <div class="cert-field"><strong>Type</strong><span>${escHtml(cert.type || '–')}</span></div>
-                        <div class="cert-field"><strong>Année</strong><span>${escHtml(cert.year || '–')}</span></div>
-                        <div class="cert-field"><strong>Émission</strong><span>${dateStr}</span></div>
-                        
-                        <div class="hash-line">ID AUTHENTICITÉ : ${cert.fullHash}</div>
 
-                        <div class="cert-footer-v0">
-                            <div class="signature-box">Signature de l'artiste</div>
-                            <div id="qr-code-container"></div>
+                    <div id="institutional-text" style="font-size:11px; text-align:justify; line-height:1.6; margin-bottom:25px; color:#333; font-family:'Inter';">
+                        ${institutionalText}
+                    </div>
+
+                    <div id="tech-specs" style="background:#F9F9F9; border:1px solid #CCC; padding:15px; margin-bottom:30px; border-radius:4px;">
+                        <div style="display:grid; grid-template-columns:100px 1fr; font-size:12px; gap:8px;">
+                            <strong style="color:#666; font-family:var(--font-accent);">TITRE :</strong> <span>${data.title}</span>
+                            <strong style="color:#666; font-family:var(--font-accent);">ARTISTE :</strong> <span>${artistDisplay}</span>
+                            <strong style="color:#666; font-family:var(--font-accent);">TECHNIQUE :</strong> <span>${data.tech}</span>
+                            <strong style="color:#666; font-family:var(--font-accent);">DIMENSIONS :</strong> <span>${data.dims}</span>
+                            <strong style="color:#666; font-family:var(--font-accent);">ANNÉE :</strong> <span>${data.year}</span>
                         </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 150px; gap:40px; align-items:flex-end; margin-bottom:30px;">
+                        <div id="signature-area" style="border:1px dashed #333; height:4cm; display:flex; flex-direction:column; justify-content:flex-end; padding:10px; font-size:10px; color:#555; font-family:var(--font-accent);">
+                            SIGNATURE DE L'ARTISTE
+                        </div>
+                        <div id="qr-code-container" style="width:150px; height:150px;"></div>
+                    </div>
+
+                    <div id="certificate-footer" style="font-size:9px; text-align:center; color:#666; border-top:1px solid #EEE; padding-top:10px;">
+                        ID AUTHENTICITÉ : ${data.fullHash}<br>
+                        Généré par TCHAK – Système de traçabilité cryptographique
                     </div>
                 </div>
             `;
-            generateQR(cert.fullHash);
+            generateQR(data.fullHash);
             document.getElementById('preview-actions').style.display = 'flex';
         }
 
@@ -621,20 +720,32 @@
             const isPro = artistProfile && artistProfile.plan === 'pro';
             if (!isPro && q.count >= QUOTA_MAX) { toast('❌ Quota Free atteint.', 'error'); return; }
 
-            const artist = document.getElementById('f-artist').value.trim();
-            const title  = document.getElementById('f-title').value.trim();
+            const artist = document.getElementById('f-artist').value || 'Artiste';
+            const title  = document.getElementById('f-title').value || 'Titre';
             const type   = document.getElementById('f-type').value;
-            const year   = document.getElementById('f-year').value.trim();
+            const year   = document.getElementById('f-year').value || '2026';
+            const dims   = document.getElementById('f-dimensions').value || '';
+            const tech   = document.getElementById('f-technique').value || '';
 
             const btn = document.getElementById('generate-btn');
             btn.disabled = true;
 
             try {
-                const prevId = certificates.length ? certificates[certificates.length - 1].fullHash : '';
+                const prevHash = certificates.length ? certificates[certificates.length - 1].fullHash : 'GENESIS';
                 const ts = Date.now();
-                const fullHash = await generateCertificateId(prevId, artist, title, ts, 'MANUAL_SIG');
+                
+                // Final data object for the permanent block
+                const finalData = { prevHash, artist, title, type, year, dims, tech, image: currentImageBase64 ? 'IMG_PRESENT' : 'NO_IMG' };
+                const fullHash = await generateCertificateId(finalData);
 
-                const cert = { fullHash, timestamp: ts, artist, title, type, year, prevId };
+                const cert = { 
+                    fullHash, 
+                    timestamp: ts, 
+                    artist, title, type, year, dims, tech,
+                    prevHash,
+                    image: currentImageBase64 // WE STORE the full image in the local record
+                };
+                
                 certificates.push(cert);
                 saveCerts(certificates);
 
@@ -643,12 +754,37 @@
                 q.count++;
                 tx.objectStore(STORE_NAME).put(q, 'current');
 
-                renderCert(cert);
+                renderCertUI(cert); // Final render
                 renderHistory(certificates);
                 await updateQuotaUI();
-                toast('✅ Certificat généré !', 'success');
+                toast('🔐 Certificat sécurisé et enregistré !', 'success');
             } catch (err) { toast('❌ Erreur', 'error'); }
             finally { btn.disabled = false; }
+        });
+
+        /* ===== IMAGE UPLOAD ===== */
+        document.getElementById('f-image').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                toast('❌ Image trop lourde (Max 2 Mo)', 'error');
+                e.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                currentImageBase64 = ev.target.result;
+                updatePreview();
+                toast('🖼️ Image chargée !', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        /* ===== HOT REFRESH WIRING ===== */
+        ['f-title', 'f-type', 'f-year', 'f-dimensions', 'f-technique'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
         });
 
         document.getElementById('btn-export-pdf').addEventListener('click', exportPDF);
@@ -661,7 +797,10 @@
             certificates = loadCerts();
             renderHistory(certificates);
             await updateQuotaUI();
-            if (certificates.length > 0) renderCert(certificates[certificates.length - 1]);
+            
+            // Initial preview
+            updatePreview(); 
+            
             checkUpdates();
         }
         init();
