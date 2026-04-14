@@ -20,22 +20,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Brand Colors (Logo Elephant) */
-            --primary-orange: #D4541A;
-            --primary-dark:   #180E08;
-            --primary-white:  #FDFBF7;
+            /* NEW INTELLIGENT PALETTE - THE GALLERY THEME */
+            --primary-orange: #F24B0F;   /* Vibrant Action */
+            --secondary-peach: #F29C6B;  /* Smooth Accent */
+            --primary-dark:   #0D0D0D;   /* Deep Sharp Text */
+            --bg-primary:     #F2F2F0;   /* Off-white Base */
+            --bg-surface:     #F2F1DC;   /* Ivory Art Paper */
             
             /* Functional Aliases */
             --orange:         var(--primary-orange);
-            --orange-hover:   #B8451A;
-            --orange-glow:    rgba(212, 84, 26, 0.2);
+            --orange-hover:   #D8420D;
+            --orange-glow:    rgba(242, 156, 107, 0.3);
             
             --charcoal:       var(--primary-dark);
-            --text-dark:      #2D3436;
-            --text-light:     #6B7280;
+            --text-dark:      #0D0D0D;
+            --text-light:     #525252;
             --text-muted:     #888;
             
-            --cream:          #F9F7F5;
+            --cream:          var(--bg-surface);
             --border:         #E5E0D5;
             --border-light:   #F0F0F0;
             
@@ -47,7 +49,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--primary-white);
+            background: var(--bg-primary);
             color: var(--text-dark);
             min-height: 100vh;
         }
@@ -72,14 +74,14 @@
         }
 
         .v-badge {
-            background: rgba(212, 175, 55, 0.15);
-            color: var(--primary-orange);
+            background: rgba(242, 156, 107, 0.15);
+            color: var(--secondary-peach);
             padding: 0.2rem 0.6rem;
             border-radius: 4px;
             font-size: 0.65rem;
             font-weight: 700;
             margin-right: 0.5rem;
-            border: 1px solid var(--primary-orange);
+            border: 1px solid var(--secondary-peach);
         }
 
         .dashboard-bar {
@@ -96,12 +98,12 @@
         .quota-bar-wrap { width: 150px; height: 10px; background: #EEE; border-radius: 5px; overflow: hidden; position: relative; }
         .quota-bar-fill { height: 100%; background: var(--primary-orange); transition: width 0.3s ease; }
         .quota-text { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
-        .pro-badge { background: var(--primary-orange); color: var(--primary-dark); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; }
+        .pro-badge { background: var(--secondary-peach); color: var(--primary-dark); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; }
 
         .update-btn {
             background: transparent;
-            border: 1px solid var(--primary-orange);
-            color: var(--primary-orange);
+            border: 1px solid var(--secondary-peach);
+            color: var(--secondary-peach);
             padding: 0.4rem 0.8rem;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -109,7 +111,7 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .update-btn:hover { background: var(--primary-orange); color: var(--primary-dark); }
+        .update-btn:hover { background: var(--secondary-peach); color: var(--primary-dark); }
 
 
         /* ========= MAIN LAYOUT ========= */
@@ -128,10 +130,10 @@
 
         /* ========= PANELS ========= */
         .panel {
-            background: #fff;
+            background: var(--bg-surface);
             border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             border: 1px solid var(--border);
         }
 
@@ -143,9 +145,9 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--charcoal);
+            color: var(--text-dark);
             padding-bottom: 1rem;
-            border-bottom: 2px solid var(--cream);
+            border-bottom: 2px solid var(--bg-primary);
         }
 
         /* ========= FORM ========= */
@@ -208,8 +210,12 @@
             gap: 0.4rem;
         }
 
-        .btn-primary { background: var(--orange); color: #fff; width: 100%; justify-content: center; font-size: 1rem; padding: 1rem; }
-        .btn-primary:hover { background: var(--orange-hover); box-shadow: 0 8px 20px var(--orange-glow); transform: translateY(-1px); }
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-peach) 100%); 
+            color: #fff; width: 100%; justify-content: center; font-size: 1rem; padding: 1rem; 
+            box-shadow: 0 4px 12px var(--orange-glow);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px var(--orange-glow); filter: brightness(1.1); }
         .btn-primary:disabled { background: #CCC; cursor: not-allowed; transform: none; box-shadow: none; }
 
         .btn-sm { padding: 0.5rem 1rem; font-size: 0.8rem; }
@@ -229,21 +235,21 @@
 
         /* ========= CERTIFICATE V0 ========= */
         .certificate {
-            background: #fff;
+            background: var(--bg-surface);
             border: 1px solid var(--border-light);
-            border-radius: 4px; /* Plus carré pour le print */
+            border-radius: 2px; /* Even sharper for art style */
             padding: 40px;
             position: relative;
-            box-shadow: 0 0 40px rgba(0,0,0,0.03);
+            box-shadow: 0 0 40px rgba(0,0,0,0.05);
         }
 
         .cert-header { border-bottom: 2px solid var(--primary-orange); padding-bottom: 20px; margin-bottom: 30px; text-align: center; }
         .cert-header h2 { font-size: 1.8rem; letter-spacing: 3px; color: var(--primary-dark); margin-bottom: 5px; }
 
         .cert-body { line-height: 2; }
-        .cert-field { display: flex; border-bottom: 1px solid #F0F0F0; padding: 10px 0; }
+        .cert-field { display: flex; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 10px 0; }
         .cert-field strong { width: 140px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-light); }
-        .cert-field span { font-weight: 500; font-size: 1rem; }
+        .cert-field span { font-weight: 500; font-size: 1rem; color: var(--text-dark); }
 
         .hash-line { font-family: monospace; font-size: 0.7rem; color: var(--primary-orange); word-break: break-all; margin-top: 20px; }
 
