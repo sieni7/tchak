@@ -359,6 +359,28 @@
             text-align: center;
             border: 1px solid var(--border-warm);
             transition: var(--transition);
+            position: relative;
+        }
+
+        .badge-recommended {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: #FFD700;
+            color: #1A1A1A;
+            font-weight: 800;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            animation: floatingBadge 2.5s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes floatingBadge {
+            0%, 100% { transform: translateY(0); box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+            50% { transform: translateY(-5px); box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
         }
 
         .card-free:hover, .card-pro:hover { transform: translateY(-6px); }
@@ -532,7 +554,7 @@
     <!-- NAVBAR -->
     <nav class="glass-nav">
         <div style="display:flex;align-items:center;">
-            <img src="logo-tchak.png" alt="TCHAK! Logo" class="logo-img">
+            <img src="logo tchak-01.png" alt="TCHAK! Logo" class="logo-img">
             <span class="beta-badge">Outil personnel</span>
         </div>
         <div class="nav-links">
@@ -651,6 +673,7 @@
         <h2 data-aos="fade-up">Tarification transparente</h2>
         <div class="pricing-cards">
             <div class="card-free" data-aos="zoom-in" data-aos-delay="100">
+                <div class="badge-recommended">Recommandé!</div>
                 <h3>TCHAK Gratuit</h3>
                 <div class="price">0 XOF</div>
                 <p>10 certificats / mois</p>
@@ -671,7 +694,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <img src="logo-tchak.png" alt="TCHAK Logo" class="footer-logo">
+        <img src="logo tchak-01.png" alt="TCHAK Logo" class="footer-logo">
         <div class="footer-links">
             <a href="#">FAQ</a>
             <a href="#">Contact</a>
